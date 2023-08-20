@@ -58,16 +58,7 @@ namespace API.Controllers
 
         [HttpDelete("delete")]
 
-        public async Task<List<Account>> Delete (Guid Id)
-        {
-
-            var account = await _db.Account.AsNoTracking().FirstOrDefaultAsync(d => d.Id == Id);
-             _db.Account.Remove(account);
-              await _db.SaveChangesAsync();
-
-            var list = await _db.Account.AsNoTracking().ToListAsync();
-            return list;
-        }
+       
 
         [HttpPut("put")]
 

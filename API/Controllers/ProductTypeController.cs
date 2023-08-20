@@ -18,12 +18,17 @@ namespace API.Controllers
 
         [HttpGet("getAll")]
 
-        public async Task<List<ProductType>> Getall()
+        public async Task<IActionResult> GetAll()
         {
-            var product = await _db.ProductType.AsNoTracking().ToListAsync();
-            return product;
+            var producttype = await _db.ProductType.AsNoTracking().ToListAsync();
+            if (producttype == null)
+                return BadRequest();
+            else
+            {
+                return Ok(producttype);
+            }
         }
-        [HttpPost("create")]
+        [HttpPost("createProDuctType")]
 
         public async Task<IActionResult> CreateProductType(CreateProductTypeDTO input)
         {
@@ -32,10 +37,12 @@ namespace API.Controllers
                 Id = new Guid(),
                 Name = input.Name
             };
-         await  _db.ProductType.AddAsync(productType);
+           await  _db.ProductType.AddAsync(productType);
            await _db.SaveChangesAsync();
-            return new JsonResult("Create Done");
+            return Ok("Create Done");
         }
+
+
 
     }
 }

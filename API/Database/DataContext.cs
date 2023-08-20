@@ -14,12 +14,19 @@ namespace API.Database
         public DbSet <Bill> Bill { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
-        public DbSet<Test> Test { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Account>(e => {
+                e.HasKey(ac => ac.Id);
+            });
+
+            builder.Entity<Bill>(e =>
+            {
+                e.Property(e => e.Time).HasDefaultValueSql("DATEADD(hour, 7, GETUTCDATE())");
+            });
         }
 
 

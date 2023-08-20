@@ -1,4 +1,7 @@
+using API.Business.Interfaces.IBillService;
 using API.Business.Interfaces.ICustomerService;
+using API.Business.Repository;
+using API.Business.Services.BillService.cs;
 using API.Business.Services.CustomerService;
 using API.Database;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddCors();
+builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
 builder.Services.AddScoped<ICustomerService, CustomerAppService>();
+builder.Services.AddScoped<IBillService, BillAppService>();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

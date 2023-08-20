@@ -1,10 +1,13 @@
 ﻿using API.Business.DTOs.BillDTO;
+using API.Business.Interfaces.IBillService;
+using API.Business.Repository;
 using API.Database;
 using API.Entities;
 using API.Entities.Enum;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -12,21 +15,25 @@ namespace API.Controllers
     {
         private readonly DataContext _db;
         private readonly IMapper _mapper;
+        private readonly IBillService _service;
 
-
-        public BillController(DataContext db,IMapper mapper)
+        public BillController(DataContext db,IMapper mapper,IBillService service)
         {
             _db = db;
             _mapper = mapper;
+            _service = service;
         }
 
 
         [HttpGet("getAll")]
 
-        public async Task<List<GetAllBillDTO>> GetAll ()
+        public async Task<IActionResult> GetAll ()
         {
-            var bill = await _db.Bill.AsNoTracking().ToListAsync();
-            return _mapper.Map<List<GetAllBillDTO>>(bill);
+            var bill = await _service.GetAll();
+            if (bill == null)
+                return BadRequest(HttpStatusCode.NoContent);
+           return Ok( _mapper.Map<List<GetAllBillDTO>>(bill));
+            
         }
 
 
@@ -35,19 +42,6 @@ namespace API.Controllers
 
         public async Task<IActionResult> AddBill(CreateBillDTO input)
         {
-            Bill bill = new Bill
-            {
-                Id = new Guid(),
-                CustomerID = input.CustomerId,
-                Time = DateTime.Now,
-                Address = input.Address,
-                PhoneNumber = input.PhoneNumber,
-                Discount = input.Discount,
-                TotalMoney = input.TotalMoney,
-                Status = Status.Ordered,
-                Note =  input.Note
-            };
-
             await _db.AddAsync(_mapper.Map<Bill>(input));
             await _db.SaveChangesAsync();
             return new JsonResult("Done");
