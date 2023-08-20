@@ -1,0 +1,27 @@
+﻿using API.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Database
+{
+    public class DataContext : DbContext
+    {
+        public DataContext(DbContextOptions options) : base(options)
+        {
+        }
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<ProductType> ProductType {get;set;}
+        public DbSet<Account> Account { get; set; }
+        public DbSet <Bill> Bill { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+        public DbSet<Test> Test { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+        }
+
+
+    }
+}
