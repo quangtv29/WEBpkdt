@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\DATN\\API\\API\\API.csproj": {}
+    "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\DATN\\API\\API\\API.csproj": {
+    "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DATN\\API\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\DATN\\API\\API\\API.csproj",
+        "projectPath": "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\API\\API.csproj",
         "packagesPath": "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\",
-        "outputPath": "C:\\DATN\\API\\API\\obj\\",
+        "outputPath": "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Uzumaki Naruto\\AppData\\Roaming\\NuGet\\NuGet.Config",

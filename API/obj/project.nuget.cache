@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aTq/3QKNQSvG9nOdkvfpj40hBYbOC9IEGJKgWGt3HRAj3m0ptNLeuaAlt2+4XFX+h4mH2e1ORaPJh4yMR9qmVQ==",
+  "dgSpecHash": "05lnGeR+WIbXxI3BDH+dBxYjs9QZqcgsbu/7sv3LZaooGMwQ+z4opYWWD18DrlSoeHR154QAf94tC7luiPTU2w==",
   "success": true,
-  "projectFilePath": "C:\\DATN\\API\\API\\API.csproj",
+  "projectFilePath": "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
