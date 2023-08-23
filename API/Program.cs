@@ -1,9 +1,4 @@
 using API.Business.Extensions;
-using API.Business.Interfaces.IBillService;
-using API.Business.Interfaces.ICustomerService;
-using API.Business.Repository;
-using API.Business.Services.BillService.cs;
-using API.Business.Services.CustomerService;
 using API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -15,11 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 // Add services to the container.
 builder.Services.ConfigureLoggerService();
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
+builder.Services.ConfigureCustomerService();
 builder.Services.AddControllers();
 builder.Services.AddCors();
-builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
-builder.Services.AddScoped<ICustomerService, CustomerAppService>();
-builder.Services.AddScoped<IBillService, BillAppService>();
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

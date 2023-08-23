@@ -1,4 +1,5 @@
-﻿using API.Business.Interfaces.ICustomerService;
+﻿using API.Business.Repository.IRepository;
+using API.Business.Services.Interface;
 using API.Database;
 using API.Entities;
 using API.Exceptions.NotFoundExceptions;
@@ -11,17 +12,17 @@ namespace API.Controllers
     public class CustomerController : BaseApiController
     {
         private readonly DataContext _db;
-        private readonly ICustomerService _customerAppService;
-        public CustomerController(DataContext db, ICustomerService customerAppService)
+        private readonly ICustomerService _customerService;
+        public CustomerController(DataContext db, ICustomerService customerService)
         {
             _db = db;
-            _customerAppService = customerAppService;
+            _customerService = customerService;
         }
         [HttpGet("getall")]
-        public async Task<List<Customer>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var list = await _customerAppService.GetAll();
-            return list;
+            var list = _customerService.GetAllCustomer(trackChanges : false);
+            return Ok(list);
         }
 
         [HttpPut("update")]
