@@ -1,3 +1,4 @@
+using API.Business.Extensions;
 using API.Business.Interfaces.IBillService;
 using API.Business.Interfaces.ICustomerService;
 using API.Business.Repository;
@@ -6,12 +7,14 @@ using API.Business.Services.CustomerService;
 using API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using NLog;
 
 Environment.SetEnvironmentVariable("APP_BASE_DIRECTORY", Directory.GetCurrentDirectory());
 
 var builder = WebApplication.CreateBuilder(args);
-
+LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 // Add services to the container.
+builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers();
 builder.Services.AddCors();
 builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
@@ -23,6 +26,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     //options.EnableSensitiveDataLogging();
     options.EnableSensitiveDataLogging(true);
 });
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

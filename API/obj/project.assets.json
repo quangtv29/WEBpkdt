@@ -1089,6 +1089,37 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
+      "NLog/5.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NLog.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "NLog.Extensions.Logging/5.3.3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging": "6.0.0",
+          "NLog": "5.2.3"
+        },
+        "compile": {
+          "lib/net6.0/NLog.Extensions.Logging.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/NLog.Extensions.Logging.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.5.0": {
         "type": "package",
         "dependencies": {
@@ -1640,6 +1671,19 @@
             "assetType": "runtime",
             "rid": "win"
           }
+        }
+      },
+      "LoggerService/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "NLog.Extensions.Logging": "5.3.3"
+        },
+        "compile": {
+          "bin/placeholder/LoggerService.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LoggerService.dll": {}
         }
       }
     }
@@ -3167,6 +3211,55 @@
         "mono.texttemplating.nuspec"
       ]
     },
+    "NLog/5.2.3": {
+      "sha512": "rHTNRtQF5qYqLutSR9ldUWXglKym/KA1R6GKw4JtDvza8i5+kgfmeKH75Ccn1noeJIOjHLXorphMxKk3EiN2tg==",
+      "type": "package",
+      "path": "nlog/5.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "N.png",
+        "lib/net35/NLog.dll",
+        "lib/net35/NLog.xml",
+        "lib/net45/NLog.dll",
+        "lib/net45/NLog.xml",
+        "lib/net46/NLog.dll",
+        "lib/net46/NLog.xml",
+        "lib/netstandard1.3/NLog.dll",
+        "lib/netstandard1.3/NLog.xml",
+        "lib/netstandard1.5/NLog.dll",
+        "lib/netstandard1.5/NLog.xml",
+        "lib/netstandard2.0/NLog.dll",
+        "lib/netstandard2.0/NLog.xml",
+        "nlog.5.2.3.nupkg.sha512",
+        "nlog.nuspec"
+      ]
+    },
+    "NLog.Extensions.Logging/5.3.3": {
+      "sha512": "o3V1oUr0izjhU1djuVqN5JdmNUGmunTs3Amjhumt/nxva8kG9QWjOdba+ciwkP//QOjv+KkGklZtI9o4qz50hQ==",
+      "type": "package",
+      "path": "nlog.extensions.logging/5.3.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "N.png",
+        "README.md",
+        "lib/net461/NLog.Extensions.Logging.dll",
+        "lib/net461/NLog.Extensions.Logging.xml",
+        "lib/net6.0/NLog.Extensions.Logging.dll",
+        "lib/net6.0/NLog.Extensions.Logging.xml",
+        "lib/netstandard1.3/NLog.Extensions.Logging.dll",
+        "lib/netstandard1.3/NLog.Extensions.Logging.xml",
+        "lib/netstandard1.5/NLog.Extensions.Logging.dll",
+        "lib/netstandard1.5/NLog.Extensions.Logging.xml",
+        "lib/netstandard2.0/NLog.Extensions.Logging.dll",
+        "lib/netstandard2.0/NLog.Extensions.Logging.xml",
+        "lib/netstandard2.1/NLog.Extensions.Logging.dll",
+        "lib/netstandard2.1/NLog.Extensions.Logging.xml",
+        "nlog.extensions.logging.5.3.3.nupkg.sha512",
+        "nlog.extensions.logging.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/6.5.0": {
       "sha512": "FK05XokgjgwlCI6wCT+D4/abtQkL1X1/B9Oas6uIwHFmYrIO9WUD5aLC9IzMs9GnHfUXOtXZ2S43gN1mhs5+aA==",
       "type": "package",
@@ -4628,12 +4721,18 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "LoggerService/1.0.0": {
+      "type": "project",
+      "path": "../LoggerService/LoggerService.csproj",
+      "msbuildProject": "../LoggerService/LoggerService.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "CoreApiResponse >= 1.0.1",
+      "LoggerService >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 7.0.9",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.9",
@@ -4667,7 +4766,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\LoggerService\\LoggerService.csproj": {
+              "projectPath": "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\LoggerService\\LoggerService.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

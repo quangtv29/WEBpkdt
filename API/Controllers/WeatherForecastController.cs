@@ -1,4 +1,6 @@
+﻿using LoggerService;
 using Microsoft.AspNetCore.Mvc;
+using NLog.Fluent;
 
 namespace API.Controllers
 {
@@ -12,11 +14,14 @@ namespace API.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILoggerManager _loggerManager;
+    
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ILoggerManager loggerManager)
         {
             _logger = logger;
-        }
+            _loggerManager = loggerManager;
+    }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
@@ -28,6 +33,15 @@ namespace API.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+
+        }
+        [HttpGet("hihi")]
+
+        public async Task<IActionResult> Test ()
+        {
+            _loggerManager.LogError("Lỗi rồi");
+            _loggerManager.LogDebug("meo");
+            return Ok();
         }
     }
 }

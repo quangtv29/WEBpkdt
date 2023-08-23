@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "05lnGeR+WIbXxI3BDH+dBxYjs9QZqcgsbu/7sv3LZaooGMwQ+z4opYWWD18DrlSoeHR154QAf94tC7luiPTU2w==",
+  "dgSpecHash": "FwglRhLke8XSNRKsQ4W2xAjvk/GewIdaDizInjWMuUO6JFQAqmWkerDAVhHGpQICarecgfu6JeefwuqSomap0g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Uzumaki Naruto\\Desktop\\WEBpkdt\\API\\API.csproj",
   "expectedPackageFiles": [
@@ -67,6 +67,8 @@
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\nlog\\5.2.3\\nlog.5.2.3.nupkg.sha512",
+    "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\nlog.extensions.logging\\5.3.3\\nlog.extensions.logging.5.3.3.nupkg.sha512",
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
     "C:\\Users\\Uzumaki Naruto\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.5.0\\swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
