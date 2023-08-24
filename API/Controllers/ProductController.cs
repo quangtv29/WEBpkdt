@@ -1,4 +1,5 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
+using API.Business.Helper;
 using API.Database;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,11 @@ namespace API.Controllers
     public class ProductController : BaseApiController
     {
         private readonly DataContext _db;
+       
         public ProductController(DataContext db)
         {
             _db = db;
+           
         }
 
         [HttpGet("getAll")]
@@ -25,7 +28,7 @@ namespace API.Controllers
                 List<Product> productList = new List<Product>();
                 foreach (var pro in pagedProducts)
                 {
-                    Product productformattedPrice = new Product
+                    var productformattedPrice = new Product
                     {
                         Id = pro.Id,
                         Image = pro.Image,
@@ -37,7 +40,7 @@ namespace API.Controllers
                         Quantity = pro.Quantity,
                         Producer = pro.Producer,
                         formatPrice = string.Format("đ{0:N0}", pro.Price).Replace(",", "."),
-                        formatImportPrice = string.Format("đ{0:N0}", pro.ImportPrice).Replace(",", ".")
+                        formatImportPrice = Helper.ConvertToMoney<int?>(pro.ImportPrice)
                     };
                     productList.Add(productformattedPrice);
                 }

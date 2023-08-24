@@ -13,10 +13,6 @@ namespace API.Controllers
             _db = db;
         }
 
-        
-
-        
-
         [HttpPut("updateTotalMoney")]
 
         public async Task <string> UpdateTotalMoney (int Price, int Quantity)

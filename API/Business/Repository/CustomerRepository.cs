@@ -8,7 +8,6 @@ namespace API.Business.Repository
 {
     public class CustomerRepository : RepositoryBase<Customer>, ICustomerRepository
     {
-
         public CustomerRepository(DataContext db) : base(db)
         {
 
@@ -22,7 +21,7 @@ namespace API.Business.Repository
 
         public IEnumerable<Customer> GetCustomerByCondition(Expression<Func<Customer, bool>> expression, bool trackChanges)
         {
-            return GetAllByCondition(expression, trackChanges).OrderBy(c => c.Name).ToList();
+            return GetAllByCondition(expression, trackChanges).ToList();
         }
     }
 }

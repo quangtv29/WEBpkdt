@@ -1,8 +1,11 @@
-﻿using API.Business.Repository.IRepository;
+﻿using API.Business.DTOs.BillDTO;
+using API.Business.DTOs.CustomerDTO;
+using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Database;
 using API.Entities;
 using API.Exceptions.NotFoundExceptions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
@@ -14,20 +17,37 @@ namespace API.Controllers
     {
         private readonly DataContext _db;
         private readonly ICustomerService _customerService;
-        public CustomerController(DataContext db, ICustomerService customerService)
+        private readonly IMapper _mapper;
+        public CustomerController(DataContext db, ICustomerService customerService,IMapper mapper)
         {
             _db = db;
             _customerService = customerService;
+            _mapper=mapper;
         }
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var list = _customerService.GetAllCustomer(trackChanges : false);
-            if (list == null)
+            try
             {
-                return BadRequest(HttpStatusCode.NoContent);
+                var list = _customerService.GetAllCustomer(trackChanges: false);
+                if (list == null)
+                {
+                    return BadRequest(HttpStatusCode.NoContent);
+                }
+                var mappedCustomers = list.Select(c => _mapper.Map<GetAllCustomerDTO>(c));
+                var message = new
+                {
+                    statusCode = HttpStatusCode.OK,
+                    message = "succcess",
+                    data = mappedCustomers
+                };
+                return Ok(message);
             }
-            return Ok(list);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
 
         [HttpGet("getCustomerById/{Id}")]
@@ -41,11 +61,12 @@ namespace API.Controllers
                 {
                     return BadRequest(HttpStatusCode.NoContent);
                 }
+                var mappedCustomers = customer.Select(c => _mapper.Map<GetAllCustomerDTO>(c));
                 var message = new
                 {
                     statusCode = HttpStatusCode.OK,
                     message = "succcess",
-                    data = customer
+                    data = mappedCustomers
                 };
                 return Ok(message);
             }
@@ -55,20 +76,6 @@ namespace API.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-
-
-
-        [HttpPut("update")]
-
-        public async Task<Customer> Update(Customer input)
-        {
-            var customerId = await _db.Customer.FindAsync(input.Id);
-
-            if (customerId == null)
-            {
-                throw new CustomerNotFoundException(input.Id);
-            }
-            return customerId;
-        }
+        
     }
 }
