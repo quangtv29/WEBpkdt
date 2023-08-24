@@ -5,5 +5,6 @@ namespace API.Business.Services.Interface
     public interface ICustomerService
     {
         IEnumerable<Customer> GetAllCustomer(bool trackChanges);
+       IEnumerable<Customer> GetCustomerByID(Guid ? Id,  bool trackChanges);
     }
 }

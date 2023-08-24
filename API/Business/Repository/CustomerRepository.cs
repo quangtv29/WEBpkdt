@@ -1,6 +1,7 @@
 ﻿using API.Business.Repository.IRepository;
 using API.Database;
 using API.Entities;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 
 namespace API.Business.Repository
@@ -18,7 +19,10 @@ namespace API.Business.Repository
             return GetAll(trackChanges).OrderBy(c => c.Name).
                 ToList();
         }
-            
-        
+
+        public IEnumerable<Customer> GetCustomerByCondition(Expression<Func<Customer, bool>> expression, bool trackChanges)
+        {
+            return GetAllByCondition(expression, trackChanges).OrderBy(c => c.Name).ToList();
+        }
     }
 }

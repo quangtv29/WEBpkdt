@@ -13,21 +13,9 @@ namespace API.Controllers
             _db = db;
         }
 
-        [HttpPost("addOrderDetail")]
+        
 
-        public async Task <IActionResult> AddOrderDetail (CreateOrderDetailDTO input)
-        {
-            OrderDetail orderDetail = new OrderDetail
-            {
-                Id = new Guid(),
-                BillId = input.BillId,
-                ProductId = input.ProductId,
-                Quantity = input.Quantity,
-                TotalMoney = input.TotalMoney
-            };
-
-            return new JsonResult("Create Done");
-        }
+        
 
         [HttpPut("updateTotalMoney")]
 

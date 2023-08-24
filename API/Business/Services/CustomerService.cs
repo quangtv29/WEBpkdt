@@ -29,5 +29,11 @@ namespace API.Business.Services
                 throw;
             }
         }
+
+        public IEnumerable<Customer> GetCustomerByID(Guid? Id, bool trackChanges)
+        {
+            var customer =   _repo._customerRepository.GetCustomerByCondition(e=> e.Id == Id, trackChanges);
+            return customer;
+        }
     }
 }
