@@ -21,11 +21,11 @@ namespace API.Controllers
             _logger = logger;
         }
         [HttpGet("getAll")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                var list = _customerService.GetAllCustomer(trackChanges: false);
+                var list = await _customerService.GetAllCustomer(trackChanges: false);
                 if (!list.Any())
                 {
                     return BadRequest(HttpStatusCode.NoContent);
@@ -48,17 +48,17 @@ namespace API.Controllers
 
         [HttpGet("getCustomerById/{Id}")]
 
-        public  IActionResult getAllCustomerById (Guid? Id)
+        public async Task<IActionResult> getAllCustomerById (Guid? Id)
         {
             try
             {
-                var customer = _customerService.GetCustomerByID(Id, trackChanges: false);
+                var customer = await _customerService.GetCustomerByID(Id, trackChanges: false);
                 if (customer == null|| !customer.Any())
                 {
                     _logger.LogInfo($"The Customer with id = {Id} does n't exists in the database ");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                var mappedCustomers = customer.Select(c => _mapper.Map<GetAllCustomerDTO>(c));
+                var mappedCustomers =  customer.Select(c => _mapper.Map<GetAllCustomerDTO>(c));
                 var message = new
                 {
                     statusCode = HttpStatusCode.OK,

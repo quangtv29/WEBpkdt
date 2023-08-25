@@ -4,7 +4,7 @@ namespace API.Business.Services.Interface
 {
     public interface ICustomerService
     {
-        IEnumerable<Customer> GetAllCustomer(bool trackChanges);
-       IEnumerable<Customer> GetCustomerByID(Guid ? Id,  bool trackChanges);
+        Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges);
+       Task<IEnumerable<Customer>> GetCustomerByID(Guid ? Id,  bool trackChanges);
     }
 }

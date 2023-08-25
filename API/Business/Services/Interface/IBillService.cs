@@ -4,6 +4,6 @@ namespace API.Business.Services.Interface
 {
     public interface IBillService
     {
-         IEnumerable<Bill> GetAll(bool trackChanges);
+         Task<IEnumerable<Bill>> GetAll(bool trackChanges);
     }
 }

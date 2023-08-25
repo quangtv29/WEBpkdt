@@ -5,8 +5,8 @@ namespace API.Business.Repository.IRepository
 {
     public interface ICustomerRepository
     {
-        IEnumerable<Customer> GetAllCustomer(bool trackChanges);
+        Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges);
 
-        IEnumerable<Customer> GetCustomerByCondition(Expression<Func<Customer,bool>> expression, bool trackChanges);
+        Task<IEnumerable<Customer>> GetCustomerByCondition(Expression<Func<Customer,bool>> expression, bool trackChanges);
     }
 }

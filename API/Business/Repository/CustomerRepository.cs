@@ -1,8 +1,8 @@
 ﻿using API.Business.Repository.IRepository;
 using API.Database;
 using API.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-
 
 namespace API.Business.Repository
 {
@@ -13,15 +13,17 @@ namespace API.Business.Repository
 
         }
 
-        public IEnumerable<Customer> GetAllCustomer(bool trackChanges)
+       
+
+        public async Task<IEnumerable<Customer>> GetCustomerByCondition(Expression<Func<Customer, bool>> expression, bool trackChanges)
         {
-            return GetAll(trackChanges).OrderBy(c => c.Name).Where(c=>c.isDelete == false).
-                ToList();
+            return await GetAllByCondition(expression, trackChanges).Where(c=>c.isDelete == false).ToListAsync();
         }
 
-        public IEnumerable<Customer> GetCustomerByCondition(Expression<Func<Customer, bool>> expression, bool trackChanges)
+       public async Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges)
         {
-            return GetAllByCondition(expression, trackChanges).Where(c=>c.isDelete == false).ToList();
+            return await GetAll(trackChanges).OrderBy(c => c.Name).Where(c => c.isDelete == false).
+               ToListAsync();
         }
     }
 }

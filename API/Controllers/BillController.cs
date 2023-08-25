@@ -25,11 +25,11 @@ namespace API.Controllers
 
         [HttpGet("getAll")]
 
-        public IActionResult getAll ()
+        public async Task<IActionResult> getAll ()
         {
             try
             {
-                var bill = _billService.GetAll(trackChanges:false);
+                var bill = await _billService.GetAll(trackChanges: false);
                 if (bill == null || !bill.Any())
                 {
                     _logger.LogInfo("List Bill is empty");

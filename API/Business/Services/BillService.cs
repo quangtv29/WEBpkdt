@@ -16,9 +16,9 @@ namespace API.Business.Services
 
        
 
-        public IEnumerable<Bill> GetAll(bool trackChanges)
+        public async Task<IEnumerable<Bill>> GetAll(bool trackChanges)
         {
-            var bill = _repositoryBill._billRepository.GetAllBill(trackChanges);
+            var bill = await  _repositoryBill._billRepository.GetAllBill(trackChanges);
                 return bill;
         }
     }

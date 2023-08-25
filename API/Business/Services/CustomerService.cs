@@ -13,11 +13,11 @@ namespace API.Business.Services
             _repo = repo;
         }
 
-        public IEnumerable<Customer> GetAllCustomer(bool trackChanges)
+        public async Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges)
         {
              try
             {
-                var customer = _repo._customerRepository.GetAllCustomer(trackChanges);
+                var customer = await _repo._customerRepository.GetAllCustomer(trackChanges);
                 return customer;
             }
             catch 
@@ -27,9 +27,9 @@ namespace API.Business.Services
             }
         }
 
-        public IEnumerable<Customer> GetCustomerByID(Guid? Id, bool trackChanges)
+        public async Task<IEnumerable<Customer>> GetCustomerByID(Guid? Id, bool trackChanges)
         {
-            var customer =   _repo._customerRepository.GetCustomerByCondition(e=> e.Id == Id, trackChanges);
+            var customer =  await _repo._customerRepository.GetCustomerByCondition(e=> e.Id == Id, trackChanges);
             return customer;
         }
     }
