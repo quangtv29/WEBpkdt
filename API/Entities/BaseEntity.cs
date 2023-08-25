@@ -10,6 +10,7 @@ namespace API.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual T Id { get; set; }
+        public virtual bool isDelete { get; set; } = false;
     }
     public abstract class BaseEntity : BaseEntity<Guid>
     {

@@ -15,13 +15,13 @@ namespace API.Business.Repository
 
         public IEnumerable<Customer> GetAllCustomer(bool trackChanges)
         {
-            return GetAll(trackChanges).OrderBy(c => c.Name).
+            return GetAll(trackChanges).OrderBy(c => c.Name).Where(c=>c.isDelete == false).
                 ToList();
         }
 
         public IEnumerable<Customer> GetCustomerByCondition(Expression<Func<Customer, bool>> expression, bool trackChanges)
         {
-            return GetAllByCondition(expression, trackChanges).ToList();
+            return GetAllByCondition(expression, trackChanges).Where(c=>c.isDelete == false).ToList();
         }
     }
 }

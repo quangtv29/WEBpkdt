@@ -1,14 +1,10 @@
-﻿using API.Business.DTOs.BillDTO;
-using API.Business.DTOs.CustomerDTO;
-using API.Business.Repository.IRepository;
+﻿using API.Business.DTOs.CustomerDTO;
 using API.Business.Services.Interface;
 using API.Database;
-using API.Entities;
-using API.Exceptions.NotFoundExceptions;
 using AutoMapper;
+using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using System.Net;
 
 namespace API.Controllers
@@ -18,11 +14,13 @@ namespace API.Controllers
         private readonly DataContext _db;
         private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
-        public CustomerController(DataContext db, ICustomerService customerService,IMapper mapper)
+        private readonly ILoggerManager _logger;
+        public CustomerController(DataContext db, ICustomerService customerService,IMapper mapper, ILoggerManager logger)
         {
             _db = db;
             _customerService = customerService;
             _mapper=mapper;
+            _logger = logger;
         }
         [HttpGet("getAll")]
         public IActionResult GetAll()
@@ -30,7 +28,7 @@ namespace API.Controllers
             try
             {
                 var list = _customerService.GetAllCustomer(trackChanges: false);
-                if (list == null)
+                if (!list.Any())
                 {
                     return BadRequest(HttpStatusCode.NoContent);
                 }
@@ -57,9 +55,10 @@ namespace API.Controllers
             try
             {
                 var customer = _customerService.GetCustomerByID(Id, trackChanges: false);
-                if (customer == null)
+                if (customer == null|| !customer.Any())
                 {
-                    return BadRequest(HttpStatusCode.NoContent);
+                    _logger.LogInfo($"The Customer with id = {Id} does n't exists in the database ");
+                    return BadRequest(HttpStatusCode.NotFound);
                 }
                 var mappedCustomers = customer.Select(c => _mapper.Map<GetAllCustomerDTO>(c));
                 var message = new
@@ -72,7 +71,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex.Message);
                 return StatusCode(500, new { message = ex.Message });
             }
         }
