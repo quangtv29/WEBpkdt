@@ -1,6 +1,5 @@
 ﻿using API.Business.DTOs.CustomerDTO;
 using API.Business.Services.Interface;
-using API.Database;
 using AutoMapper;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +10,12 @@ namespace API.Controllers
 {
     public class CustomerController : BaseApiController
     {
-        private readonly DataContext _db;
         private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _logger;
-        public CustomerController(DataContext db, ICustomerService customerService,IMapper mapper, ILoggerManager logger)
+        public CustomerController( ICustomerService customerService,IMapper mapper, ILoggerManager logger)
         {
-            _db = db;
+          
             _customerService = customerService;
             _mapper=mapper;
             _logger = logger;

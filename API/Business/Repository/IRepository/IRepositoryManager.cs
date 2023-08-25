@@ -3,6 +3,7 @@
     public interface IRepositoryManager
     {
         ICustomerRepository _customerRepository { get; }
+        IBillRepository _billRepository { get; }
 
         void Save();
     }

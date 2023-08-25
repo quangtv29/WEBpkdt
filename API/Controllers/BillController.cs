@@ -1,48 +1,55 @@
-﻿using API.Business.DTOs.BillDTO;
-using API.Business.Repository;
-using API.Database;
-using API.Entities;
+﻿using API.Business.Services.Interface;
 using AutoMapper;
+using LoggerService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace API.Controllers
 {
     public class BillController : BaseApiController
     {
-        private readonly DataContext _db;
+        
         private readonly IMapper _mapper;
+        private readonly IBillService _billService;
+        private readonly ILoggerManager _logger;
 
-        public BillController(DataContext db,IMapper mapper)
+        public BillController(IMapper mapper, IBillService billService, ILoggerManager logger)
         {
-            _db = db;
+            _logger = logger;
             _mapper = mapper;
-           
+           _billService = billService;
         }
 
 
         [HttpGet("getAll")]
 
-        public async Task<IActionResult> GetAll ()
+        public IActionResult getAll ()
         {
-            var bill = await _db.Bill.AsNoTracking().ToListAsync();
-            if (bill == null)
-                return BadRequest(HttpStatusCode.NoContent);
-           return Ok( _mapper.Map<List<GetAllBillDTO>>(bill));
+            try
+            {
+                var bill = _billService.GetAll(trackChanges:false);
+                if (bill == null || !bill.Any())
+                {
+                    _logger.LogInfo("List Bill is empty");
+                    return BadRequest(HttpStatusCode.NotFound);
+                }
+                return Ok(new  {
+                    StatusCode = "Success",
+                    data = bill
+                    });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
             
         }
 
 
 
-        [HttpPost("addBill")]
-
-        public async Task<IActionResult> AddBill(CreateBillDTO input)
-        {
-            await _db.AddAsync(_mapper.Map<Bill>(input));
-            await _db.SaveChangesAsync();
-            return new JsonResult("Done");
-        }
+      
 
     }
 }

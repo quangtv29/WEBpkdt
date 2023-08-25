@@ -16,5 +16,8 @@ namespace API.Business.Extensions
 services.AddScoped<IServiceManager, ServiceManager>();
         public static void ConfigureCustomerService(this IServiceCollection services) =>
 services.AddScoped<ICustomerService, CustomerService>();
+        public static void ConfigureBillService(this IServiceCollection services) =>
+services.AddScoped<IBillService, BillService>();
+
     }
 }

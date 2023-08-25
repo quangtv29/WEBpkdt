@@ -13,6 +13,7 @@ builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureCustomerService();
+builder.Services.ConfigureBillService();
 builder.Services.AddControllers();
 builder.Services.AddCors();
 builder.Services.AddDbContext<DataContext>(options =>

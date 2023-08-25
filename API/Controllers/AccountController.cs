@@ -1,7 +1,6 @@
 ﻿using API.Database;
 using API.DTOs.AccountDTO;
 using API.Entities;
-using API.Entities.Enum;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

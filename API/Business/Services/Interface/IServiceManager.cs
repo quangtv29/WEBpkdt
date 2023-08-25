@@ -4,5 +4,7 @@
     {
         ICustomerService customerService { get; }
 
+        IBillService billService { get; }   
+
     }
 }

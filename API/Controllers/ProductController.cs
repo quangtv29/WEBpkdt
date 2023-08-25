@@ -32,7 +32,7 @@ namespace API.Controllers
                     {
                         Id = pro.Id,
                         Image = pro.Image,
-                        Name = pro.Name,
+                        Name = pro.Name,    
                         Describe = pro.Describe,
                         Price = pro.Price,
                         ProductTypeID = pro.ProductTypeID,
