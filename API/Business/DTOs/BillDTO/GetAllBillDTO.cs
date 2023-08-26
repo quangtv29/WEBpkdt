@@ -10,10 +10,9 @@ namespace API.Business.DTOs.BillDTO
         public DateTime? Time { get; set; }
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
-        public int? Discount { get; set; }
-        public int? TotalMoney { get; set; }
+        public string? TotalMoney { get; set; }
         public Status? Status { get; set; }
         public string? Note { get; set; }
-        public string? ConvertDiscount { get; set; }
+        public string? Discount { get; set; }
     }
 }

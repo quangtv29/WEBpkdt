@@ -3,8 +3,6 @@ using AutoMapper;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.EntityFrameworkCore;
-using API.Exceptions.NotFoundExceptions;
 using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
 
@@ -16,14 +14,12 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly IBillService _billService;
         private readonly ILoggerManager _logger;
-        private readonly ICustomerService _customerService;
 
-        public BillController(IMapper mapper, IBillService billService, ILoggerManager logger, ICustomerService customerService)
+        public BillController(IMapper mapper, IBillService billService, ILoggerManager logger)
         {
             _logger = logger;
             _mapper = mapper;
             _billService = billService;
-            _customerService = customerService;
         }
 
 
@@ -39,7 +35,13 @@ namespace API.Controllers
                     _logger.LogInfo("List Bill is empty");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                var convert = bills.Select(p => { p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount); return p; }).ToList();
+                var convert = bills.Select(
+                   p => {
+                       p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount);
+                       p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
+                       return p;
+                   })
+                   .ToList();
                 return Ok(new
                 {
                     message = "Success",
@@ -57,13 +59,14 @@ namespace API.Controllers
         {
            try
             {
-                var customer = await _customerService.GetAllCustomer(trackChanges: false);
-                if (customer == null || !customer.Any())
-                {
-                    throw new CustomerNotFoundException(customerId);
-                }
                 var bills = await _billService.GetAllBillFromCustomer(customerId,trackChanges: false);
-                var convert = bills.Select(p => { p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount); return p; }).ToList();
+                var convert = bills.Select(
+                    p => {
+                        p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount);
+                        p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
+                        return p;
+                    })
+                    .ToList();
 
                 return Ok(_mapper.Map<List<GetAllBillDTO>>(convert));
             }

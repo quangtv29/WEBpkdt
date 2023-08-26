@@ -12,8 +12,13 @@ namespace API.Business.Helper
         {
             CreateMap<CreateDTO, Account>().ReverseMap();
             CreateMap<CreateBillDTO, Bill>().ReverseMap();
-            CreateMap<GetAllBillDTO, Bill>().ReverseMap();
-            CreateMap<GetAllCustomerDTO, Customer>().ReverseMap();
+            CreateMap<GetAllBillDTO, Bill>()
+                .ForMember(b => b.ConvertDiscount, p => p.MapFrom(src => src.Discount))
+                .ForMember(t => t.ConvertTotalMoney, p => p.MapFrom(src => src.TotalMoney))
+                .ReverseMap();
+            CreateMap<GetAllCustomerDTO, Customer>()
+                .ForMember(p=> p.FormatDate, b=> b.MapFrom(src=> src.DateOfBirth) )
+                .ReverseMap();
         }
     }
 }

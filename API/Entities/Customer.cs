@@ -12,8 +12,10 @@ namespace API.Entities
         [StringLength (255)]
         public string ?Address { get; set; }
         [StringLength(255)]
-        public string ?Name { get; set; }
+        public string? Name { get; set; }
         public DateTime DateOfBirth { get; set; }
+        [NotMapped]
+        public string? FormatDate { get; set; }
 
         public ICollection<Bill>? Bill { get; set; }
     }

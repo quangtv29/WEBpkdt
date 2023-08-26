@@ -3,7 +3,6 @@ using API.Business.Services.Interface;
 using AutoMapper;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace API.Controllers
@@ -30,12 +29,15 @@ namespace API.Controllers
                 {
                     return BadRequest(HttpStatusCode.NoContent);
                 }
-                var mappedCustomers = list.Select(c => _mapper.Map<GetAllCustomerDTO>(c));
+                var convert = list.Select(p => {
+                    p.FormatDate = p.DateOfBirth.ToString("dd/MM/yyyy");
+                    return p; 
+                    }).ToList();
                 var message = new
                 {
                     statusCode = HttpStatusCode.OK,
                     message = "succcess",
-                    data = mappedCustomers
+                    data = _mapper.Map<List<GetAllCustomerDTO>>(convert)
                 };
                 return Ok(message);
             }
@@ -58,12 +60,15 @@ namespace API.Controllers
                     _logger.LogInfo($"The Customer with id = {Id} does n't exists in the database ");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                var mappedCustomers =  customer.Select(c => _mapper.Map<GetAllCustomerDTO>(c));
+                var convert = customer.Select(p => {
+                    p.FormatDate = p.DateOfBirth.ToString("dd/MM/yyyy");
+                    return p;
+                }).ToList();
                 var message = new
                 {
                     statusCode = HttpStatusCode.OK,
                     message = "succcess",
-                    data = mappedCustomers
+                    data = _mapper.Map<List<GetAllCustomerDTO>>(convert)
                 };
                 return Ok(message);
             }
