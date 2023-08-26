@@ -12,7 +12,7 @@ namespace API.Business.Helper
         {
             CreateMap<CreateDTO, Account>().ReverseMap();
             CreateMap<CreateBillDTO, Bill>().ReverseMap();
-            CreateMap<GetAllBillDTO,Bill>().ReverseMap();   
+            CreateMap<GetAllBillDTO, Bill>().ReverseMap();
             CreateMap<GetAllCustomerDTO, Customer>().ReverseMap();
         }
     }

@@ -21,5 +21,11 @@ namespace API.Business.Services
             var bill = await  _repositoryBill._billRepository.GetAllBill(trackChanges);
                 return bill;
         }
+
+        public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(Guid? customerId, bool trackChanges)
+        {
+            var bill = await _repositoryBill._billRepository.GetAllBillFromCustomer(customerId, trackChanges);
+                    return bill;
+        }
     }
 }

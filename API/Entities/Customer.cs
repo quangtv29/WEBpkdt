@@ -15,6 +15,6 @@ namespace API.Entities
         public string ?Name { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public ICollection<Bill> Bill { get; set; }
+        public ICollection<Bill>? Bill { get; set; }
     }
 }

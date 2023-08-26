@@ -4,50 +4,74 @@ using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
-
+using API.Exceptions.NotFoundExceptions;
+using API.Business.DTOs.BillDTO;
+using API.Business.Helper;
 
 namespace API.Controllers
 {
     public class BillController : BaseApiController
     {
-        
+
         private readonly IMapper _mapper;
         private readonly IBillService _billService;
         private readonly ILoggerManager _logger;
+        private readonly ICustomerService _customerService;
 
-        public BillController(IMapper mapper, IBillService billService, ILoggerManager logger)
+        public BillController(IMapper mapper, IBillService billService, ILoggerManager logger, ICustomerService customerService)
         {
             _logger = logger;
             _mapper = mapper;
-           _billService = billService;
+            _billService = billService;
+            _customerService = customerService;
         }
 
 
         [HttpGet("getAll")]
 
-        public async Task<IActionResult> getAll ()
+        public async Task<IActionResult> getAll()
         {
             try
             {
-                var bill = await _billService.GetAll(trackChanges: false);
-                if (bill == null || !bill.Any())
+                var bills = await _billService.GetAll(trackChanges: false);
+                if (bills == null || !bills.Any())
                 {
                     _logger.LogInfo("List Bill is empty");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                return Ok(new  {
-                    StatusCode = "Success",
-                    data = bill
-                    });
+                var convert = bills.Select(p => { p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount); return p; }).ToList();
+                return Ok(new
+                {
+                    message = "Success",
+                    data = _mapper.Map<List<GetAllBillDTO>>(convert)
+                }) ;
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = ex.Message });
             }
-            
+
         }
+        [HttpGet("{customerId}/bills")]
+        public async Task<IActionResult> getAllBillFromCustomer (Guid? customerId)
+        {
+           try
+            {
+                var customer = await _customerService.GetAllCustomer(trackChanges: false);
+                if (customer == null || !customer.Any())
+                {
+                    throw new CustomerNotFoundException(customerId);
+                }
+                var bills = await _billService.GetAllBillFromCustomer(customerId,trackChanges: false);
+                var convert = bills.Select(p => { p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount); return p; }).ToList();
 
-
+                return Ok(_mapper.Map<List<GetAllBillDTO>>(convert));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
       
 

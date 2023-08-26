@@ -20,6 +20,9 @@ namespace API.Entities
         [Required, StringLength(30)]
         public Status? Status { get; set; }
         public string? Note { get; set; }
+
+        [NotMapped]
+        public string? ConvertDiscount { get; set; }
         public ICollection<OrderDetail> OrderDetail { get; set; }
 
     }

@@ -46,7 +46,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("getCustomerById/{Id}")]
+        [HttpGet("{Id}")]
 
         public async Task<IActionResult> getAllCustomerById (Guid? Id)
         {
