@@ -9,13 +9,13 @@ namespace API.Controllers
 {
     public class CustomerController : BaseApiController
     {
-        private readonly ICustomerService _customerService;
+        private readonly IServiceManager _service;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _logger;
-        public CustomerController( ICustomerService customerService,IMapper mapper, ILoggerManager logger)
+        public CustomerController(IServiceManager service, IMapper mapper, ILoggerManager logger)
         {
           
-            _customerService = customerService;
+            _service = service;
             _mapper=mapper;
             _logger = logger;
         }
@@ -24,7 +24,7 @@ namespace API.Controllers
         {
             try
             {
-                var list = await _customerService.GetAllCustomer(trackChanges: false);
+                var list = await _service.customerService.GetAllCustomer(trackChanges: false);
                 if (!list.Any())
                 {
                     return BadRequest(HttpStatusCode.NoContent);
@@ -54,7 +54,7 @@ namespace API.Controllers
         {
             try
             {
-                var customer = await _customerService.GetCustomerByID(Id, trackChanges: false);
+                var customer = await _service.customerService.GetCustomerByID(Id, trackChanges: false);
                 if (customer == null|| !customer.Any())
                 {
                     _logger.LogInfo($"The Customer with id = {Id} does n't exists in the database ");
@@ -78,6 +78,15 @@ namespace API.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        
+
+
+        [HttpPost("createCustomer")]
+
+
+        public async Task<IActionResult> createCustomer ([FromBody ]CreateCustomerDTO input)
+        {
+          var customer =  await _service.customerService.addCustomer(input);
+            return Ok(customer); 
+        }
     }
 }

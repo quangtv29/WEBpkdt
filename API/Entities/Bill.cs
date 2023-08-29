@@ -23,10 +23,9 @@ namespace API.Entities
 
         [NotMapped]
         public string? ConvertDiscount { get; set; }
-
         [NotMapped]
         public string? ConvertTotalMoney { get; set; }
-        public ICollection<OrderDetail> OrderDetail { get; set; }
+        public ICollection<OrderDetail>? OrderDetail { get; set; }
 
     }
 }

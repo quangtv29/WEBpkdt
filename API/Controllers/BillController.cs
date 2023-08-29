@@ -12,14 +12,14 @@ namespace API.Controllers
     {
 
         private readonly IMapper _mapper;
-        private readonly IBillService _billService;
+        private readonly IServiceManager _service;
         private readonly ILoggerManager _logger;
 
-        public BillController(IMapper mapper, IBillService billService, ILoggerManager logger)
+        public BillController(IMapper mapper, IServiceManager service, ILoggerManager logger)
         {
             _logger = logger;
             _mapper = mapper;
-            _billService = billService;
+            _service = service;
         }
 
 
@@ -29,7 +29,7 @@ namespace API.Controllers
         {
             try
             {
-                var bills = await _billService.GetAll(trackChanges: false);
+                var bills = await _service.billService.GetAll(trackChanges: false);
                 if (bills == null || !bills.Any())
                 {
                     _logger.LogInfo("List Bill is empty");
@@ -59,7 +59,7 @@ namespace API.Controllers
         {
            try
             {
-                var bills = await _billService.GetAllBillFromCustomer(customerId,trackChanges: false);
+                var bills = await _service.billService.GetAllBillFromCustomer(customerId,trackChanges: false);
                 var convert = bills.Select(
                     p => {
                         p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount);

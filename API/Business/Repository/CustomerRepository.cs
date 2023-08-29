@@ -25,5 +25,11 @@ namespace API.Business.Repository
             return await GetAll(trackChanges).OrderBy(c => c.Name).Where(c => c.isDelete == false).
                ToListAsync();
         }
+
+        public async Task<Customer> addCustomer(Customer customer)
+        {
+            Create(customer);
+            return customer;
+        }
     }
 }

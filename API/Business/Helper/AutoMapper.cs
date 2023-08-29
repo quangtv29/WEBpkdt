@@ -19,6 +19,7 @@ namespace API.Business.Helper
             CreateMap<GetAllCustomerDTO, Customer>()
                 .ForMember(p=> p.FormatDate, b=> b.MapFrom(src=> src.DateOfBirth) )
                 .ReverseMap();
+            CreateMap<Customer, CreateCustomerDTO>().ReverseMap();
         }
     }
 }

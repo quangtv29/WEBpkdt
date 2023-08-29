@@ -27,6 +27,11 @@ namespace API.Database
             {
                 e.Property(e => e.Time).HasDefaultValueSql("DATEADD(hour, 7, GETUTCDATE())");
             });
+            builder.Entity<Customer>(e =>
+            {
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
+                e.Property(e => e.isDelete).HasDefaultValue(false);
+            });
         }
 
 
