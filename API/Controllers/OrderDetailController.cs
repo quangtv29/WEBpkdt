@@ -1,11 +1,48 @@
 ﻿using API.Business.DTOs.OrderDetailDTO;
+using API.Business.Services.Interface;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers
 {
     public class OrderDetailController : BaseApiController
     {
-       
+        private readonly IServiceManager _service;
+
+        public OrderDetailController(IServiceManager service)
+        {
+            _service = service;
+        }
+
+        [HttpGet("getAllOrderDetail")]
+
+        public async Task<IActionResult> getAllOrderDetail ()
+        {
+            try
+            {
+                var orderDetail = await _service.orderDetailService.GetAll(trackChanges: false);
+                if (orderDetail == null )
+                {
+                    return BadRequest(HttpStatusCode.NoContent);
+                }
+                return Ok(orderDetail);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = ex.Message
+                });   
+            }
+        }
+
+        [HttpGet("getOrderDetailFromCustomerId")]
+
+        public async Task<IActionResult> getOrderDetailFromCustomerId (Guid? CustomerId)
+        {
+            var orderDetail = await _service.orderDetailService.GetOrderDetailFromCustomerId(CustomerId);
+            return Ok(orderDetail);
+        }
     }
 }

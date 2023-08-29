@@ -38,42 +38,13 @@ namespace API.Controllers
             return Content(json, "application/json");
         }
 
-        [HttpPost("createAccount")]
 
-        public async Task<IActionResult> createAccount(CreateDTO input)
-        {
+        
 
-            //var account = new Account
-            //{
-            //    /*User = input.user,*/
-            //    Password = input.password,
-            //    Position = Position.Customer
-
-            //};
-            await _db.Account.AddAsync(_mapper.Map<Account>(input));
-            await _db.SaveChangesAsync();
-            return new JsonResult("Done");
-        }
-
-        [HttpDelete("delete")]
+      
 
        
 
-        [HttpPut("put")]
-
-        public async Task<IActionResult> Update (Account input)
-        {
-           
-            var accountid = await _db.Account.FindAsync(input.Id);
-            if (accountid != null)
-            {
-                accountid.User = input.User;
-                accountid.Password = input.Password;
-               
-            }
-           _db.Update(accountid);
-           await _db.SaveChangesAsync();
-            return Ok(accountid);
-        }
+       
     }
 }

@@ -1,5 +1,4 @@
-﻿using API.Business.DTOs.BillDTO;
-using API.Business.DTOs.CustomerDTO;
+﻿using API.Business.DTOs.CustomerDTO;
 using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Entities;

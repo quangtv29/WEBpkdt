@@ -4,6 +4,9 @@
     {
         ICustomerRepository _customerRepository { get; }
         IBillRepository _billRepository { get; }
+        IOrderDetailRepository _orderDetailRepository {get;}
+
+        IProductRepository _productRepository { get; }
 
         Task SaveAsync();
     }

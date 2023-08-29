@@ -7,7 +7,6 @@ namespace API.Business.Services.Interface
     {
         Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges);
        Task<IEnumerable<Customer>> GetCustomerByID(Guid ? Id,  bool trackChanges);
-
         Task<Customer> addCustomer(CreateCustomerDTO customer);
     }
 }

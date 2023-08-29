@@ -6,5 +6,9 @@
 
         IBillService billService { get; }   
 
+        IOrderDetailService orderDetailService { get; }
+
+        IProductService productService { get; }
+
     }
 }
