@@ -20,17 +20,29 @@ namespace API.Database
             base.OnModelCreating(builder);
 
             builder.Entity<Account>(e => {
+                e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
                 e.HasKey(ac => ac.Id);
+                e.HasIndex(ac => ac.User).IsUnique();
             });
 
             builder.Entity<Bill>(e =>
             {
                 e.Property(e => e.Time).HasDefaultValueSql("DATEADD(hour, 7, GETUTCDATE())");
+                e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
             });
             builder.Entity<Customer>(e =>
             {
+                e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
                 e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
                 e.Property(e => e.isDelete).HasDefaultValue(false);
+            });
+            builder.Entity<Product>(e =>
+            {
+                e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
+            });
+            builder.Entity<ProductType>(e =>
+            {
+                e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
             });
         }
 

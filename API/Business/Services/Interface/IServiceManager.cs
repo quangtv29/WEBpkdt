@@ -10,5 +10,7 @@
 
         IProductService productService { get; }
 
+        IProductTypeService productTypeService { get; }
+
     }
 }

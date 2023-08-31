@@ -1,15 +1,9 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
 using API.Business.Helper;
 using API.Business.Services.Interface;
-using API.Database;
-using API.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 using System.Net;
-using System.Net.WebSockets;
 
 namespace API.Controllers
 {
@@ -23,8 +17,6 @@ namespace API.Controllers
             _service = service;
             _mapper = mapper;
         }
-
- 
 
         [HttpGet("getAllProduct")]
 
@@ -52,6 +44,62 @@ namespace API.Controllers
             {
                 return StatusCode(500, new { message = ex.Message });
             }
+        }
+
+
+        [HttpPost("GetProductByIds")]
+
+        public async Task<IActionResult> getProductByIds (IEnumerable<Guid>? Ids)
+        {
+            try
+            {
+                var product = await _service.productService.GetProductByIds(Ids);
+                if (product == null)
+                {
+                    return BadRequest(HttpStatusCode.NotFound);
+                }
+
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpPut("updateProduct/{Id}")]
+        
+        public async Task<IActionResult> updateProduct ([FromBody] UpdateProductDTO product, Guid? Id)
+        {
+            try
+            {
+                await _service.productService.Update(product, Id);
+                return Ok("ok");            
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("{Id}")]
+
+        public async Task<IActionResult> getProductById (Guid? Id)
+        {
+            try
+            {
+                var product = await _service.productService.GetProductById(Id);
+                if (product == null)
+                {
+                    return BadRequest(HttpStatusCode.NotFound);
+                }
+                return Ok(product);
+            }
+            catch (Exception ex) {
+                return StatusCode(500, new { message = ex.Message });
+            }
+
         }
     }
 }

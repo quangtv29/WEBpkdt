@@ -85,8 +85,19 @@ namespace API.Controllers
 
         public async Task<IActionResult> createCustomer ([FromBody ]CreateCustomerDTO input)
         {
-          var customer =  await _service.customerService.addCustomer(input);
-            return Ok(customer); 
+            try
+            {
+                var customer = await _service.customerService.addCustomer(input);
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, new
+                {
+                    message = ex.Message
+                }) ;
+            }
         }
     }
 }

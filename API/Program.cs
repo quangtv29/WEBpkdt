@@ -10,6 +10,7 @@ Environment.SetEnvironmentVariable("APP_BASE_DIRECTORY", Directory.GetCurrentDir
 var builder = WebApplication.CreateBuilder(args);
 LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 // Add services to the container.
+
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
@@ -17,8 +18,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
-builder.Services.ConfigureCustomerService();
-builder.Services.ConfigureBillService();
 builder.Services.AddControllers();
 builder.Services.AddCors();
 builder.Services.AddDbContext<DataContext>(options =>
@@ -49,6 +48,7 @@ app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000"));
 //app.UseCors("AllowOrigin");
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

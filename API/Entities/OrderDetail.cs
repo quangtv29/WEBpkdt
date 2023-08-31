@@ -13,6 +13,7 @@ namespace API.Entities
         public Guid? ProductId { get; set; }
         [Required]
         public int? Quantity { get; set; }
+        public bool isSave { get; set; }
         [Required]
         public int? TotalMoney { get; set; }
     }

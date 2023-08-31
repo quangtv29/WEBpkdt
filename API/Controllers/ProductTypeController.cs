@@ -1,13 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API.Entities;
-using API.Business.DTOs.ProductDTO.cs;
-using API.Business.DTOs.ProductTypeDTO;
+using API.Business.Services.Interface;
+using System.Net;
 
 namespace API.Controllers
 {
     public class ProductTypeController : BaseApiController
     {
+        private readonly IServiceManager _service;
 
+        public ProductTypeController(IServiceManager service)
+        {
+            _service = service;
+        }
+
+        [HttpGet("GetAll")]
+
+        public async Task<IActionResult> getAll()
+        {
+            try
+            {
+                var productType = await _service.productTypeService.GetAll();
+                if (productType == null)
+                {
+                    return BadRequest(HttpStatusCode.NoContent);
+                }
+                return Ok(productType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = ex.Message
+                });
+            }
+        }
     }
 }

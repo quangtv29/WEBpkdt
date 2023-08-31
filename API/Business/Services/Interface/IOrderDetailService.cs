@@ -10,5 +10,9 @@ namespace API.Business.Services.Interface
 
         Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(Guid? customerId);
 
+        Task <OrderDetail> UpdateTotalMoneyDTO ( Guid? Id);
+
+        Task<OrderDetail> GetOrderDetailById(Guid? Id);
+
     }
 }

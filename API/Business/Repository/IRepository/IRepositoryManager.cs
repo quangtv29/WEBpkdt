@@ -7,6 +7,7 @@
         IOrderDetailRepository _orderDetailRepository {get;}
 
         IProductRepository _productRepository { get; }
+        IProductTypeRepository _productTypeRepository { get; }
 
         Task SaveAsync();
     }

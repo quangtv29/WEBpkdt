@@ -1,5 +1,6 @@
 ﻿using API.Business.DTOs.BillDTO;
 using API.Business.DTOs.CustomerDTO;
+using API.Business.DTOs.OrderDetailDTO;
 using API.Business.DTOs.ProductDTO.cs;
 using API.DTOs.AccountDTO;
 using API.Entities;
@@ -25,6 +26,9 @@ namespace API.Business.Helper
                 .ForMember(p => p.formatImportPrice, o => o.MapFrom(src => src.ImportPrice))
                 .ForMember(p => p.formatPrice, o => o.MapFrom(src => src.Price))
                 .ReverseMap();
+            CreateMap<GetAllOrderDetail, OrderDetail>().ReverseMap();
+
+            CreateMap<UpdateProductDTO, Product>();
         }
     }
 }

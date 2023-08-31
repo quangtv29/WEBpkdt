@@ -44,5 +44,13 @@ namespace API.Controllers
             var orderDetail = await _service.orderDetailService.GetOrderDetailFromCustomerId(CustomerId);
             return Ok(orderDetail);
         }
+
+        [HttpPut("updateTotalMoney")]
+
+        public async Task<IActionResult> updateTotalMoney (Guid? orderDetailId)
+        {
+            var update = await _service.orderDetailService.UpdateTotalMoneyDTO(orderDetailId);
+            return Ok(update);
+        }
     }
 }

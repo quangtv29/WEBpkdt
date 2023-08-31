@@ -19,6 +19,11 @@ namespace API.Business.Repository
             return orderDetail;
         }
 
+        public async Task<OrderDetail> GetOrderDetailById(Guid? Id)
+        {
+            var orderDetail = await GetAllByCondition(p => p.Id == Id, true).Where(p => p.isDelete == false).FirstOrDefaultAsync() ?? throw new Exception($"The OrderDetail with id : {Id} doesn't exist in the databse.");
+            return orderDetail;
+        }
 
         public async Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerID(IEnumerable<Bill> bills)
         {
