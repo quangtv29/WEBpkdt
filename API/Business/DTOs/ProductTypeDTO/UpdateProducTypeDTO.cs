@@ -3,7 +3,7 @@
     public class UpdateProducTypeDTO
     {
         public string? Name { get; set; }
-        public bool isDelete = false;
-        public DateTime LastModifitLastModificationTime = DateTime.Now;
+        public bool? isDelete = false;
+        public DateTime? LastModificationTime = DateTime.Now;
     }
 }

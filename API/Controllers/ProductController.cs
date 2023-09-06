@@ -101,6 +101,19 @@ namespace API.Controllers
             }
 
         }
+
+        [HttpDelete ("{Id}")]
+
+
+        public async Task<IActionResult> deleteProduct (Guid? Id)
+        {
+            await _service.productService.deleteProduct(Id);
+            return Ok(new ApiResponse
+            {
+                Message = "Success",
+                StatusCode = HttpStatusCode.OK
+            });
+        }
     }
 }
 

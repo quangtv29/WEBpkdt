@@ -26,10 +26,9 @@ namespace API.Business.Repository
                ToListAsync();
         }
 
-        public async Task<Customer> addCustomer(Customer customer)
+        public void addCustomer(Customer customer)
         {
             Create(customer);
-            return customer;
         }
     }
 }

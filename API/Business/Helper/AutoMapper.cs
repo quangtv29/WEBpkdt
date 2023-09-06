@@ -29,9 +29,10 @@ namespace API.Business.Helper
                 .ReverseMap();
             CreateMap<GetAllOrderDetail, OrderDetail>().ReverseMap();
             CreateMap<PurchaseHistoryDTO, OrderDetail>().ReverseMap();
+            CreateMap<CreateOrderDetailDTO, OrderDetail>().ReverseMap();
             CreateMap<UpdateProductDTO, Product>();
             CreateMap<CreateProductTypeDTO, ProductType>().ReverseMap();
-            CreateMap<UpdateProducTypeDTO, ProductType>().ReverseMap();
+            CreateMap<UpdateProducTypeDTO, ProductType>();
         }
     }
 }

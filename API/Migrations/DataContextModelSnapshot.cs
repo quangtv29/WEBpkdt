@@ -27,12 +27,12 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("2b6c953f-dfe3-46f8-8433-69a2476b47bc"));
+                        .HasDefaultValue(new Guid("76c42825-1fb4-4201-8c6d-285f349359a1"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 5, 22, 16, 54, 889, DateTimeKind.Local).AddTicks(5133));
+                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(438));
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -48,7 +48,9 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<bool?>("isDelete")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -63,7 +65,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("3057d7d6-9f4b-4e12-b9bb-99911903f55c"));
+                        .HasDefaultValue(new Guid("64209926-22fd-4511-be90-99f9e9ba4d84"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -80,7 +82,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 5, 22, 16, 54, 889, DateTimeKind.Local).AddTicks(7635));
+                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(3014));
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -103,7 +105,9 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool?>("isDelete")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -117,7 +121,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("960348a3-f3b2-4a35-995f-f50b142d89d2"));
+                        .HasDefaultValue(new Guid("fd3fa73f-c95f-4fe1-aa1e-53071f05e6b0"));
 
                     b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier");
@@ -132,7 +136,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 5, 22, 16, 54, 889, DateTimeKind.Local).AddTicks(8489));
+                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(4208));
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
@@ -167,11 +171,14 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("Price")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("Quantity")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("TotalMoney")
@@ -198,7 +205,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("d2b68a38-2dd2-4f99-a4a2-5b38d820fb52"));
+                        .HasDefaultValue(new Guid("b36c4cf2-6c28-4946-a1d3-a1471e1653c4"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -213,7 +220,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 5, 22, 16, 54, 889, DateTimeKind.Local).AddTicks(9827));
+                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(5305));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -236,7 +243,9 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool?>("isDelete")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -250,12 +259,12 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("b99a9763-7409-4d0f-bbb2-9d70ecc04fd5"));
+                        .HasDefaultValue(new Guid("3e94927a-5aea-4cdc-8716-05a1158bfeb7"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 5, 22, 16, 54, 890, DateTimeKind.Local).AddTicks(690));
+                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(6515));
 
                     b.Property<string>("Name")
                         .IsRequired()

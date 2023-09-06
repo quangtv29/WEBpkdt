@@ -12,5 +12,7 @@ namespace API.Business.Repository.IRepository
         void Update(OrderDetail orderDetail);
 
         Task<OrderDetail> GetOrderDetailById(Guid? Id);
+
+         void addOrderDetail (OrderDetail orderDetail);
     }
 }

@@ -12,6 +12,8 @@ namespace API.Entities
         [Required]
         public Guid ProductId { get; set; }
         [Required]
+        public int? Price { get; set; }
+         
         public int? Quantity { get; set; }
         public bool isSave { get; set; }
         [Required]

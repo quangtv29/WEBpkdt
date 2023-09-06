@@ -12,7 +12,12 @@ namespace API.Business.Repository
 
         }
 
-     public async Task<IEnumerable<Bill>> GetAllBill(bool trackChanges)
+        public  void createBill(Bill bill)
+        {
+            Create(bill);
+        }
+
+        public async Task<IEnumerable<Bill>> GetAllBill(bool trackChanges)
         {
             var bill = await GetAll(trackChanges).Where(b => b.isDelete == false).ToListAsync();
             return bill;

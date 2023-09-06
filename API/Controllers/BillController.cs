@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
+using System.Net.WebSockets;
 
 namespace API.Controllers
 {
@@ -76,7 +77,17 @@ namespace API.Controllers
             }
         }
 
-      
+        [HttpPost("createBill")]
+
+        public async Task<IActionResult> createBill (CreateBillDTO bill) 
+        {
+            await _service.billService.createBill(bill);
+            return Ok(new ApiResponse
+            {
+                Message = "Create Success",
+                StatusCode = HttpStatusCode.OK
+            }) ;
+        }
 
     }
 }

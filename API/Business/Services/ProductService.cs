@@ -21,6 +21,13 @@ namespace API.Business.Services
 
         }
 
+        public async Task deleteProduct(Guid? Id)
+        {
+            var product = await _repo._productRepository.GetProductById(Id);
+           _repo._productRepository.delete(product);
+          await  _repo.SaveAsync();
+        }
+
         public async Task<IEnumerable<Product>> GetAll()
         {
            
@@ -30,11 +37,8 @@ namespace API.Business.Services
 
         public async Task<Product> GetProductById(Guid? Id)
         {
-           var product = await _repo._productRepository.GetProductById(Id);
-            if (product == null)
-            {
+           var product = await _repo._productRepository.GetProductById(Id) ??
                 throw new ProductNotFoundException(Id);
-            }
             return product;
         }
 
@@ -50,11 +54,8 @@ namespace API.Business.Services
 
         public async Task Update(UpdateProductDTO product, Guid? Id)
         {
-            var products =  await _repo._productRepository.GetProductById(Id);
-            if (products == null)
-            {
+            var products =  await _repo._productRepository.GetProductById(Id) ?? 
                 throw new ProductNotFoundException(Id);
-            }
                 _mapper.Map(product, products);
             
              await  _repo.SaveAsync();

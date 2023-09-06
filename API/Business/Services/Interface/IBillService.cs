@@ -1,4 +1,5 @@
-﻿using API.Entities;
+﻿using API.Business.DTOs.BillDTO;
+using API.Entities;
 
 namespace API.Business.Services.Interface
 {
@@ -6,5 +7,7 @@ namespace API.Business.Services.Interface
     {
          Task<IEnumerable<Bill>> GetAll(bool trackChanges);
         Task<IEnumerable<Bill>> GetAllBillFromCustomer(Guid? customerId, bool trackChanges);
+
+        Task createBill(CreateBillDTO bill);
     }
 }

@@ -3,6 +3,7 @@ using API.Business.Services.Interface;
 using System.Net;
 using Microsoft.Identity.Client;
 using API.Business.DTOs.ProductTypeDTO;
+using API.Business.Helper;
 
 namespace API.Controllers
 {
@@ -43,6 +44,28 @@ namespace API.Controllers
         {
             _service.productTypeService.createProductType(productTypeDTO);
             return Ok("done");
-        } 
+        }
+
+        [HttpGet("getProductType/{Id}")]
+
+        public async Task<IActionResult> getProductTypeById (Guid? Id)
+        {
+            var productType = await _service.productTypeService.GetProductTypeById(Id);
+            return Ok(productType);
+        }
+
+        [HttpPut("updateProductType/{Id}")]
+
+        public async Task< IActionResult> updateProductType( UpdateProducTypeDTO producTypeDTO, Guid? Id)
+        {
+          await  _service.productTypeService.updateProductType(producTypeDTO,Id);
+            return Ok(new ApiResponse
+            {
+                Message = "Success",
+                StatusCode = HttpStatusCode.OK
+            }) ;
+        }
+
+
     }
 }

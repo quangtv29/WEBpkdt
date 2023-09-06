@@ -3,7 +3,7 @@ using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
-
+using System.Net.WebSockets;
 
 namespace API.Business.Services
 {
@@ -18,10 +18,10 @@ namespace API.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<OrderDetail>> GetAll(bool trackChanges)
+        public async Task<IEnumerable<GetAllOrderDetail>> GetAll(bool trackChanges)
         {
             var orderDetail = await _repo._orderDetailRepository.GetAllOrderDetail(trackChanges);
-            return orderDetail;
+            return _mapper.Map<List<GetAllOrderDetail>>(orderDetail);
         }
 
         public async Task<OrderDetail> GetOrderDetailById(Guid? Id)
@@ -38,16 +38,11 @@ namespace API.Business.Services
         }
 
 
-        public async Task<OrderDetail> UpdateTotalMoneyDTO(Guid? Id, int? Quantity )
+        public async Task<int?> UpdateTotalMoneyDTO(Guid? Id, int? Quantity )
         {
-            var orderDetails = await _repo._orderDetailRepository.GetOrderDetailById(Id);
-
-            var product = await _repo._productRepository.GetProductById(orderDetails.ProductId);
-            int quantityValue = Quantity ?? 1;
-            orderDetails.TotalMoney = product.Price * quantityValue;
-            orderDetails.LastModificationTime = DateTime.Now;
-           await _repo.SaveAsync();
-            return orderDetails;
+            var product = await _repo._productRepository.GetProductById(Id);
+            int? quantityValue = Quantity ?? 1;
+           return product.Price * quantityValue;
         }
 
         public async Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory (Guid? CustomerId)
@@ -55,7 +50,7 @@ namespace API.Business.Services
             var bill = await _repo._billRepository.GetAllBillFromCustomer(CustomerId, false) 
                 ?? throw new Exception($"Doesn' exists Bill by CustomerID = {CustomerId} ");
             var orderDetail =  await _repo._orderDetailRepository.GetOrderDetailFromCustomerID(bill);
-            List<PurchaseHistoryDTO> purchaseHistoryDTO = new List<PurchaseHistoryDTO>() { };
+            List<PurchaseHistoryDTO> purchaseHistoryDTO = new () ;
             if (orderDetail != null)
             {
                 var productId =  orderDetail.Select(p => p.ProductId);
@@ -73,6 +68,15 @@ namespace API.Business.Services
                 }
             }
             return purchaseHistoryDTO.ToList();
-        }    
+        }
+
+        public async Task createOrderDetail(CreateOrderDetailDTO orderDetail)
+        {
+            var product = await _repo._productRepository.GetProductById(orderDetail.ProductId);
+            orderDetail.Price = product.Price;
+            var order = _mapper.Map<OrderDetail>(orderDetail);
+            _repo._orderDetailRepository.addOrderDetail(order);
+             await _repo.SaveAsync();
+        }
     }
 }

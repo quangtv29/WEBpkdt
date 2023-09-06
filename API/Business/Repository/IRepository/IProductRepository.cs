@@ -10,6 +10,7 @@ namespace API.Business.Repository.IRepository
         Task<IEnumerable<Product>> GetProductByIds(IEnumerable<Guid>? Id);
 
         Task<Product> GetProductById(Guid? Id);
+        void delete(Product product);
 
     }
 }

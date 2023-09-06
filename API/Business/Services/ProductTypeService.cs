@@ -31,17 +31,17 @@ namespace API.Business.Services
           return await _repo._productTypeRepository.GetAll();
         }
 
-        public async Task<IEnumerable<ProductType>> GetProductTypeById(Guid? Id)
+        public async Task<ProductType> GetProductTypeById(Guid? Id)
         {
             var productType = await _repo._productTypeRepository.GetProductTypeById(Id);
             return productType;
         }
 
-        //public void updateProductType(UpdateProducTypeDTO producType, Guid? Id)
-        //{
-        //    var productType = _repo._productTypeRepository. 
-        //    _mapper.Map<ProductType>(producType);
-        //    _repo.SaveAsync();
-        //}
+        public async Task updateProductType(UpdateProducTypeDTO producType, Guid? Id)
+        {
+            var productType = await _repo._productTypeRepository.GetProductTypeById(Id);
+            _mapper.Map(producType, productType);
+           await _repo.SaveAsync();
+        }
     }
 }

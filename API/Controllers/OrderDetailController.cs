@@ -1,4 +1,5 @@
 ﻿using API.Business.DTOs.OrderDetailDTO;
+using API.Business.Helper;
 using API.Business.Services.Interface;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -47,9 +48,9 @@ namespace API.Controllers
 
         [HttpPut("updateTotalMoney")]
 
-        public async Task<IActionResult> updateTotalMoney (Guid? orderDetailId, int? Quantity)
+        public async Task<IActionResult> updateTotalMoney (Guid? productID, int? Quantity)
         {
-            var update = await _service.orderDetailService.UpdateTotalMoneyDTO(orderDetailId, Quantity);
+            var update = await _service.orderDetailService.UpdateTotalMoneyDTO(productID, Quantity);
             return Ok(update);
         }
 
@@ -59,6 +60,24 @@ namespace API.Controllers
         {
             var history = await _service.orderDetailService.purchaseHistory(CustomerId);
             return Ok(history);
+        }
+
+        [HttpPost("createOrderDetail")]
+
+        public async Task<IActionResult> createOrderDetail(CreateOrderDetailDTO order)
+        {
+            try
+            {
+                await _service.orderDetailService.createOrderDetail(order);
+                return Ok("done");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse
+                {
+                    Message = ex.Message
+                });
+            }
         }
     }
 }

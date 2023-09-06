@@ -7,7 +7,9 @@ namespace API.Business.Repository.IRepository
     {
            Task<IEnumerable<ProductType>> GetAll();
            
-        Task<IEnumerable<ProductType>> GetProductTypeById(Guid? Id);
+        Task<ProductType> GetProductTypeById(Guid? Id);
         void addProductType(ProductType productTypeDTO);
+
+        
     }
 }

@@ -13,6 +13,11 @@ namespace API.Business.Repository
         {
         }
 
+        public void addOrderDetail(OrderDetail orderDetail)
+        {
+            Create(orderDetail);
+        }
+
         public async Task<IEnumerable<OrderDetail>> GetAllOrderDetail(bool trackChanges)
         {
           var orderDetail =   await GetAll(trackChanges).Where(p => p.isDelete == false).ToListAsync();
@@ -27,7 +32,7 @@ namespace API.Business.Repository
 
         public async Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerID(IEnumerable<Bill> bills)
         {
-            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            List<OrderDetail> orderDetails = new ();
             foreach (var bill in bills)
             {
                 var order = await GetAllByCondition(p => p.BillId == bill.Id, false).Where(p => p.isDelete == false).ToListAsync();

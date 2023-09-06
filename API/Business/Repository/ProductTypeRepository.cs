@@ -24,9 +24,9 @@ namespace API.Business.Repository
             return productType;
         }
 
-        public async Task<IEnumerable<ProductType>> GetProductTypeById(Guid? Id)
+        public async Task<ProductType> GetProductTypeById(Guid? Id)
         {
-            var producttype = await GetAllByCondition(p=>p.Id == Id, true).Where(p=>p.isDelete ==  false).ToListAsync();
+            var producttype = await GetAllByCondition(p=>p.Id == Id, true).Where(p=>p.isDelete ==  false).FirstOrDefaultAsync();
             return producttype;
         }
     }

@@ -12,5 +12,7 @@ namespace API.Business.Services.Interface
         Task<Product> GetProductById(Guid? Id);
 
         Task Update(UpdateProductDTO product, Guid? Id);
+
+        Task deleteProduct(Guid? Id);
     }
 }

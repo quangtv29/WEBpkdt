@@ -9,6 +9,6 @@ namespace API.Business.Repository.IRepository
 
         Task<IEnumerable<Customer>> GetCustomerByCondition(Expression<Func<Customer,bool>> expression, bool trackChanges);
 
-        Task<Customer> addCustomer (Customer customer);
+       void addCustomer (Customer customer);
     }
 }

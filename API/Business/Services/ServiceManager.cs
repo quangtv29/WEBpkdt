@@ -17,7 +17,7 @@ namespace API.Business.Services
         {
             _mapper = mapper;
             _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, _mapper));
-            _billservice = new Lazy<IBillService>(() => new BillService(repositoryManager));
+            _billservice = new Lazy<IBillService>(() => new BillService(repositoryManager, _mapper));
             _orderDetailService = new Lazy<IOrderDetailService>(() => new OrderDetailService(repositoryManager,_mapper));
             _productService = new Lazy<IProductService> (() => new ProductService(repositoryManager,_mapper));
             _productTypeService = new Lazy<IProductTypeService>(() => new ProductTypeService(repositoryManager,_mapper));

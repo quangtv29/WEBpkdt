@@ -20,23 +20,16 @@ namespace API.Business.Services
         public async Task<Customer> addCustomer(CreateCustomerDTO customer)
         {
              var convert = _mapper.Map<Customer>(customer);
-           await _repo._customerRepository.addCustomer(convert); 
-          await  _repo.SaveAsync();
+            _repo._customerRepository.addCustomer(convert); 
+            await  _repo.SaveAsync();
             return convert;
         }
 
         public async Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges)
-        {
-             try
-            {
-                var customer = await _repo._customerRepository.GetAllCustomer(trackChanges);
+        {          
+              var customer = await _repo._customerRepository.GetAllCustomer(trackChanges) 
+                ?? throw new Exception ("Customer is null");
                 return customer;
-            }
-            catch 
-            {
-
-                throw;
-            }
         }
 
         public async Task<IEnumerable<Customer>> GetCustomerByID(Guid? Id, bool trackChanges)

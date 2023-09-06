@@ -4,6 +4,7 @@ using API.Database;
 using API.Entities;
 using API.Exceptions.NotFoundExceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace API.Business.Repository
 {
@@ -11,6 +12,12 @@ namespace API.Business.Repository
     {
         public ProductRepository(DataContext db) : base(db)
         {
+        }
+
+        public  void delete(Product product)
+        {
+             Delete(product);
+
         }
 
         public async Task<IEnumerable<Product>> GetAllProduct()
