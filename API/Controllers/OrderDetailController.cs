@@ -47,10 +47,18 @@ namespace API.Controllers
 
         [HttpPut("updateTotalMoney")]
 
-        public async Task<IActionResult> updateTotalMoney (Guid? orderDetailId)
+        public async Task<IActionResult> updateTotalMoney (Guid? orderDetailId, int? Quantity)
         {
-            var update = await _service.orderDetailService.UpdateTotalMoneyDTO(orderDetailId);
+            var update = await _service.orderDetailService.UpdateTotalMoneyDTO(orderDetailId, Quantity);
             return Ok(update);
+        }
+
+        [HttpGet("history")]
+
+        public async Task<IActionResult> getHistory (Guid? CustomerId)
+        {
+            var history = await _service.orderDetailService.purchaseHistory(CustomerId);
+            return Ok(history);
         }
     }
 }

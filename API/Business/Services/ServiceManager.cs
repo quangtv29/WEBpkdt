@@ -1,5 +1,4 @@
-﻿using API.Business.Repository;
-using API.Business.Repository.IRepository;
+﻿using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using AutoMapper;
 
@@ -21,7 +20,7 @@ namespace API.Business.Services
             _billservice = new Lazy<IBillService>(() => new BillService(repositoryManager));
             _orderDetailService = new Lazy<IOrderDetailService>(() => new OrderDetailService(repositoryManager,_mapper));
             _productService = new Lazy<IProductService> (() => new ProductService(repositoryManager,_mapper));
-            _productTypeService = new Lazy<IProductTypeService>(() => new ProductTypeService(repositoryManager));
+            _productTypeService = new Lazy<IProductTypeService>(() => new ProductTypeService(repositoryManager,_mapper));
         }
 
         public ICustomerService customerService => _customerService.Value;

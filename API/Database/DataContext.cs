@@ -21,14 +21,20 @@ namespace API.Database
 
             builder.Entity<Account>(e => {
                 e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
                 e.HasKey(ac => ac.Id);
                 e.HasIndex(ac => ac.User).IsUnique();
+                e.Property(e => e.isDelete).HasDefaultValue(false);
+
             });
 
             builder.Entity<Bill>(e =>
             {
                 e.Property(e => e.Time).HasDefaultValueSql("DATEADD(hour, 7, GETUTCDATE())");
                 e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
+                e.Property(e => e.isDelete).HasDefaultValue(false);
+
             });
             builder.Entity<Customer>(e =>
             {
@@ -39,10 +45,14 @@ namespace API.Database
             builder.Entity<Product>(e =>
             {
                 e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
+                e.Property(e => e.isDelete).HasDefaultValue(false);
+
             });
             builder.Entity<ProductType>(e =>
             {
                 e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
             });
         }
 

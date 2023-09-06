@@ -10,7 +10,7 @@ namespace API.Entities
         public Guid?  BillId { get; set; }
         [ForeignKey("Product")]
         [Required]
-        public Guid? ProductId { get; set; }
+        public Guid ProductId { get; set; }
         [Required]
         public int? Quantity { get; set; }
         public bool isSave { get; set; }

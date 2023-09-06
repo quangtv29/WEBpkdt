@@ -10,9 +10,10 @@ namespace API.Business.Services.Interface
 
         Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(Guid? customerId);
 
-        Task <OrderDetail> UpdateTotalMoneyDTO ( Guid? Id);
+        Task <OrderDetail> UpdateTotalMoneyDTO ( Guid? Id, int? Quantity);
 
         Task<OrderDetail> GetOrderDetailById(Guid? Id);
+        Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory(Guid? CustomerId);
 
     }
 }

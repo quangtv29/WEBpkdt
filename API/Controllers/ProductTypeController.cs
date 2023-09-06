@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using API.Business.Services.Interface;
 using System.Net;
+using Microsoft.Identity.Client;
+using API.Business.DTOs.ProductTypeDTO;
 
 namespace API.Controllers
 {
@@ -34,5 +36,13 @@ namespace API.Controllers
                 });
             }
         }
+
+        [HttpPost("createProductType")]
+
+        public IActionResult createProductType (CreateProductTypeDTO productTypeDTO)
+        {
+            _service.productTypeService.createProductType(productTypeDTO);
+            return Ok("done");
+        } 
     }
 }
