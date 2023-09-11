@@ -9,6 +9,8 @@
         IProductRepository _productRepository { get; }
         IProductTypeRepository _productTypeRepository { get; }
 
+        IAccountRepository _accountRepository { get; }
+
         Task SaveAsync();
     }
 }

@@ -13,8 +13,6 @@ namespace API.Business.Repository
 
         }
 
-       
-
         public async Task<IEnumerable<Customer>> GetCustomerByCondition(Expression<Func<Customer, bool>> expression, bool trackChanges)
         {
             return await GetAllByCondition(expression, trackChanges).Where(c=>c.isDelete == false).ToListAsync();

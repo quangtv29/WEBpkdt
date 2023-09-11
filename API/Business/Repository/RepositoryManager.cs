@@ -12,6 +12,7 @@ namespace API.Business.Repository
         private readonly Lazy<IOrderDetailRepository> _orderDetailRepo;
         private readonly Lazy<IProductRepository> _productRepo;
         private readonly Lazy<IProductTypeRepository> _productTypeRepo;
+        private readonly Lazy<IAccountRepository> _accountRepo;
         public RepositoryManager(DataContext db )
         {
             _db = db;
@@ -20,6 +21,7 @@ namespace API.Business.Repository
             _orderDetailRepo = new Lazy<IOrderDetailRepository>(() => new OrderDetailRepository(db));
             _productRepo = new Lazy<IProductRepository>(() => new ProductRepository(db));
             _productTypeRepo = new Lazy<IProductTypeRepository>(()=> new ProductTypeRepository(db));
+            _accountRepo = new Lazy<IAccountRepository>(() => new AccountRepository(db));
         }
 
 
@@ -32,6 +34,8 @@ namespace API.Business.Repository
         public IProductRepository _productRepository => _productRepo.Value;
 
         public IProductTypeRepository _productTypeRepository => _productTypeRepo.Value;
+
+        public IAccountRepository _accountRepository => _accountRepo.Value;
 
         public async Task SaveAsync()
         {

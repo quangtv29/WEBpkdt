@@ -12,6 +12,7 @@ namespace API.Business.Services
         private readonly Lazy<IOrderDetailService> _orderDetailService;
         private readonly Lazy<IProductService> _productService;
         private readonly Lazy<IProductTypeService> _productTypeService;
+        private readonly Lazy<IAccountService> _accountService;
 
         public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper )
         {
@@ -21,6 +22,7 @@ namespace API.Business.Services
             _orderDetailService = new Lazy<IOrderDetailService>(() => new OrderDetailService(repositoryManager,_mapper));
             _productService = new Lazy<IProductService> (() => new ProductService(repositoryManager,_mapper));
             _productTypeService = new Lazy<IProductTypeService>(() => new ProductTypeService(repositoryManager,_mapper));
+            _accountService = new Lazy<IAccountService>(() => new AccountService(repositoryManager, _mapper));
         }
 
         public ICustomerService customerService => _customerService.Value;
@@ -32,5 +34,7 @@ namespace API.Business.Services
         public IProductService productService => _productService.Value;
 
         public IProductTypeService productTypeService => _productTypeService.Value;
+
+        public IAccountService accountService => _accountService.Value;
     }
 }

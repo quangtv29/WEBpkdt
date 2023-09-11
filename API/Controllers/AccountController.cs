@@ -1,4 +1,7 @@
-﻿using API.Database;
+﻿using API.Business.Helper;
+using API.Business.Interfaces;
+using API.Business.Services.Interface;
+using API.Database;
 using API.DTOs.AccountDTO;
 using API.Entities;
 using AutoMapper;
@@ -10,32 +13,26 @@ namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _db;
-        private readonly IMapper _mapper;
+        private readonly IServiceManager _service;
+        private readonly IToken _token;
 
-        public AccountController(DataContext db, IMapper mapper)
+        public AccountController(IServiceManager service, IToken token)
         {
-            _db = db;
-            _mapper = mapper;
+           _service = service;
+            _token = token;
+            
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO input)
         {
-            var user = await _db.Account.AsNoTracking().FirstOrDefaultAsync(e => e.User == input.user && e.Password == input.password);
-            if (user == null) return NotFound();
-            var account = new Account
+            var account = await _service.accountService.Login(input);
+            ApiResponse response = new ApiResponse();
+            if (account != null)
             {
-                    User = user.User,
-                Password = user.Password,
-                Position = user.Position
+                response.Message = "Login Success";
+                response.Data = _token.CreateToken(account);
             };
-            var json = JsonSerializer.Serialize(new
-            {
-                status = "success",
-                message = "Đăng nhập thành công",
-                data = account
-            });
-            return Content(json, "application/json");
+            return Ok(response);
         }
 
 

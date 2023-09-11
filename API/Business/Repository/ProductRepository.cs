@@ -29,7 +29,8 @@ namespace API.Business.Repository
 
         public async Task<Product> GetProductById(Guid? Id)
         {
-            var product = await GetAllByCondition(p => p.Id == Id, true).Where(p => p.isDelete == false).FirstOrDefaultAsync() ?? throw new ProductNotFoundException(Id);
+            var product = await GetAllByCondition(p => p.Id == Id, true).Where(p => p.isDelete == false).FirstOrDefaultAsync() 
+                ?? throw new ProductNotFoundException(Id);
             return product;
         }
 

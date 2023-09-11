@@ -1,4 +1,6 @@
 using API.Business.Extensions;
+using API.Business.Interfaces;
+using API.Business.Services;
 using API.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +28,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     //options.EnableSensitiveDataLogging();
     options.EnableSensitiveDataLogging(true);
 });
-
+builder.Services.AddScoped<IToken, TokenService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

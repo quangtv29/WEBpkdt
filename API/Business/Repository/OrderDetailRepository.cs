@@ -3,7 +3,6 @@ using API.Business.Repository.IRepository;
 using API.Database;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace API.Business.Repository
 {
