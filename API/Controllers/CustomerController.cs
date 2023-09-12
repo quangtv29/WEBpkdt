@@ -79,10 +79,8 @@ namespace API.Controllers
             }
         }
 
-
         [HttpPost("createCustomer")]
-
-
+        
         public async Task<IActionResult> createCustomer ([FromBody ]CreateCustomerDTO input)
         {
             try

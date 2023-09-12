@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using API.Business.Services.Interface;
 using System.Net;
-using Microsoft.Identity.Client;
 using API.Business.DTOs.ProductTypeDTO;
 using API.Business.Helper;
 
@@ -23,11 +22,12 @@ namespace API.Controllers
             try
             {
                 var productType = await _service.productTypeService.GetAll();
-                if (productType == null)
+                return Ok(new
                 {
-                    return BadRequest(HttpStatusCode.NoContent);
-                }
-                return Ok(productType);
+                    Message = "Success",
+                    Data = productType,
+                    StatusCode = HttpStatusCode.OK
+                });
             }
             catch (Exception ex)
             {
@@ -42,8 +42,20 @@ namespace API.Controllers
 
         public IActionResult createProductType (CreateProductTypeDTO productTypeDTO)
         {
+            if (productTypeDTO == null)
+            {
+                return Ok(new ApiResponse
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Input is null"
+                });
+            }
             _service.productTypeService.createProductType(productTypeDTO);
-            return Ok("done");
+            return Ok(new ApiResponse
+            {
+                Message = "Create Success",
+                StatusCode = HttpStatusCode.Created
+            });
         }
 
         [HttpGet("getProductType/{Id}")]
@@ -58,7 +70,15 @@ namespace API.Controllers
 
         public async Task< IActionResult> updateProductType( UpdateProducTypeDTO producTypeDTO, Guid? Id)
         {
-          await  _service.productTypeService.updateProductType(producTypeDTO,Id);
+            if (Id == null)
+            {
+                return Ok(new ApiResponse
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Id is null"
+                });
+            }
+            await  _service.productTypeService.updateProductType(producTypeDTO,Id);
             return Ok(new ApiResponse
             {
                 Message = "Success",

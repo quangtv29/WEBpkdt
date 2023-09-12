@@ -1,13 +1,9 @@
 ﻿using API.Business.Helper;
 using API.Business.Interfaces;
 using API.Business.Services.Interface;
-using API.Database;
 using API.DTOs.AccountDTO;
-using API.Entities;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -26,13 +22,21 @@ namespace API.Controllers
         public async Task<IActionResult> Login(LoginDTO input)
         {
             var account = await _service.accountService.Login(input);
-            ApiResponse response = new ApiResponse();
             if (account != null)
             {
-                response.Message = "Login Success";
-                response.Data = _token.CreateToken(account);
-            };
-            return Ok(response);
+                return Ok(new ApiResponse {
+                    StatusCode = HttpStatusCode.OK,
+                Message = "Login Success",
+                Data = _token.CreateToken(account)
+            });
+               
+            }
+
+            return Ok(new ApiResponse
+            {
+                StatusCode = HttpStatusCode.NotFound,
+                Message = "Login Fail",
+            });
         }
 
 

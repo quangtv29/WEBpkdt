@@ -2,6 +2,7 @@
 using API.Business.Helper;
 using API.Business.Services.Interface;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -17,9 +18,9 @@ namespace API.Controllers
             _service = service;
             _mapper = mapper;
         }
-
+        
         [HttpGet("getAllProduct")]
-
+        [Authorize]
         public async Task<IActionResult> getAllProduct()
         {
             try
@@ -59,7 +60,11 @@ namespace API.Controllers
                     return BadRequest(HttpStatusCode.NotFound);
                 }
 
-                return Ok(product);
+                return Ok(new ApiResponse
+                {
+                    StatusCode = (HttpStatusCode.Created), //201
+                    Message = "Create Product Success"
+                });
             }
             catch (Exception ex)
             {
@@ -74,7 +79,10 @@ namespace API.Controllers
             try
             {
                 await _service.productService.Update(product, Id);
-                return Ok("ok");            
+                return Ok(new ApiResponse
+                {
+                    StatusCode= (HttpStatusCode.OK)
+                });            
             }
 
             catch (Exception ex)
@@ -89,12 +97,25 @@ namespace API.Controllers
         {
             try
             {
+                if (Id == null)
+                {
+                    return Ok(new ApiResponse
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Invalid request. Missing Id"
+                    });
+                }
                 var product = await _service.productService.GetProductById(Id);
                 if (product == null)
                 {
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                return Ok(product);
+                return Ok(new
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Data = product,
+                    Message = "Done"
+                });
             }
             catch (Exception ex) {
                 return StatusCode(500, new { message = ex.Message });
@@ -107,6 +128,13 @@ namespace API.Controllers
 
         public async Task<IActionResult> deleteProduct (Guid? Id)
         {
+            if (Id == null)
+            {
+                return Ok(new ApiResponse
+                {
+                    StatusCode = HttpStatusCode.BadRequest
+                });
+            }
             await _service.productService.deleteProduct(Id);
             return Ok(new ApiResponse
             {
@@ -119,3 +147,8 @@ namespace API.Controllers
 
 
 
+//{
+//    "statusCode": 200,
+//  "message": "Login Success",
+//  "data": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1haWkiLCJJZCI6IjdiMTNkYzBlLWJjY2YtNGQ3Yi1mNGIwLTA4ZGJhMGFmNzc5ZiIsIm5iZiI6MTY5NDUzMTg4OCwiZXhwIjoxNjk0NjE4Mjg4LCJpYXQiOjE2OTQ1MzE4ODh9.ANIcYa3OZiBRAlvfSgiRvJHgiOo6OrZkTmwmDlGjIOE1TVZ84uzK1THSsu6rzTsLY20l3nVCj9_NLHYS-Z_kzA"
+////}

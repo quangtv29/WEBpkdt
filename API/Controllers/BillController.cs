@@ -81,12 +81,32 @@ namespace API.Controllers
 
         public async Task<IActionResult> createBill (CreateBillDTO bill) 
         {
-            await _service.billService.createBill(bill);
-            return Ok(new ApiResponse
+            try
             {
-                Message = "Create Success",
-                StatusCode = HttpStatusCode.OK
-            }) ;
+                if ( bill == null)
+                {
+                    return Ok(new ApiResponse
+                    {
+                        Message = "Bill is null",
+                        StatusCode = HttpStatusCode.BadRequest
+                    });
+                }    
+                await _service.billService.createBill(bill);
+                return Ok(new ApiResponse
+                {
+                    Message = "Create Success",
+                    StatusCode = HttpStatusCode.Created
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Ok(new ApiResponse
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                }) ;
+            }
         }
 
     }

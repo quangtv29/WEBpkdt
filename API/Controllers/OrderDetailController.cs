@@ -68,8 +68,20 @@ namespace API.Controllers
         {
             try
             {
+                if (order == null)
+                {
+                    return Ok(new ApiResponse
+                    {
+                        Message = "Order is null",
+                        StatusCode = HttpStatusCode.BadRequest
+                    });
+                }
                 await _service.orderDetailService.createOrderDetail(order);
-                return Ok("done");
+                return Ok(new ApiResponse
+                {
+                    Message = "Create Success",
+                    StatusCode = HttpStatusCode.Created
+                });
             }
             catch (Exception ex)
             {
