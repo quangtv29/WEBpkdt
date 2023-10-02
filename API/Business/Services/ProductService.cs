@@ -5,7 +5,6 @@ using API.Entities;
 using API.Exceptions.BadRequestExceptions;
 using API.Exceptions.NotFoundExceptions;
 using AutoMapper;
-using System.Net;
 
 namespace API.Business.Services
 {
@@ -23,21 +22,21 @@ namespace API.Business.Services
 
         public async Task deleteProduct(Guid? Id)
         {
-            var product = await _repo._productRepository.GetProductById(Id);
-           _repo._productRepository.delete(product);
+            var product = await _repo.Product.GetProductById(Id);
+           _repo.Product.delete(product);
           await  _repo.SaveAsync();
         }
 
         public async Task<IEnumerable<Product>> GetAll()
         {
            
-            return await _repo._productRepository.GetAllProduct(); 
+            return await _repo.Product.GetAllProduct(); 
 
         }
 
         public async Task<Product> GetProductById(Guid? Id)
         {
-           var product = await _repo._productRepository.GetProductById(Id) ??
+           var product = await _repo.Product.GetProductById(Id) ??
                 throw new ProductNotFoundException(Id);
             return product;
         }
@@ -48,13 +47,13 @@ namespace API.Business.Services
             {
                 throw new IdParametersBadRequestExceptions();
             }    
-            var product = await _repo._productRepository.GetProductByIds(Id);
+            var product = await _repo.Product.GetProductByIds(Id);
             return product;
         }
 
         public async Task Update(UpdateProductDTO product, Guid? Id)
         {
-            var products =  await _repo._productRepository.GetProductById(Id) ?? 
+            var products =  await _repo.Product.GetProductById(Id) ?? 
                 throw new ProductNotFoundException(Id);
                 _mapper.Map(product, products);
             

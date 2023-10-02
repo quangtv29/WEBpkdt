@@ -27,12 +27,12 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("76c42825-1fb4-4201-8c6d-285f349359a1"));
+                        .HasDefaultValue(new Guid("f9edf927-519e-4d22-96df-97342e49b24c"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(438));
+                        .HasDefaultValue(new DateTime(2023, 9, 20, 10, 51, 4, 625, DateTimeKind.Local).AddTicks(4002));
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -65,7 +65,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("64209926-22fd-4511-be90-99f9e9ba4d84"));
+                        .HasDefaultValue(new Guid("96c51d81-7432-416a-9d5c-82f96644b2f3"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -82,7 +82,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(3014));
+                        .HasDefaultValue(new DateTime(2023, 9, 20, 10, 51, 4, 625, DateTimeKind.Local).AddTicks(7035));
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -121,7 +121,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("fd3fa73f-c95f-4fe1-aa1e-53071f05e6b0"));
+                        .HasDefaultValue(new Guid("cfd1b14c-d1a3-4c15-9015-76a029e08e2f"));
 
                     b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier");
@@ -136,7 +136,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(4208));
+                        .HasDefaultValue(new DateTime(2023, 9, 20, 10, 51, 4, 625, DateTimeKind.Local).AddTicks(8319));
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
@@ -205,7 +205,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("b36c4cf2-6c28-4946-a1d3-a1471e1653c4"));
+                        .HasDefaultValue(new Guid("b7f76c65-eb06-4980-97e2-fd612fc477a2"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -220,7 +220,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(5305));
+                        .HasDefaultValue(new DateTime(2023, 9, 20, 10, 51, 4, 625, DateTimeKind.Local).AddTicks(9661));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -259,12 +259,12 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("3e94927a-5aea-4cdc-8716-05a1158bfeb7"));
+                        .HasDefaultValue(new Guid("52f236f4-ce54-48c7-b93b-69c63dc33625"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 6, 14, 11, 6, 531, DateTimeKind.Local).AddTicks(6515));
+                        .HasDefaultValue(new DateTime(2023, 9, 20, 10, 51, 4, 626, DateTimeKind.Local).AddTicks(878));
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -14,6 +14,8 @@ namespace API.Database
         public DbSet <Bill> Bill { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
+       
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -19,7 +19,7 @@ namespace API.Business.Services
 
         public async  Task<Account> Login(LoginDTO login)
         {
-            var account = await _repo._accountRepository.Login(_mapper.Map<Account>(login));
+            var account = await _repo.Account.Login(_mapper.Map<Account>(login));
             return account;
         }
     }

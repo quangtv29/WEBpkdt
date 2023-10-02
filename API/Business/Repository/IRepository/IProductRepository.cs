@@ -3,7 +3,7 @@ using API.Entities;
 
 namespace API.Business.Repository.IRepository
 {
-    public interface IProductRepository
+    public interface IProductRepository : IRepositoryBase<Product>
     {
         Task<IEnumerable<Product>> GetAllProduct();
 

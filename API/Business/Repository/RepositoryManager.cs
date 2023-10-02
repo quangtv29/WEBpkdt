@@ -25,17 +25,19 @@ namespace API.Business.Repository
         }
 
 
-        public ICustomerRepository _customerRepository => _customerRepo.Value;
+        public ICustomerRepository Customer => _customerRepo.Value;
 
-        public IBillRepository _billRepository => _billrepo.Value;
+        public IBillRepository Bill => _billrepo.Value;
 
-        public IOrderDetailRepository _orderDetailRepository => _orderDetailRepo.Value;
+        public IOrderDetailRepository OrderDetail => _orderDetailRepo.Value;
 
-        public IProductRepository _productRepository => _productRepo.Value;
+        public IProductRepository Product => _productRepo.Value;
 
-        public IProductTypeRepository _productTypeRepository => _productTypeRepo.Value;
+        public IProductTypeRepository ProductType => _productTypeRepo.Value;
 
-        public IAccountRepository _accountRepository => _accountRepo.Value;
+        public IAccountRepository Account => _accountRepo.Value;
+
+        
 
         public async Task SaveAsync()
         {

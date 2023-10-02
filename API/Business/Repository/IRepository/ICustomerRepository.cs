@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace API.Business.Repository.IRepository
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IRepositoryBase<Customer>
     {
         Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges);
 

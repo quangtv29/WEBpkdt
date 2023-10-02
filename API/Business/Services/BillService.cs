@@ -23,24 +23,24 @@ namespace API.Business.Services
         public async Task createBill(CreateBillDTO bill)
         {
             var cbill =  _mapper.Map<Bill>(bill);
-           _repo._billRepository.createBill(cbill);
+           _repo.Bill.createBill(cbill);
             await _repo.SaveAsync();
         }
 
         public async Task<IEnumerable<Bill>> GetAll(bool trackChanges)
         {
-            var bill = await  _repo._billRepository.GetAllBill(trackChanges);
+            var bill = await  _repo.Bill.GetAllBill(trackChanges);
                 return bill;
         }
 
         public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(Guid? customerId, bool trackChanges)
         {
-            var customer = await _repo._customerRepository.GetCustomerByCondition(p => p.Id == customerId, trackChanges);
+            var customer = await _repo.Customer.GetCustomerByCondition(p => p.Id == customerId, trackChanges);
             if (customer == null || !customer.Any())
             {
                 throw new CustomerNotFoundException(customerId);
             }
-                var bill = await _repo._billRepository.GetAllBillFromCustomer(customerId, trackChanges);
+                var bill = await _repo.Bill.GetAllBillFromCustomer(customerId, trackChanges);
                     return bill;
         }
     }

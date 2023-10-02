@@ -20,7 +20,7 @@ namespace API.Controllers
         }
         
         [HttpGet("getAllProduct")]
-        [Authorize]
+       
         public async Task<IActionResult> getAllProduct()
         {
             try

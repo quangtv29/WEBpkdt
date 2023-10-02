@@ -2,7 +2,7 @@
 
 namespace API.Business.Repository.IRepository
 {
-    public interface IBillRepository
+    public interface IBillRepository : IRepositoryBase<Bill>
     {
         Task<IEnumerable<Bill>> GetAllBill (bool trackChanges);
 

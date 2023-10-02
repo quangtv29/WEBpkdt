@@ -22,24 +22,24 @@ namespace API.Business.Services
         public void createProductType(CreateProductTypeDTO productType)
         {
             var pro = _mapper.Map<ProductType>(productType);
-            _repo._productTypeRepository.addProductType(pro);
+            _repo.ProductType.addProductType(pro);
             _repo.SaveAsync();
         }
 
         public async Task<IEnumerable<ProductType>> GetAll()
         {
-          return await _repo._productTypeRepository.GetAll();
+          return await _repo.ProductType.GetAll();
         }
 
         public async Task<ProductType> GetProductTypeById(Guid? Id)
         {
-            var productType = await _repo._productTypeRepository.GetProductTypeById(Id);
+            var productType = await _repo.ProductType.GetProductTypeById(Id);
             return productType;
         }
 
         public async Task updateProductType(UpdateProducTypeDTO producType, Guid? Id)
         {
-            var productType = await _repo._productTypeRepository.GetProductTypeById(Id);
+            var productType = await _repo.ProductType.GetProductTypeById(Id);
             _mapper.Map(producType, productType);
            await _repo.SaveAsync();
         }

@@ -2,14 +2,14 @@
 {
     public interface IRepositoryManager
     {
-        ICustomerRepository _customerRepository { get; }
-        IBillRepository _billRepository { get; }
-        IOrderDetailRepository _orderDetailRepository {get;}
+        ICustomerRepository Customer { get; }
+        IBillRepository Bill { get; }
+        IOrderDetailRepository OrderDetail {get;}
 
-        IProductRepository _productRepository { get; }
-        IProductTypeRepository _productTypeRepository { get; }
+        IProductRepository Product { get; }
+        IProductTypeRepository ProductType { get; }
 
-        IAccountRepository _accountRepository { get; }
+        IAccountRepository Account { get; }
 
         Task SaveAsync();
     }

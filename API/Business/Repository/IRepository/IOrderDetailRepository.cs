@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace API.Business.Repository.IRepository
 {
-    public interface IOrderDetailRepository
+    public interface IOrderDetailRepository : IRepositoryBase<OrderDetail>
     {
         Task<IEnumerable<OrderDetail>> GetAllOrderDetail(bool trackChanges);
         Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerID(IEnumerable<Bill> bill);
