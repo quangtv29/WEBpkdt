@@ -12,7 +12,7 @@
 
         IProductTypeService productTypeService { get; }
 
-        IAccountService accountService { get; }
+        IAuthenticationService authenticationService { get; }
 
     }
 }

@@ -6,6 +6,7 @@ using System.Net;
 using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
 using System.Net.WebSockets;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -25,7 +26,7 @@ namespace API.Controllers
 
 
         [HttpGet("getAll")]
-
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> getAll()
         {
             try

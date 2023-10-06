@@ -1,5 +1,4 @@
-﻿using API.Business.DTOs.ProductTypeDTO;
-using API.Entities;
+﻿using API.Entities;
 
 namespace API.Business.Repository.IRepository
 {
@@ -9,7 +8,6 @@ namespace API.Business.Repository.IRepository
            
         Task<ProductType> GetProductTypeById(Guid? Id);
         void addProductType(ProductType productTypeDTO);
-
         
     }
 }

@@ -1,9 +1,12 @@
-﻿using API.Entities;
+﻿using API.Business.Repository.Configuration;
+using API.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace API.Database
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
@@ -20,6 +23,8 @@ namespace API.Database
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new RoleConfiguration());
+
 
             builder.Entity<Account>(e => {
                 e.Property(e => e.LastModificationTime).HasDefaultValue(DateTime.Now);
