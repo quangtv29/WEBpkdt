@@ -14,5 +14,7 @@
 
         IAuthenticationService authenticationService { get; }
 
+        ISaleService saleService { get; }
+
     }
 }

@@ -9,7 +9,7 @@ namespace API.Business.Repository.IRepository
     {
         Task<IEnumerable<OrderDetail>> GetAllOrderDetail(bool trackChanges);
         Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerID(IEnumerable<Bill> bill);
-        void Update(OrderDetail orderDetail);
+        //void UpdateOrder(OrderDetail orderDetail);
 
         Task<OrderDetail> GetOrderDetailById(Guid? Id);
 

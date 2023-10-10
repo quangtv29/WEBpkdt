@@ -11,6 +11,9 @@
 
         IAccountRepository Account { get; }
 
+        ISaleRepository Sale { get; }
+
+        IProductListRepository ProductList { get; }
         Task SaveAsync();
     }
 }

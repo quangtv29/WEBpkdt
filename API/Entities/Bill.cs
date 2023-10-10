@@ -1,5 +1,4 @@
 ﻿using API.Entities.Enum;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,11 +14,14 @@ namespace API.Entities
         public string? Address { get; set; }
         [Required,StringLength(12)]
         public string? PhoneNumber { get; set; }
-        public int? Discount { get; set; }
+        public double? Discount { get; set; }
         public int? TotalMoney { get; set; }    
         [Required, StringLength(30)]
         public Status? Status { get; set; }
         public string? Note { get; set; }
+
+        public string? DiscountCode { get; set; }
+        public double? IntoMoney { get; set; } 
 
         [NotMapped]
         public string? ConvertDiscount { get; set; }

@@ -28,5 +28,13 @@ namespace API.Business.Repository
             var bill = await GetAllByCondition(p=>p.CustomerID == customerId, trackChanges).Where(p=>p.isDelete == false).ToListAsync();
             return bill;
         }
+
+        public async Task<Bill> getBillById(Guid? ID)
+        {
+            var bill = await GetAllByCondition(p => p.Id == ID, true)
+                .Where(p => p.isDelete == false)
+                .FirstOrDefaultAsync();
+             return bill;
+        }
     }
 }

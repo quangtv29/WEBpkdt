@@ -40,7 +40,7 @@ namespace API.Controllers
 
         [HttpPost("createProductType")]
 
-        public IActionResult createProductType (CreateProductTypeDTO productTypeDTO)
+        public async Task<IActionResult> createProductType (CreateProductTypeDTO productTypeDTO)
         {
             if (productTypeDTO == null)
             {
@@ -50,11 +50,12 @@ namespace API.Controllers
                     Message = "Input is null"
                 });
             }
-            _service.productTypeService.createProductType(productTypeDTO);
-            return Ok(new ApiResponse
+       var result =   await   _service.productTypeService.createProductType(productTypeDTO);
+            return Ok(new 
             {
                 Message = "Create Success",
-                StatusCode = HttpStatusCode.Created
+                StatusCode = HttpStatusCode.Created,
+                Data = result
             });
         }
 

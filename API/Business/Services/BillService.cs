@@ -1,5 +1,4 @@
 ﻿using API.Business.DTOs.BillDTO;
-using API.Business.Repository;
 using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Entities;
@@ -20,11 +19,45 @@ namespace API.Business.Services
             _mapper = mapper;
         }
 
-        public async Task createBill(CreateBillDTO bill)
+        public async Task<bool> createBill(CreateBillDTO bill, string code)
         {
-            var cbill =  _mapper.Map<Bill>(bill);
-           _repo.Bill.createBill(cbill);
-            await _repo.SaveAsync();
+            var bills =  _mapper.Map<Bill>(bill);
+            if (code == null)
+            {
+                bills.Discount = 0;
+                bills.IntoMoney = bills.TotalMoney;
+                _repo.Bill.createBill(bills);
+                await _repo.SaveAsync();
+                return true;
+            }
+            else
+            {
+                var sale = await _repo.Sale.GetSaleByCode(code);
+                if (sale == null)
+                {
+                    return false;
+                }
+                double? discount = 0;
+                if (bills.TotalMoney > sale.MinBill)
+                {
+                    discount = bills.TotalMoney * sale.Percent > sale.Money
+                       ? sale.Money
+                       : bills.TotalMoney * sale.Percent;
+                }
+                if (sale.Count < sale.Quantity)
+                {
+                    bills.Discount = discount;
+                    bills.IntoMoney = bills.TotalMoney - discount >= 0
+                        ? bills.TotalMoney - discount
+                        : 0;
+
+                    sale.Count += 1;
+                    _repo.Bill.createBill(bills);
+                    await _repo.SaveAsync();
+                    return true;
+                }
+                return false;
+            }
         }
 
         public async Task<IEnumerable<Bill>> GetAll(bool trackChanges)
@@ -43,5 +76,7 @@ namespace API.Business.Services
                 var bill = await _repo.Bill.GetAllBillFromCustomer(customerId, trackChanges);
                     return bill;
         }
+
+       
     }
 }

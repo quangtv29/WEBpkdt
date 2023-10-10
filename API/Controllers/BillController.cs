@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
-using System.Net.WebSockets;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
@@ -39,7 +38,7 @@ namespace API.Controllers
                 }
                 var convert = bills.Select(
                    p => {
-                       p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount);
+                       p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
                        p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
                        return p;
                    })
@@ -64,7 +63,7 @@ namespace API.Controllers
                 var bills = await _service.billService.GetAllBillFromCustomer(customerId,trackChanges: false);
                 var convert = bills.Select(
                     p => {
-                        p.ConvertDiscount = Helper.ConvertToMoney<int?>(p.Discount);
+                        p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
                         p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
                         return p;
                     })
@@ -80,7 +79,7 @@ namespace API.Controllers
 
         [HttpPost("createBill")]
 
-        public async Task<IActionResult> createBill (CreateBillDTO bill) 
+        public async Task<IActionResult> createBillWithDiscountCode (CreateBillDTO bill,string code) 
         {
             try
             {
@@ -92,11 +91,18 @@ namespace API.Controllers
                         StatusCode = HttpStatusCode.BadRequest
                     });
                 }    
-                await _service.billService.createBill(bill);
+             var status =   await _service.billService.createBill(bill,code);
+                if (status)
+                {
+                    return Ok(new ApiResponse
+                    {
+                        Message = "Create Success",
+                        StatusCode = HttpStatusCode.Created
+                    });
+                }
                 return Ok(new ApiResponse
                 {
-                    Message = "Create Success",
-                    StatusCode = HttpStatusCode.Created
+                    Message = "Discount code has expired "
                 });
             }
             catch (Exception ex)

@@ -8,7 +8,7 @@ namespace API.Business.Services.Interface
         Task<IEnumerable<ProductType>> GetAll();
 
         Task<ProductType> GetProductTypeById(Guid? Id);
-        void createProductType(CreateProductTypeDTO productType);
+        Task<ProductType> createProductType(CreateProductTypeDTO productType);
 
         Task updateProductType(UpdateProducTypeDTO producType, Guid? Id);
 

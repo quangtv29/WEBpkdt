@@ -14,5 +14,7 @@ namespace API.Business.DTOs.BillDTO
         public Status? Status { get; set; }
         public string? Note { get; set; }
         public string? Discount { get; set; }
+        public double? IntoMoney { get; set; }
+
     }
 }

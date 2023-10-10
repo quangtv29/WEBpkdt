@@ -27,12 +27,12 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("a841014e-fc30-48a6-8cba-153aeb0fcfae"));
+                        .HasDefaultValue(new Guid("b263cdb4-cbe5-42db-a6d6-7b9fe8cdee3d"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 6, 11, 48, 16, 942, DateTimeKind.Local).AddTicks(5823));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 293, DateTimeKind.Local).AddTicks(430));
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -65,7 +65,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("ac72a231-c602-47b6-9084-0641b54782ca"));
+                        .HasDefaultValue(new Guid("1520b5cd-5aec-4c5c-b809-c07b30584bbc"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -76,13 +76,19 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Discount")
-                        .HasColumnType("int");
+                    b.Property<double?>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("DiscountCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("IntoMoney")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 6, 11, 48, 16, 942, DateTimeKind.Local).AddTicks(8388));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 294, DateTimeKind.Local).AddTicks(5876));
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -121,7 +127,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("3e49c7d8-adc4-49e7-bf66-dfb69a540cea"));
+                        .HasDefaultValue(new Guid("c6566a72-8c60-460a-9836-80a532487a94"));
 
                     b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier");
@@ -136,7 +142,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 6, 11, 48, 16, 942, DateTimeKind.Local).AddTicks(9671));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 294, DateTimeKind.Local).AddTicks(9401));
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
@@ -205,7 +211,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("80ab680f-0d26-4434-9dbc-74d0fa1bf0af"));
+                        .HasDefaultValue(new Guid("3751f91d-b742-46b9-bcc0-3b242328abc7"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -220,7 +226,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 6, 11, 48, 16, 943, DateTimeKind.Local).AddTicks(1008));
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 295, DateTimeKind.Local).AddTicks(2700));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -254,29 +260,103 @@ namespace API.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("API.Entities.ProductType", b =>
+            modelBuilder.Entity("API.Entities.ProductList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("13716fd7-b872-4918-9cc3-9ef0bd6c0d2f"));
+                        .HasDefaultValue(new Guid("ae069d6d-10d6-4599-854a-6732b5be8a2c"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 6, 11, 48, 16, 943, DateTimeKind.Local).AddTicks(2370));
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("isDelete")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
+                    b.ToTable("ProductList");
+                });
+
+            modelBuilder.Entity("API.Entities.ProductType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValue(new Guid("d5e5436f-01e7-48d7-886f-a4a096d85f4d"));
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("ProductListId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("isDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductListId");
+
                     b.ToTable("ProductType");
+                });
+
+            modelBuilder.Entity("API.Entities.Sale", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValue(new Guid("87d1ffc8-b10b-4fe2-b3e4-1647648e9ac2"));
+
+                    b.Property<int?>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DiscountCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 295, DateTimeKind.Local).AddTicks(9181));
+
+                    b.Property<int?>("MinBill")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Money")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Percent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(1.0);
+
+                    b.Property<int?>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool?>("isDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sale");
                 });
 
             modelBuilder.Entity("API.Entities.User", b =>
@@ -373,22 +453,22 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f3045383-4644-4263-b8eb-4aaa6c818568",
-                            ConcurrencyStamp = "a8accd52-ab83-43d7-8754-cb72b70a656d",
+                            Id = "3df1645e-23a1-485d-b869-d110dd7cc4bd",
+                            ConcurrencyStamp = "fe651d6b-2089-4920-84fe-3a0dba9e8cf2",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "51c743f7-5067-468a-897b-ba21875524d1",
-                            ConcurrencyStamp = "5779a149-1f77-438f-89b4-c6896c414df5",
+                            Id = "384cb82d-f04d-4714-9580-1a4dbc047190",
+                            ConcurrencyStamp = "cdbda0f8-f4aa-4ca9-bedb-2273583a6f5b",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "97567d17-e10e-43c1-9e34-97afdb9d0e5b",
-                            ConcurrencyStamp = "be0d61ad-3889-46fa-a921-d9ccd121f461",
+                            Id = "5a9d9ad5-3647-4131-9d4f-12d7c2a6324a",
+                            ConcurrencyStamp = "a702e003-0ba0-44a3-bc13-93531712aa4e",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -538,6 +618,13 @@ namespace API.Migrations
                         .HasForeignKey("ProductTypeID");
                 });
 
+            modelBuilder.Entity("API.Entities.ProductType", b =>
+                {
+                    b.HasOne("API.Entities.ProductList", null)
+                        .WithMany("ProductType")
+                        .HasForeignKey("ProductListId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -607,6 +694,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Product", b =>
                 {
                     b.Navigation("OrderDetail");
+                });
+
+            modelBuilder.Entity("API.Entities.ProductList", b =>
+                {
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("API.Entities.ProductType", b =>

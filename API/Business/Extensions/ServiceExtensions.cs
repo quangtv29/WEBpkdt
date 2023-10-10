@@ -17,9 +17,9 @@ namespace API.Business.Extensions
         public static void ConfigureLoggerService(this IServiceCollection services) =>
  services.AddSingleton<ILoggerManager, LoggerManager>();
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
- services.AddScoped<IRepositoryManager, RepositoryManager>();
+ services.AddTransient<IRepositoryManager, RepositoryManager>();
         public static void ConfigureServiceManager(this IServiceCollection services) =>
-services.AddScoped<IServiceManager, ServiceManager>();
+services.AddTransient<IServiceManager, ServiceManager>();
         public static void ConfigureIdentity(this IServiceCollection services)
         {
             var builder = services.AddIdentity<User, IdentityRole>(o =>

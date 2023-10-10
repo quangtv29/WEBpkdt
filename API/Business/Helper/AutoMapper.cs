@@ -4,6 +4,7 @@ using API.Business.DTOs.CustomerDTO;
 using API.Business.DTOs.OrderDetailDTO;
 using API.Business.DTOs.ProductDTO.cs;
 using API.Business.DTOs.ProductTypeDTO;
+using API.Business.DTOs.SaleDTO;
 using API.DTOs.AccountDTO;
 using API.Entities;
 using AutoMapper;
@@ -36,6 +37,7 @@ namespace API.Business.Helper
             CreateMap<CreateProductTypeDTO, ProductType>().ReverseMap();
             CreateMap<UpdateProducTypeDTO, ProductType>();
             CreateMap<CreateUserDTO,User>().ReverseMap();
+            CreateMap<CreateDiscountCode,Sale>().ReverseMap();    
         }
     }
 }

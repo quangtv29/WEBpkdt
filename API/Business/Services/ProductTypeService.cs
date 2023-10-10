@@ -1,8 +1,6 @@
 ﻿using API.Business.DTOs.ProductTypeDTO;
-using API.Business.Repository;
 using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
-using API.Database;
 using API.Entities;
 using AutoMapper;
 
@@ -19,11 +17,12 @@ namespace API.Business.Services
             _mapper = mapper;
         }
 
-        public void createProductType(CreateProductTypeDTO productType)
+        public async Task<ProductType> createProductType(CreateProductTypeDTO productType)
         {
             var pro = _mapper.Map<ProductType>(productType);
             _repo.ProductType.addProductType(pro);
-            _repo.SaveAsync();
+          await  _repo.SaveAsync();
+            return pro;
         }
 
         public async Task<IEnumerable<ProductType>> GetAll()

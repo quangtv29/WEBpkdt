@@ -6,6 +6,7 @@ namespace API.Business.Repository.IRepository
     {
         Task<IEnumerable<Bill>> GetAllBill (bool trackChanges);
 
+        Task<Bill> getBillById(Guid? ID);
         Task<IEnumerable<Bill>> GetAllBillFromCustomer (Guid? customerId, bool trackChanges);
 
         void createBill (Bill bill);

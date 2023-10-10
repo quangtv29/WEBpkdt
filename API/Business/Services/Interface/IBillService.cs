@@ -8,6 +8,9 @@ namespace API.Business.Services.Interface
          Task<IEnumerable<Bill>> GetAll(bool trackChanges);
         Task<IEnumerable<Bill>> GetAllBillFromCustomer(Guid? customerId, bool trackChanges);
 
-        Task createBill(CreateBillDTO bill);
+        Task<bool> createBill(CreateBillDTO bill, string code);
+
+       
+
     }
 }
