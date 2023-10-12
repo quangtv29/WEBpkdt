@@ -1,11 +1,12 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
+using API.Business.Shared;
 using API.Entities;
 
 namespace API.Business.Services.Interface
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAll();
+        Task<IEnumerable<Product>> GetAll(ProductParameters productParameters);
 
         Task<IEnumerable<Product>> GetProductByIds(IEnumerable<Guid>? Id);
 

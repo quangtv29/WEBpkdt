@@ -1,4 +1,5 @@
-﻿using API.Business.DTOs.AccountDTO;
+﻿using API.Business.DTOs;
+using API.Business.DTOs.AccountDTO;
 using API.Business.Helper;
 using API.Business.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -45,12 +46,19 @@ namespace API.Controllers
                     Message = "Login Fail"
                 });
             }
-            return Ok(new ApiResponse
+            return Ok(new 
             {
                 StatusCode = HttpStatusCode.OK,
-                Data = await _serviceManager.authenticationService.CreateToken(),
+                Data = await _serviceManager.authenticationService.CreateToken(true),
                 Message = "Login Success"
             }) ;
+        }
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] TokenDTO tokenDto)
+        {
+            var tokenDtoToReturn = await
+            _serviceManager.authenticationService.RefreshToken(tokenDto);
+            return Ok(tokenDtoToReturn);
         }
     }
 }

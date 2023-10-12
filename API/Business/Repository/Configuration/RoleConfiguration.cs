@@ -12,16 +12,19 @@ namespace API.Business.Repository.Configuration
 
                 new IdentityRole
                 {
+                    
                     Name = "Manager",
                     NormalizedName = "MANAGER"
                 },
                 new IdentityRole
                 {
+                   
                     Name = "Customer",
                     NormalizedName = "CUSTOMER" 
                     },
                 new IdentityRole
                 {
+                    
                     Name = "Employee",
                     NormalizedName = "EMPLOYEE"
                 }

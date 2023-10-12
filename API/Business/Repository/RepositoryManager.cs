@@ -12,7 +12,6 @@ namespace API.Business.Repository
         private readonly Lazy<IOrderDetailRepository> _orderDetailRepo;
         private readonly Lazy<IProductRepository> _productRepo;
         private readonly Lazy<IProductTypeRepository> _productTypeRepo;
-        private readonly Lazy<IAccountRepository> _accountRepo;
         private readonly Lazy<ISaleRepository> _saleRepo;
         private readonly Lazy<IProductListRepository> _productListRepo;
         public RepositoryManager(DataContext db )
@@ -23,7 +22,6 @@ namespace API.Business.Repository
             _orderDetailRepo = new Lazy<IOrderDetailRepository>(() => new OrderDetailRepository(db));
             _productRepo = new Lazy<IProductRepository>(() => new ProductRepository(db));
             _productTypeRepo = new Lazy<IProductTypeRepository>(()=> new ProductTypeRepository(db));
-            _accountRepo = new Lazy<IAccountRepository>(() => new AccountRepository(db));
             _saleRepo = new Lazy<ISaleRepository>(() => new SaleRepository(db));
             _productListRepo = new Lazy<IProductListRepository>(() => new ProductListRepository(db));
         }
@@ -39,7 +37,6 @@ namespace API.Business.Repository
 
         public IProductTypeRepository ProductType => _productTypeRepo.Value;
 
-        public IAccountRepository Account => _accountRepo.Value;
 
         public ISaleRepository Sale => _saleRepo.Value;
 

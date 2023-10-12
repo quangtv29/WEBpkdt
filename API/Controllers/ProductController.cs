@@ -1,6 +1,7 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
 using API.Business.Helper;
 using API.Business.Services.Interface;
+using API.Business.Shared;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,14 @@ namespace API.Controllers
             _service = service;
             _mapper = mapper;
         }
-        
-        [HttpGet("getAllProduct")]
-       
-        public async Task<IActionResult> getAllProduct()
+
+        [HttpPost("getAllProduct")]
+
+        public async Task<IActionResult> getAllProduct([FromBody] ProductParameters productParameters)
         {
             try
             {
-                var products = await _service.productService.GetAll();
+                var products = await _service.productService.GetAll(productParameters);
                 if (products == null)
                 {
                     return BadRequest(HttpStatusCode.NoContent);
@@ -50,7 +51,7 @@ namespace API.Controllers
 
         [HttpPost("GetProductByIds")]
 
-        public async Task<IActionResult> getProductByIds (IEnumerable<Guid>? Ids)
+        public async Task<IActionResult> getProductByIds(IEnumerable<Guid>? Ids)
         {
             try
             {
@@ -73,7 +74,7 @@ namespace API.Controllers
         }
 
         [HttpPut("updateProduct/{Id}")]
-        
+        [Authorize(Roles = "Manager,Employee")]
         public async Task<IActionResult> updateProduct ([FromBody] UpdateProductDTO product, Guid? Id)
         {
             try
@@ -124,7 +125,7 @@ namespace API.Controllers
         }
 
         [HttpDelete ("{Id}")]
-
+        [Authorize(Roles = "Manager")]
 
         public async Task<IActionResult> deleteProduct (Guid? Id)
         {
@@ -147,8 +148,3 @@ namespace API.Controllers
 
 
 
-//{
-//    "statusCode": 200,
-//  "message": "Login Success",
-//  "data": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im1haWkiLCJJZCI6IjdiMTNkYzBlLWJjY2YtNGQ3Yi1mNGIwLTA4ZGJhMGFmNzc5ZiIsIm5iZiI6MTY5NDUzMTg4OCwiZXhwIjoxNjk0NjE4Mjg4LCJpYXQiOjE2OTQ1MzE4ODh9.ANIcYa3OZiBRAlvfSgiRvJHgiOo6OrZkTmwmDlGjIOE1TVZ84uzK1THSsu6rzTsLY20l3nVCj9_NLHYS-Z_kzA"
-////}

@@ -1,10 +1,12 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
 using API.Business.Repository.IRepository;
+using API.Business.Shared;
 using API.Database;
 using API.Entities;
 using API.Exceptions.NotFoundExceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Linq;
 
 namespace API.Business.Repository
 {
@@ -20,9 +22,12 @@ namespace API.Business.Repository
 
         }
 
-        public async Task<IEnumerable<Product>> GetAllProduct()
+        public async Task<IEnumerable<Product>> GetAllProduct(ProductParameters productParameters)
         {
-           var products =  await GetAll(false).Where(p=>p.isDelete == false).ToListAsync();
+           var products =  await GetAll(false).Where(p=>p.isDelete == false)
+                .Skip((productParameters.PageNumber - 1)* productParameters.PageSize)
+                .Take(productParameters.PageSize)
+                .ToListAsync();
             return products;
         }
 

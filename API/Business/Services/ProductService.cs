@@ -1,6 +1,7 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
 using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
+using API.Business.Shared;
 using API.Entities;
 using API.Exceptions.BadRequestExceptions;
 using API.Exceptions.NotFoundExceptions;
@@ -27,10 +28,10 @@ namespace API.Business.Services
           await  _repo.SaveAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetAll()
+        public async Task<IEnumerable<Product>> GetAll(ProductParameters productParameters)
         {
            
-            return await _repo.Product.GetAllProduct(); 
+            return await _repo.Product.GetAllProduct(productParameters); 
 
         }
 

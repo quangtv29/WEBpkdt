@@ -2,6 +2,7 @@
 using API.Business.Helper;
 using API.Business.Services.Interface;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -55,7 +56,7 @@ namespace API.Controllers
         }
 
         [HttpGet("history")]
-
+        [Authorize]
         public async Task<IActionResult> getHistory (Guid? CustomerId)
         {
             var history = await _service.orderDetailService.purchaseHistory(CustomerId);
@@ -63,6 +64,7 @@ namespace API.Controllers
         }
 
         [HttpPost("createOrderDetail")]
+       
 
         public async Task<IActionResult> createOrderDetail(CreateOrderDetailDTO order)
         {

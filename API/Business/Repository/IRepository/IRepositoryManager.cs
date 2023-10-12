@@ -9,7 +9,7 @@
         IProductRepository Product { get; }
         IProductTypeRepository ProductType { get; }
 
-        IAccountRepository Account { get; }
+       
 
         ISaleRepository Sale { get; }
 

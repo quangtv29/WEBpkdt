@@ -22,50 +22,12 @@ namespace API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("API.Entities.Account", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("b263cdb4-cbe5-42db-a6d6-7b9fe8cdee3d"));
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 293, DateTimeKind.Local).AddTicks(430));
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
-
-                    b.Property<string>("User")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool?>("isDelete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("User")
-                        .IsUnique();
-
-                    b.ToTable("Account");
-                });
-
             modelBuilder.Entity("API.Entities.Bill", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("1520b5cd-5aec-4c5c-b809-c07b30584bbc"));
+                        .HasDefaultValue(new Guid("5838e44a-43bd-4d11-abd7-26c17fad1a75"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -88,7 +50,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 294, DateTimeKind.Local).AddTicks(5876));
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -127,10 +89,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("c6566a72-8c60-460a-9836-80a532487a94"));
-
-                    b.Property<Guid?>("AccountId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasDefaultValue(new Guid("d3f1ded5-34a6-4ec1-9562-142be60c0766"));
 
                     b.Property<string>("Address")
                         .HasMaxLength(255)
@@ -139,18 +98,27 @@ namespace API.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 294, DateTimeKind.Local).AddTicks(9401));
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool?>("isActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool?>("isDelete")
                         .ValueGeneratedOnAdd()
@@ -159,9 +127,44 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("API.Entities.Feedback", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValue(new Guid("afd3e130-8f83-4656-8f20-1ca757d5bb21"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("Star")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("isDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Feedback");
                 });
 
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
@@ -211,7 +214,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("3751f91d-b742-46b9-bcc0-3b242328abc7"));
+                        .HasDefaultValue(new Guid("2dd49965-bac5-43f2-882f-77c6c690dc7b"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -226,7 +229,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 295, DateTimeKind.Local).AddTicks(2700));
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -265,7 +268,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("ae069d6d-10d6-4599-854a-6732b5be8a2c"));
+                        .HasDefaultValue(new Guid("b846c343-b032-4c55-92e2-168981e1c673"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -289,7 +292,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("d5e5436f-01e7-48d7-886f-a4a096d85f4d"));
+                        .HasDefaultValue(new Guid("0c5c6d14-d99b-406f-96d4-bfbb45e1e8f5"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -319,7 +322,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("87d1ffc8-b10b-4fe2-b3e4-1647648e9ac2"));
+                        .HasDefaultValue(new Guid("6db2b195-db47-44b8-97e6-948654b19fec"));
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");
@@ -333,7 +336,7 @@ namespace API.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 10, 10, 21, 35, 11, 295, DateTimeKind.Local).AddTicks(9181));
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int?>("MinBill")
                         .HasColumnType("int");
@@ -359,7 +362,82 @@ namespace API.Migrations
                     b.ToTable("Sale");
                 });
 
-            modelBuilder.Entity("API.Entities.User", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "64a7f932-7116-4f9b-b216-ea7ff67eef73",
+                            ConcurrencyStamp = "5dcbe6c3-e516-4ff6-a6d3-1eb0c3f6f1db",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = "0d73f8d1-8fe5-4d60-8559-91971aeba65a",
+                            ConcurrencyStamp = "978ddcaf-f9d1-47af-8458-fdde06f412d8",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        },
+                        new
+                        {
+                            Id = "98d11ae5-7cc0-4f2d-a0dc-a782295b8bae",
+                            ConcurrencyStamp = "c0645364-0000-4ba1-8542-b542da3dbbbd",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -369,6 +447,10 @@ namespace API.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -422,81 +504,10 @@ namespace API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "3df1645e-23a1-485d-b869-d110dd7cc4bd",
-                            ConcurrencyStamp = "fe651d6b-2089-4920-84fe-3a0dba9e8cf2",
-                            Name = "Manager",
-                            NormalizedName = "MANAGER"
-                        },
-                        new
-                        {
-                            Id = "384cb82d-f04d-4714-9580-1a4dbc047190",
-                            ConcurrencyStamp = "cdbda0f8-f4aa-4ca9-bedb-2273583a6f5b",
-                            Name = "Customer",
-                            NormalizedName = "CUSTOMER"
-                        },
-                        new
-                        {
-                            Id = "5a9d9ad5-3647-4131-9d4f-12d7c2a6324a",
-                            ConcurrencyStamp = "a702e003-0ba0-44a3-bc13-93531712aa4e",
-                            Name = "Employee",
-                            NormalizedName = "EMPLOYEE"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -580,6 +591,22 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("API.Entities.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("isDelete")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("User");
+                });
+
             modelBuilder.Entity("API.Entities.Bill", b =>
                 {
                     b.HasOne("API.Entities.Customer", null)
@@ -591,9 +618,22 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Entities.Customer", b =>
                 {
-                    b.HasOne("API.Entities.Account", null)
-                        .WithMany("Customer")
-                        .HasForeignKey("AccountId");
+                    b.HasOne("API.Entities.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("API.Entities.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Entities.Feedback", b =>
+                {
+                    b.HasOne("API.Entities.Product", "Product")
+                        .WithMany("Feedback")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
@@ -636,7 +676,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("API.Entities.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -645,7 +685,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("API.Entities.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -660,7 +700,7 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -669,16 +709,11 @@ namespace API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("API.Entities.User", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("API.Entities.Account", b =>
-                {
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("API.Entities.Bill", b =>
@@ -693,6 +728,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Entities.Product", b =>
                 {
+                    b.Navigation("Feedback");
+
                     b.Navigation("OrderDetail");
                 });
 
@@ -704,6 +741,12 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.ProductType", b =>
                 {
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.Entities.User", b =>
+                {
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

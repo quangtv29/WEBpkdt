@@ -15,8 +15,7 @@ namespace API.Business.Helper
     {
         public AutoMapper()
         {
-            CreateMap<LoginDTO, Account>().ReverseMap();
-            CreateMap<CreateDTO, Account>().ReverseMap();
+            
             CreateMap<CreateBillDTO, Bill>().ReverseMap();
             CreateMap<GetAllBillDTO, Bill>()
                 .ForMember(b => b.ConvertDiscount, p => p.MapFrom(src => src.Discount))
