@@ -66,7 +66,7 @@ namespace API.Business.Services
                 return bill;
         }
 
-        public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(Guid? customerId, bool trackChanges)
+        public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(string? customerId, bool trackChanges)
         {
             var customer = await _repo.Customer.GetCustomerByCondition(p => p.Id == customerId, trackChanges);
             if (customer == null || !customer.Any())

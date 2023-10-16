@@ -41,7 +41,7 @@ namespace API.Controllers
 
         [HttpGet("getOrderDetailFromCustomerId")]
 
-        public async Task<IActionResult> getOrderDetailFromCustomerId (Guid? CustomerId)
+        public async Task<IActionResult> getOrderDetailFromCustomerId (string? CustomerId)
         {
             var orderDetail = await _service.orderDetailService.GetOrderDetailFromCustomerId(CustomerId);
             return Ok(orderDetail);
@@ -57,16 +57,16 @@ namespace API.Controllers
 
         [HttpGet("history")]
         [Authorize]
-        public async Task<IActionResult> getHistory (Guid? CustomerId)
+        public async Task<IActionResult> getHistory (string? CustomerId)
         {
             var history = await _service.orderDetailService.purchaseHistory(CustomerId);
             return Ok(history);
         }
 
-        [HttpPost("createOrderDetail")]
+        [HttpPost("createCart")]
        
 
-        public async Task<IActionResult> createOrderDetail(CreateOrderDetailDTO order)
+        public async Task<IActionResult> createOrderDetail(CreateCartDTO order)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace API.Controllers
                         StatusCode = HttpStatusCode.BadRequest
                     });
                 }
-                await _service.orderDetailService.createOrderDetail(order);
+                await _service.orderDetailService.createCart(order);
                 return Ok(new ApiResponse
                 {
                     Message = "Create Success",

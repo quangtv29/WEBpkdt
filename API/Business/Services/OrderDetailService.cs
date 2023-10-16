@@ -30,7 +30,7 @@ namespace API.Business.Services
             return orderDetail;
         }
 
-        public async Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(Guid? customerId)
+        public async Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(string? customerId)
         {
             var bill = await _repo.Bill.GetAllBillFromCustomer(customerId, false);
             var orderDetail = await _repo.OrderDetail.GetOrderDetailFromCustomerID(bill);
@@ -45,13 +45,14 @@ namespace API.Business.Services
            return product.Price * quantityValue;
         }
 
-        public async Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory (Guid? CustomerId)
+        public async Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory (string? CustomerId)
         {
             var result =  await (from kh in _repo.Customer.GetAll(false)
                                 join bill in _repo.Bill.GetAll(false) on  kh.Id equals bill.CustomerID 
                                 join order in _repo.OrderDetail.GetAll(false) on bill.Id equals order.BillId 
                                 join product in _repo.Product.GetAll(false) on order.ProductId equals product.Id 
-                                where kh.Id == CustomerId
+                                where kh.Id == CustomerId && order.isCart == "Bought"
+                                orderby bill.Time
                                 select new PurchaseHistoryDTO
                                 {
                                     Id = order.Id,
@@ -67,27 +68,7 @@ namespace API.Business.Services
             ).ToListAsync();
 
             return result;
-            //var bill = await _repo._billRepository.GetAllBillFromCustomer(CustomerId, false) 
-            //    ?? throw new Exception($"Doesn' exists Bill by CustomerID = {CustomerId} ");
-            //var orderDetail =  await _repo._orderDetailRepository.GetOrderDetailFromCustomerID(bill);
-            //List<PurchaseHistoryDTO> purchaseHistoryDTO = new () ;
-            //if (orderDetail != null)
-            //{
-            //    var productId =  orderDetail.Select(p => p.ProductId);
-            //    var product = await _repo._productRepository.GetProductByIds(productId);
-               
-            //    var history = _mapper.Map<List<PurchaseHistoryDTO>>(orderDetail);
-            //    if (product != null)
-            //    {
-            //        foreach (PurchaseHistoryDTO pur in history)
-            //        {
-            //            pur.Product = product.FirstOrDefault(c => c.Id == pur.ProductId)?.Name; 
-            //            pur.Image = product.FirstOrDefault(c => c.Id == pur.ProductId)?.Image;
-            //        }
-            //        return history;
-            //    }
-            //}
-            //return purchaseHistoryDTO.ToList();
+           
         }
 
         public async Task createOrderDetail(CreateOrderDetailDTO orderDetail)
@@ -98,5 +79,45 @@ namespace API.Business.Services
             _repo.OrderDetail.addOrderDetail(order);
              await _repo.SaveAsync();
         }
+
+
+
+        public async Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail)
+        {
+            var product = await _repo.Product.GetProductById(orderDetail.ProductId);
+            orderDetail.Price = product.Price;
+            var order = _mapper.Map<OrderDetail>(orderDetail);
+            order.isCart = "Cart";
+            _repo.OrderDetail.addOrderDetail(order);
+            await _repo.SaveAsync();
+            return _mapper.Map<GetAllOrderDetail>(order);
+        }
+
+
+        public async Task<GetAllOrderDetail> updateOrderDetail(Guid? orderDetailId)
+        {
+            var orderDetail = await _repo.OrderDetail.GetOrderDetailById(orderDetailId);
+            var product = await _repo.Product.GetProductById(orderDetail.ProductId);
+            if (product.Quantity >= orderDetail.Quantity && orderDetail.isCart == "Cart")
+            {
+                orderDetail.isCart = "Bought";
+                product.Quantity -= orderDetail.Quantity;
+                await _repo.SaveAsync();
+                return _mapper.Map<GetAllOrderDetail>(orderDetail);
+            }
+            else if (orderDetail.isCart == "Bought")
+            {
+                return new GetAllOrderDetail(
+
+                    );
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+
     }
 }

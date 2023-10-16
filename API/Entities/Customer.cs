@@ -4,17 +4,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
-    public class Customer : BaseEntity<Guid>
+    public class Customer 
     {
         
-        public string ?PhoneNumber { get; set; }
+        public string? Id { get; set; }
         [StringLength (255)]
-        public string ?Address { get; set; }
-        [StringLength(255)]
-        public string? Name { get; set; }
+        public string ?Address1 { get; set; }
+        public string? Address2 { get; set; }
+       
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
-
+        public  DateTime? LastModificationTime { get; set; }
+        public bool? isDelete { get; set; }
         public bool? isActive { get; set; }
         [NotMapped]
         public string? FormatDate { get; set; }

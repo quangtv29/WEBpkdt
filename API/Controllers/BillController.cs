@@ -56,7 +56,7 @@ namespace API.Controllers
 
         }
         [HttpGet("{customerId}/bills")]
-        public async Task<IActionResult> getAllBillFromCustomer (Guid? customerId)
+        public async Task<IActionResult> getAllBillFromCustomer (string? customerId)
         {
            try
             {

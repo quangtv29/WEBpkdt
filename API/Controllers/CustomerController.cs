@@ -50,7 +50,7 @@ namespace API.Controllers
 
         [HttpGet("{Id}")]
 
-        public async Task<IActionResult> getAllCustomerById (Guid? Id)
+        public async Task<IActionResult> getAllCustomerById (string? Id)
         {
             try
             {

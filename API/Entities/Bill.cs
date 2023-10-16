@@ -8,7 +8,7 @@ namespace API.Entities
     {
         [ForeignKey("Customer")]
         [Required]
-        public Guid?  CustomerID { get; set; }
+        public string?  CustomerID { get; set; }
         public DateTime? Time { get; set; }
         [Required, StringLength(255)]
         public string? Address { get; set; }

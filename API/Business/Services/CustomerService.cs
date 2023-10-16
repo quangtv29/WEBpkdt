@@ -32,7 +32,7 @@ namespace API.Business.Services
                 return customer;
         }
 
-        public async Task<IEnumerable<Customer>> GetCustomerByID(Guid? Id, bool trackChanges)
+        public async Task<IEnumerable<Customer>> GetCustomerByID(string? Id, bool trackChanges)
         {
             var customer =  await _repo.Customer.GetCustomerByCondition(e=> e.Id == Id, trackChanges);
             return customer;

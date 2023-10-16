@@ -8,14 +8,16 @@ namespace API.Business.Services.Interface
     {
         Task<IEnumerable<GetAllOrderDetail>> GetAll(bool trackChanges);
 
-        Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(Guid? customerId);
+        Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(string? customerId);
 
         Task<int?> UpdateTotalMoneyDTO ( Guid? Id, int? Quantity);
 
         Task<OrderDetail> GetOrderDetailById(Guid? Id);
-        Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory(Guid? CustomerId);
+        Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory(string? CustomerId);
 
-       Task createOrderDetail (CreateOrderDetailDTO orderDetail);
+        Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail);
+
+        Task<GetAllOrderDetail> updateOrderDetail(Guid? orderDetailId);
 
     }
 }

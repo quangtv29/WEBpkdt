@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Business\DTOs\ProductListDTO\**" />
+    <Compile Remove="Business\Interfaces\**" />
+    <Content Remove="Business\DTOs\ProductListDTO\**" />
+    <Content Remove="Business\Interfaces\**" />
+    <EmbeddedResource Remove="Business\DTOs\ProductListDTO\**" />
+    <EmbeddedResource Remove="Business\Interfaces\**" />
+    <None Remove="Business\DTOs\ProductListDTO\**" />
+    <None Remove="Business\Interfaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="nlog.config" />
   </ItemGroup>
 
@@ -34,11 +45,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Business\DTOs\ProductListDTO\" />
-    <Folder Include="Business\Interfaces\" />
   </ItemGroup>
 
 </Project>

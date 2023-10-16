@@ -23,7 +23,7 @@ namespace API.Business.Repository
             return bill;
         }
 
-        public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(Guid? customerId, bool trackChanges)
+        public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(string? customerId, bool trackChanges)
         {
             var bill = await GetAllByCondition(p=>p.CustomerID == customerId, trackChanges).Where(p=>p.isDelete == false).ToListAsync();
             return bill;

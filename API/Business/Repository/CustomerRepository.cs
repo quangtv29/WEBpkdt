@@ -20,7 +20,7 @@ namespace API.Business.Repository
 
        public async Task<IEnumerable<Customer>> GetAllCustomer(bool trackChanges)
         {
-            return await GetAll(trackChanges).OrderBy(c => c.Name).Where(c => c.isDelete == false).
+            return await GetAll(trackChanges).Where(c => c.isDelete == false).
                ToListAsync();
         }
 
