@@ -1,7 +1,6 @@
 ﻿using API.Business.Repository.IRepository;
 using API.Database;
 using API.Entities;
-using API.Migrations;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Business.Repository

@@ -6,8 +6,6 @@ namespace API.Entities
 {
     public class Customer 
     {
-        
-        public string? Id { get; set; }
         [StringLength (255)]
         public string ?Address1 { get; set; }
         public string? Address2 { get; set; }
@@ -20,11 +18,10 @@ namespace API.Entities
         [NotMapped]
         public string? FormatDate { get; set; }
 
-
         public ICollection<Bill>? Bill { get; set; }
 
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public string? Id { get; set; }
         public User User { get; set; }
     }
 }

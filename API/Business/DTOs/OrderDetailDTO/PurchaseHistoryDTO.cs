@@ -16,9 +16,9 @@ namespace API.Business.DTOs.OrderDetailDTO
         public int? Quantity { get; set; }
 
        
-        public string? Price { get; set; }
+        public int? Price { get; set; }
 
-        public string? TotalMoney { get; set; }
+        public int? TotalMoney { get; set; }
 
         public Decimal? Image { get; set; }
 

@@ -14,10 +14,13 @@ namespace API.Business.Services.Interface
 
         Task<OrderDetail> GetOrderDetailById(Guid? Id);
         Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory(string? CustomerId);
+        Task<IEnumerable<PurchaseHistoryDTO>> listCart(string? CustomerId);
 
         Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail);
 
         Task<GetAllOrderDetail> updateOrderDetail(Guid? orderDetailId);
+        
+        Task<GetAllOrderDetail> updateTotal (Guid? Id,  int? quantity);
 
     }
 }

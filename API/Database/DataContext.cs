@@ -45,7 +45,6 @@ namespace API.Database
             builder.Entity<Customer>(e =>
             {
                 e.Property(e => e.LastModificationTime).HasDefaultValueSql("GETDATE()");
-                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
                 e.Property(e => e.isDelete).HasDefaultValue(false);
             });
             builder.Entity<Product>(e =>
@@ -80,7 +79,7 @@ namespace API.Database
             builder.Entity<User>()
             .HasOne(e => e.Customer)
             .WithOne(e => e.User)
-            .HasForeignKey<Customer>(e => e.UserId);
+            .HasForeignKey<Customer>(e => e.Id);
 
         }
 

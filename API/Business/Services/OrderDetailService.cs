@@ -58,10 +58,10 @@ namespace API.Business.Services
                                     Id = order.Id,
                                     Quantity = order.Quantity,
                                     Product = product.Name,
-                                    Price = Helper.Helper.ConvertToMoney(order.Price),
+                                    Price = (order.Price),
                                     ProductId = order.Id,
                                     Image = product.Image,
-                                    TotalMoney = Helper.Helper.ConvertToMoney( order.TotalMoney),
+                                    TotalMoney = ( order.TotalMoney),
                                     Time = bill.Time
                                 }
                                 
@@ -117,7 +117,40 @@ namespace API.Business.Services
             }
 
         }
+        public async Task<IEnumerable<PurchaseHistoryDTO>> listCart(string? CustomerId)
+        {
+            var result = await (from kh in _repo.Customer.GetAll(false)
+                                join bill in _repo.Bill.GetAll(false) on kh.Id equals bill.CustomerID
+                                join order in _repo.OrderDetail.GetAll(false) on bill.Id equals order.BillId
+                                join product in _repo.Product.GetAll(false) on order.ProductId equals product.Id
+                                where kh.Id == CustomerId && order.isCart == "Cart"
+                                orderby bill.Time
+                                select new PurchaseHistoryDTO
+                                {
+                                    Id = order.Id,
+                                    Quantity = order.Quantity,
+                                    Product = product.Name,
+                                    Price = order.Price,
+                                    ProductId = order.Id,
+                                    Image = product.Image,
+                                    TotalMoney = order.TotalMoney,
+                                    Time = bill.Time
+                                }
 
+            ).ToListAsync();
 
+            return result;
+
+        }
+
+        public async Task<GetAllOrderDetail> updateTotal(Guid? Id, int? quantity)
+        {
+            var result = await _repo.OrderDetail.GetOrderDetailById(Id);
+            result.Quantity = quantity;
+            result.TotalMoney = result.Price * quantity;
+            await _repo.SaveAsync();
+            var results = _mapper.Map<GetAllOrderDetail>(result);
+            return results;
+        }
     }
 }

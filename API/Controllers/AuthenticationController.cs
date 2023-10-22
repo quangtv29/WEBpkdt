@@ -46,11 +46,12 @@ namespace API.Controllers
                     Message = "Login Fail"
                 });
             }
-            return Ok(new 
+            return Ok(new
             {
                 StatusCode = HttpStatusCode.OK,
                 Data = await _serviceManager.authenticationService.CreateToken(true),
-                Message = "Login Success"
+                Message = "Login Success",
+                User = await _serviceManager.authenticationService.getInfo(login.UserName)
             }) ;
         }
         [HttpPost("refresh")]
@@ -59,6 +60,37 @@ namespace API.Controllers
             var tokenDtoToReturn = await
             _serviceManager.authenticationService.RefreshToken(tokenDto);
             return Ok(tokenDtoToReturn);
+        }
+
+        [HttpPost("checkUserId")]
+
+        public async Task<IActionResult> checkUserId ([FromBody] checkUser userId)
+        {
+            var result = await _serviceManager.authenticationService.isUserExists(userId.UserName);
+            if (result == 0)
+            {
+                return Ok(new
+                {
+                    Data = 0,
+                    Message = "Bạn cần nhập userId"
+                });
+            }    
+            else if (result == 1)
+            {
+                return Ok(new
+                {
+                    Data = 1,
+                    Message = "Success"
+                });
+            }    
+            else
+            {
+                return Ok(new
+                {
+                    Data = -1,
+                    Message = "UserId đã tồn tại"
+                });
+            }
         }
     }
 }

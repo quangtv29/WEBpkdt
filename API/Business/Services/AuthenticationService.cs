@@ -47,6 +47,8 @@ namespace API.Business.Services
             }
             return true;
         }
+           
+
        
         private SigningCredentials GetSigningCredentials()
         {
@@ -147,5 +149,29 @@ List<Claim> claims)
             return await CreateToken(populateExp: false);
         }
 
+        public async Task<User> getInfo(string userId)
+        {
+            return  _user;
+        }
+
+        public async Task<int> isUserExists(string userId)
+        {
+            if (userId == null)
+            {
+                return 0;
+            }    
+            else
+            {
+               var result =  await _userManager.FindByNameAsync(userId);
+                if (result == null)
+                {
+                    return 1;
+                }    
+                else
+                {
+                    return -1;
+                }
+            }
+        }
     }
 }

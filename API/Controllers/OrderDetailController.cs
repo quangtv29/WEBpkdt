@@ -40,6 +40,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getOrderDetailFromCustomerId")]
+        [Authorize(Roles ="Customer")]
 
         public async Task<IActionResult> getOrderDetailFromCustomerId (string? CustomerId)
         {
@@ -61,6 +62,16 @@ namespace API.Controllers
         {
             var history = await _service.orderDetailService.purchaseHistory(CustomerId);
             return Ok(history);
+        }
+        [HttpGet("listCart")]
+        public async Task<IActionResult> listCart(string CustomerId)
+        {
+            if (CustomerId == null)
+            {
+                return BadRequest();
+            }    
+            var result = await _service.orderDetailService.listCart(CustomerId);
+            return Ok(result);
         }
 
         [HttpPost("createCart")]
@@ -92,6 +103,16 @@ namespace API.Controllers
                     Message = ex.Message
                 });
             }
+        }
+        [HttpPost("updateTotal")]
+        public async Task<IActionResult> updateTotal (UpdateTotalMoneyDTO update)
+        {
+            if (update.Quantity == null)
+            {
+                update.Quantity = 1;
+            }    
+            var result = await _service.orderDetailService.updateTotal(update.Id, update.Quantity);
+            return Ok(result);
         }
     }
 }
