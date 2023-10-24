@@ -1,0 +1,91 @@
+.contai{
+    padding: auto;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .row {
+        .col-md-8{
+            .table{
+                th {
+                    border: 1px solid #ddd;
+                    background-color: #04AA6D;
+                    color: white;
+                }
+                tr {
+                    &:nth-child(even) {
+                      background-color: #f2f2f2;
+                    }
+                    &:hover {
+                      background-color: #ddd;
+                    }
+                  }
+                td{
+                    max-width: 100px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .fa-edit{
+                    font-size: 40px;
+                    color: orange;
+                }
+                .fa-trash-alt{
+                    font-size: 40px;
+                    color: red;
+                }
+            }
+            .btn{
+                margin-left: 100px;
+                margin-top: 50px;
+            }
+
+        }
+        .col-md-4{
+            .mb-1{
+                min-width: 100px;
+                .preview{
+                    margin-top: 30px;
+                    color: black;
+                    box-sizing: border-box;
+                    border: 1px solid black;
+                    min-height: 65vh;
+                    min-width: 25vh;
+                    border-radius: 5px;   
+                    display: flex;
+                    justify-content: center;   
+                    align-items: center;
+                    flex-direction: column;
+                    cursor: pointer;
+                    position: relative;
+                    &:hover{
+                    background: linear-gradient(45deg, #3575d1, #7d4ed4);                        
+                    // opacity: 0.8;
+                    }
+                    .preview-image{
+                        background: center center no-repeat;
+                        background-size: contain;
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        object-fit: cover;
+                    }
+                }
+            }            
+        }
+        .col-md-6{
+            .btn{
+                margin-left: 20px;
+                margin-top: 20px;
+            }
+        }
+    }    
+  }
+  
+.fixImage {
+    height: 50px;
+    width: 50px;
+}
+  

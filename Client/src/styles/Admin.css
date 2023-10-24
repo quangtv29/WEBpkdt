@@ -1,0 +1,41 @@
+.nav-link {
+    color: #6c757d;
+  }
+  
+  .nav-link.active {
+    color: #20c997;
+  }
+  
+  .nav-pills .nav-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .nav-pills .nav-link {
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-sidebar {
+    background-color: #f8f9fa;
+  }
+  
+  .nav-treeview {
+    display: none;
+    background-color: #e2e6ea;
+  }
+  
+  .nav-treeview.menu-open {
+    display: block;
+  }
+  
+  .nav-treeview .nav-item {
+    margin-left: 1rem;
+  }
+  
+  .nav-treeview .nav-link {
+    padding-left: 1rem;
+  }
+  
+  .nav-treeview .nav-link.active {
+    color: #007bff;
+  }
