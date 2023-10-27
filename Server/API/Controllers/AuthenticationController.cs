@@ -30,7 +30,8 @@ namespace API.Controllers
                 }
                 return BadRequest(ModelState);
             }
-            return StatusCode(201);
+            var info = await _serviceManager.authenticationService.getInfo(user.UserName);
+            return Ok(info);
         }
 
         [HttpPost("login")]

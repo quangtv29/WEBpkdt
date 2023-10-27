@@ -21,6 +21,7 @@ namespace API.Business.Services.Interface
         Task<GetAllOrderDetail> updateOrderDetail(Guid? orderDetailId);
         
         Task<GetAllOrderDetail> updateTotal (Guid? Id,  int? quantity);
+        Task<IEnumerable<OrderDetail>> getOrderDetailByBillId(Guid? Id);
 
     }
 }

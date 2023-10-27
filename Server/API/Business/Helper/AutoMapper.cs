@@ -5,7 +5,6 @@ using API.Business.DTOs.OrderDetailDTO;
 using API.Business.DTOs.ProductDTO.cs;
 using API.Business.DTOs.ProductTypeDTO;
 using API.Business.DTOs.SaleDTO;
-using API.DTOs.AccountDTO;
 using API.Entities;
 using AutoMapper;
 
@@ -17,18 +16,12 @@ namespace API.Business.Helper
         {
             
             CreateMap<CreateBillDTO, Bill>().ReverseMap();
-            CreateMap<GetAllBillDTO, Bill>()
-                .ForMember(b => b.ConvertDiscount, p => p.MapFrom(src => src.Discount))
-                .ForMember(t => t.ConvertTotalMoney, p => p.MapFrom(src => src.TotalMoney))
-                .ReverseMap();
+            CreateMap<GetAllBillDTO, Bill>().ReverseMap();
             CreateMap<GetAllCustomerDTO, Customer>()
                 .ForMember(p=> p.FormatDate, b=> b.MapFrom(src=> src.DateOfBirth) )
                 .ReverseMap();
             CreateMap<Customer, CreateCustomerDTO>().ReverseMap();
-            CreateMap<GetAllProductDTO, Product>()
-                .ForMember(p => p.formatImportPrice, o => o.MapFrom(src => src.ImportPrice))
-                .ForMember(p => p.formatPrice, o => o.MapFrom(src => src.Price))
-                .ReverseMap();
+            CreateMap<GetAllProductDTO, Product>().ReverseMap();
             CreateMap<GetAllOrderDetail, OrderDetail>().ReverseMap();
             CreateMap<PurchaseHistoryDTO, OrderDetail>().ReverseMap();
             CreateMap<CreateOrderDetailDTO, OrderDetail>().ReverseMap();

@@ -1,5 +1,4 @@
-﻿using API.Business.DTOs.OrderDetailDTO;
-using API.Business.Repository.IRepository;
+﻿using API.Business.Repository.IRepository;
 using API.Database;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,12 @@ namespace API.Business.Repository
         public async Task<IEnumerable<OrderDetail>> GetAllOrderDetail(bool trackChanges)
         {
           var orderDetail =   await GetAll(trackChanges).Where(p => p.isDelete == false).ToListAsync();
+            return orderDetail;
+        }
+
+        public async Task<IEnumerable<OrderDetail>> GetOrderDetailByBillID(Guid? Id)
+        {
+            var orderDetail = await GetAllByCondition(p => p.BillId == Id, false).Where(p => p.isDelete == false).ToListAsync();
             return orderDetail;
         }
 

@@ -35,6 +35,7 @@ import Canceled from "./components/Purchase History/Canceled";
 import Deliveringg from "./components/Purchase History/Deliveringg";
 import Done from "./components/Purchase History/Done";
 import Profile from "./views/Profile";
+import OrderDetail from "./components/Purchase History/OrderDetail";
 function App() {
   // const u = JSON.parse(localStorage.getItem('user'));
 
@@ -69,6 +70,7 @@ function App() {
               <Route path="to-cancel" element={<Canceled />} />
               <Route path="to-deliveringg" element={<Deliveringg />} />
               <Route path="done" element={<Done />} />
+              <Route path="orderDetail" element={<OrderDetail />} />
             </Route>
           </Route>
         </Routes>

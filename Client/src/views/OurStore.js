@@ -1,19 +1,19 @@
-import React, { useState, useContext, useEffect } from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import ReactStars from 'react-rating-stars-component';
-import ProductCard from '../components/ProductCard';
-import Color from '../components/Color';
-import Container from '../components/Container';
+import React, { useState, useContext, useEffect } from "react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import ReactStars from "react-rating-stars-component";
+import ProductCard from "../components/ProductCard";
+import Color from "../components/Color";
+import Container from "../components/Container";
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
-  const [condition, setCondition] = useState('Liên Quan');
+  const [condition, setCondition] = useState("Liên Quan");
   const handleConditionChange = (event) => {
     setCondition(event.target.value);
   };
   return (
     <>
-      <Meta title={'Our Store'} />
+      <Meta title={"Our Store"} />
       <BreadCrumb title="Our Store" />
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
@@ -322,13 +322,13 @@ const OurStore = () => {
             <div className="filter-sort-grid mb-4">
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center gap-10">
-                  <p className="mb-0 d-block" style={{ width: '165px' }}>
+                  <p className="mb-0 d-block" style={{ width: "165px" }}>
                     Sắp xếp theo:
                   </p>
                   <select
                     name=""
                     value={condition}
-                    defaultValue={'Liên Quan'}
+                    defaultValue={"Liên Quan"}
                     className="form-control form-select"
                     id=""
                     onChange={handleConditionChange}
@@ -386,6 +386,7 @@ const OurStore = () => {
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
                 <ProductCard grid={grid} condition={condition} />
+                meo
               </div>
             </div>
           </div>

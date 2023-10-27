@@ -5,6 +5,7 @@ using API.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using NLog.Fluent;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -151,7 +152,7 @@ List<Claim> claims)
 
         public async Task<User> getInfo(string userId)
         {
-            return  _user;
+            return await _userManager.FindByNameAsync(userId); ;
         }
 
         public async Task<int> isUserExists(string userId)

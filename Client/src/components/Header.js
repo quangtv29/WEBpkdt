@@ -149,6 +149,7 @@ const Header = (props) => {
                                     </Link> */}
                 </div>
                 <div className="d-flex align-items-center gap-10 text-white text-light">
+                  Xin chào!
                   {welcomeMessage ? (
                     <NavDropdown
                       title={welcomeMessage}

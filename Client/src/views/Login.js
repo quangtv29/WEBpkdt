@@ -24,6 +24,7 @@ const Login = () => {
       })
       .then((response) => {
         const accessToken = response.data.data.accessToken;
+        sessionStorage.setItem("meo", "meo");
         const encryptedId = CryptoJS.AES.encrypt(
           response.data.user.id,
           encryptionKey

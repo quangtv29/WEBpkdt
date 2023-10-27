@@ -1,7 +1,6 @@
 ﻿using API.Business.DTOs.OrderDetailDTO;
 using API.Business.Helper;
 using API.Business.Services.Interface;
-using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -112,6 +111,16 @@ namespace API.Controllers
                 update.Quantity = 1;
             }    
             var result = await _service.orderDetailService.updateTotal(update.Id, update.Quantity);
+            return Ok(result);
+        }
+
+        [HttpPost("getOrderDetailByBillId")]
+
+        public async Task<IActionResult> getOrderDetailByBillId (Guid? Id)
+        {
+            if (Id == null)
+                return BadRequest(HttpStatusCode.NotFound);
+            var result = await _service.orderDetailService.getOrderDetailByBillId(Id);
             return Ok(result);
         }
     }

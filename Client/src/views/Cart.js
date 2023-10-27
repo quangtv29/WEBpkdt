@@ -12,6 +12,7 @@ import CryptoJS from "crypto-js";
 export const Cart = () => {
   const { cartItems, totalPrice, removeFromCart, updateCart } =
     useContext(CartContext);
+
   const handleRemoveFromCart = (item) => {
     removeFromCart(item);
   };

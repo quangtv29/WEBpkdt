@@ -9,7 +9,7 @@ namespace API.Entities
         [ForeignKey("Customer")]
         [Required]
         public string?  CustomerID { get; set; }
-        public DateTime? Time { get; set; }
+        public DateTime Time { get; set; }
         [Required, StringLength(255)]
         public string? Address { get; set; }
         [Required,StringLength(12)]
@@ -27,6 +27,9 @@ namespace API.Entities
         public string? ConvertDiscount { get; set; }
         [NotMapped]
         public string? ConvertTotalMoney { get; set; }
+
+        [NotMapped]
+        public string? FormatDate { get; set; }
         public ICollection<OrderDetail>? OrderDetail { get; set; }
 
     }

@@ -6,7 +6,7 @@ namespace API.Business.Services.Interface
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAll(ProductParameters productParameters);
+        Task<IEnumerable<GetAllProductDTO>> GetAll(ProductParameters productParameters);
 
         Task<IEnumerable<Product>> GetProductByIds(IEnumerable<Guid>? Id);
 

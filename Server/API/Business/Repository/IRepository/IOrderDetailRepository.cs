@@ -14,5 +14,6 @@ namespace API.Business.Repository.IRepository
         Task<OrderDetail> GetOrderDetailById(Guid? Id);
 
          void addOrderDetail (OrderDetail orderDetail);
+        Task<IEnumerable<OrderDetail>> GetOrderDetailByBillID(Guid? Id);
     }
 }

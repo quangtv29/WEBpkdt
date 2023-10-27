@@ -7,6 +7,7 @@ using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace API.Controllers
 {
     public class BillController : BaseApiController
@@ -61,14 +62,20 @@ namespace API.Controllers
            try
             {
                 var bills = await _service.billService.GetAllBillFromCustomer(customerId,trackChanges: false);
-                var convert = bills.Select(
-                    p => {
-                        p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
-                        p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
-                        return p;
-                    })
-                    .ToList();
+                //var convert = bills.Select(
+                //    p => {
+                //        p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
+                //        p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
+                //        return p;
+                //    })
+                //    .ToList();
 
+                var convert = bills.Select(p =>
+                {
+                    p.FormatDate = p.Time.ToString("dd/MM/yyyy HH:mm:ss");
+                    return p;
+                }).ToList();
+                
                 return Ok(_mapper.Map<List<GetAllBillDTO>>(convert));
             }
             catch (Exception ex)

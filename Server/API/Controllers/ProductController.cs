@@ -31,14 +31,8 @@ namespace API.Controllers
                 {
                     return BadRequest(HttpStatusCode.NoContent);
                 }
-                var convert = products.Select(p =>
-                {
-                    p.formatPrice = Helper.ConvertToMoney<int?>(p.Price);
-                    p.formatImportPrice = Helper.ConvertToMoney<int?>(p.ImportPrice);
-                    return p;
-                }).ToList();
-
-                var productDTO = _mapper.Map<List<GetAllProductDTO>>(convert);
+        
+                var productDTO = _mapper.Map<List<GetAllProductDTO>>(products);
 
                 return Ok(productDTO);
             }

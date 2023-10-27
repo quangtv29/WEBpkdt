@@ -102,6 +102,7 @@ namespace API.Business.Services
             {
                 orderDetail.isCart = "Bought";
                 product.Quantity -= orderDetail.Quantity;
+                product.Sold += 1;
                 await _repo.SaveAsync();
                 return _mapper.Map<GetAllOrderDetail>(orderDetail);
             }
@@ -151,6 +152,12 @@ namespace API.Business.Services
             await _repo.SaveAsync();
             var results = _mapper.Map<GetAllOrderDetail>(result);
             return results;
+        }
+
+        public async Task<IEnumerable<OrderDetail>> getOrderDetailByBillId (Guid? Id)
+        {
+            var result = await _repo.OrderDetail.GetOrderDetailByBillID(Id);
+            return result;
         }
     }
 }

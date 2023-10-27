@@ -28,7 +28,8 @@ namespace API.Entities
         public string? formatPrice{ get; set; }
         [NotMapped]
         public string? formatImportPrice { get; set; }
-
+      
+        public int Sold { get; set; } = 0;
 
         public ICollection<Feedback> Feedback { get; set; }
         public ICollection<OrderDetail> OrderDetail { get; set; }

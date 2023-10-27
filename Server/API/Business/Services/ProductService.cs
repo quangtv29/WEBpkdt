@@ -6,6 +6,7 @@ using API.Entities;
 using API.Exceptions.BadRequestExceptions;
 using API.Exceptions.NotFoundExceptions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Business.Services
 {
@@ -28,10 +29,42 @@ namespace API.Business.Services
           await  _repo.SaveAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetAll(ProductParameters productParameters)
+        public async Task<IEnumerable<GetAllProductDTO>> GetAll(ProductParameters productParameters)
         {
-           
-            return await _repo.Product.GetAllProduct(productParameters); 
+            var result = await (from pd in _repo.Product.GetAll(false)
+                          join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                          into feedbackGroup
+                          from fb in feedbackGroup.DefaultIfEmpty()
+                          group fb by new
+                          {
+                              pd.Id,
+                              pd.Name,
+                              pd.Quantity,
+                              pd.ImportPrice,
+                              pd.Price,
+                              pd.ProductTypeID,
+                              pd.Producer,
+                              pd.Describe,
+                              pd.Image,
+                              pd.Sold
+                          } into g
+                          select new GetAllProductDTO
+                          {
+                              Id = g.Key.Id,
+                              Name = g.Key.Name,
+                              Quantity = g.Key.Quantity,
+                              ImportPrice = g.Key.ImportPrice,
+                              Price = g.Key.Price,
+                              ProductTypeID = g.Key.ProductTypeID,
+                              Producer = g.Key.Producer,
+                              Describe = g.Key.Describe,
+                              Image = g.Key.Image,
+                              Sold = g.Key.Sold,
+                              StarRating = g.Sum(f => f.Star) / (double)g.Count()
+                          }).Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+                .Take(productParameters.PageSize)
+                .ToListAsync();
+            return result;
 
         }
 

@@ -8,9 +8,7 @@
 
         IProductRepository Product { get; }
         IProductTypeRepository ProductType { get; }
-
-       
-
+        IFeedbackRepository Feedback { get; }
         ISaleRepository Sale { get; }
 
         IProductListRepository ProductList { get; }

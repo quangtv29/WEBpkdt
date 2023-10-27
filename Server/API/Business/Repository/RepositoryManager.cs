@@ -1,6 +1,5 @@
 ﻿using API.Business.Repository.IRepository;
 using API.Database;
-using System.Runtime.InteropServices;
 
 namespace API.Business.Repository
 {
@@ -14,6 +13,7 @@ namespace API.Business.Repository
         private readonly Lazy<IProductTypeRepository> _productTypeRepo;
         private readonly Lazy<ISaleRepository> _saleRepo;
         private readonly Lazy<IProductListRepository> _productListRepo;
+        private readonly Lazy<IFeedbackRepository> _feedbackRepository;
         public RepositoryManager(DataContext db )
         {
             _db = db;
@@ -24,6 +24,7 @@ namespace API.Business.Repository
             _productTypeRepo = new Lazy<IProductTypeRepository>(()=> new ProductTypeRepository(db));
             _saleRepo = new Lazy<ISaleRepository>(() => new SaleRepository(db));
             _productListRepo = new Lazy<IProductListRepository>(() => new ProductListRepository(db));
+            _feedbackRepository = new Lazy<IFeedbackRepository>(() => new FeedbackRepository(db));
         }
 
 
@@ -41,6 +42,8 @@ namespace API.Business.Repository
         public ISaleRepository Sale => _saleRepo.Value;
 
         public IProductListRepository ProductList => _productListRepo.Value;
+
+        public IFeedbackRepository Feedback => _feedbackRepository.Value;
 
         public async Task SaveAsync()
         {

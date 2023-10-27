@@ -1,19 +1,19 @@
-import { useState, useEffect, useContext } from 'react';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import ReactStars from 'react-rating-stars-component';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import ProductCard from '../components/ProductCard';
-import ReactImageZoom from 'react-image-zoom';
-import Color from '../components/Color';
-import { TbGitCompare } from 'react-icons/tb';
-import { AiOutlineHeart } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useContext } from "react";
+import React from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import ReactStars from "react-rating-stars-component";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import ProductCard from "../components/ProductCard";
+import ReactImageZoom from "react-image-zoom";
+import Color from "../components/Color";
+import { TbGitCompare } from "react-icons/tb";
+import { AiOutlineHeart } from "react-icons/ai";
+import { Link } from "react-router-dom";
 // import watch from "../assets/images/watch.jpg";
-import Container from '../components/Container';
-import { CartContext } from '../CartContext';
+import Container from "../components/Container";
+import { CartContext } from "../CartContext";
 const SingleProduct = () => {
   const [product, setProduct] = useState(null);
 
@@ -23,7 +23,7 @@ const SingleProduct = () => {
 
   const [quantity, setQuantity] = useState(1);
 
-  const [available, setAvailable] = useState('');
+  const [available, setAvailable] = useState("");
 
   // const [modalData, setModalData] = useState(null);
 
@@ -32,19 +32,19 @@ const SingleProduct = () => {
   };
 
   const { id } = useParams();
-  useEffect(() => {
-    axios
-      .get(`/api/sanpham/${id}`)
-      .then((response) => {
-        setProduct(response.data[0]);
-        if (response.data[0].SoLuong === 0) {
-          setAvailable('Hết Hàng');
-        } else {
-          setAvailable('Còn Hàng');
-        }
-      })
-      .catch((error) => console.error(error));
-  }, [id]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`/api/sanpham/${id}`)
+  //     .then((response) => {
+  //       setProduct(response.data[0]);
+  //       if (response.data[0].SoLuong === 0) {
+  //         setAvailable('Hết Hàng');
+  //       } else {
+  //         setAvailable('Còn Hàng');
+  //       }
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, [id]);
 
   if (!product) {
     return <div>Loading...</div>;
@@ -58,12 +58,12 @@ const SingleProduct = () => {
   };
 
   const copyToClipboard = (text) => {
-    console.log('text', text);
-    var textField = document.createElement('textarea');
+    console.log("text", text);
+    var textField = document.createElement("textarea");
     textField.innerText = text;
     document.body.appendChild(textField);
     textField.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     textField.remove();
   };
   const closeModal = () => {};
@@ -78,7 +78,7 @@ const SingleProduct = () => {
 
   return (
     <>
-      <Meta title={'Product Name'} />
+      <Meta title={"Product Name"} />
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -107,9 +107,9 @@ const SingleProduct = () => {
               </div>
               <div className="border-bottom py-3">
                 <p className="price">
-                  {product.GiaBan.toLocaleString('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND',
+                  {product.GiaBan.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
                   })}
                 </p>
                 <div className="d-flex align-items-center gap-10">
@@ -177,7 +177,7 @@ const SingleProduct = () => {
                       min={1}
                       max={10}
                       className="form-control"
-                      style={{ width: '70px' }}
+                      style={{ width: "70px" }}
                       value={quantity}
                       onChange={handleQuantityChange}
                       id=""
@@ -221,7 +221,7 @@ const SingleProduct = () => {
                     href="javascript:void(0);"
                     onClick={() => {
                       copyToClipboard(
-                        'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg'
+                        "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
                       );
                     }}
                   >

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿
 
 namespace API.Business.DTOs.ProductDTO.cs
 {
@@ -10,9 +9,10 @@ namespace API.Business.DTOs.ProductDTO.cs
        
         public int? Quantity { get; set; }
        
-        public string? ImportPrice { get; set; }
+        public int? ImportPrice { get; set; }
+        public int Sold { get; set; } 
        
-        public string? Price { get; set; }
+        public int? Price { get; set; }
 
         public Guid? ProductTypeID { get; set; }
        
@@ -22,6 +22,7 @@ namespace API.Business.DTOs.ProductDTO.cs
 
         public Decimal? Image { get; set; }
 
+        public Double? StarRating { get; set; }
       
     }
 }
