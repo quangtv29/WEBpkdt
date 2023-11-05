@@ -16,7 +16,15 @@ const OrderDetail = () => {
       })
       .catch(() => {});
   }, [id]);
-  return <></>;
+  return (
+    <>
+      <div className="container mt-2">
+        <ul>
+          <li></li>
+        </ul>
+      </div>
+    </>
+  );
 };
 
 export default OrderDetail;

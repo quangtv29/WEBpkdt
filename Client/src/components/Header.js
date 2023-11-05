@@ -8,7 +8,6 @@ import { LinkContainer } from "react-router-bootstrap";
 // import wishlist from "../assets/images/wishlist.svg";
 import cart from "../assets/images/cart.svg";
 import menu from "../assets/images/menu.svg";
-import axios from "axios";
 import { CartContext } from "../CartContext";
 import "./Admin/LayoutAdmin/LayoutAdmin.scss";
 import { useNavigate } from "react-router-dom";
@@ -26,20 +25,6 @@ const Header = (props) => {
   const isAorN = chucvu === "Nhân viên" || chucvu === "Admin";
   const [isLogin, setIsLogin] = useState(false);
 
-  // const [makh, setMakh] = useState("");
-  // useEffect(() => {
-  //   if (localStorage.getItem("chucvu") === "Khách hàng") {
-  //     axios
-  //       .get("/api/users")
-  //       .then((res) => {
-  //         setMakh(res.data.users[0].MAKH);
-  //         localStorage.setItem("makh", res.data.users[0].MAKH);
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   }
-  // }, []);
   const logout = () => {
     localStorage.clear();
     setIsLogin(false);
@@ -50,13 +35,13 @@ const Header = (props) => {
     navigate(search ? `/product/?search=${search}` : "/product");
     setSearchTerm(search);
   };
-  useEffect(() => {
+  if (!isLogin) {
     if (localStorage.getItem("id") != null) {
       setIsLogin(true);
     }
-  });
+  }
+
   const handleLinkClick = () => {
-    // Tải lại toàn bộ trang web
     window.location.href = "/admin";
   };
 
@@ -68,15 +53,15 @@ const Header = (props) => {
   // };
   return (
     <>
-      <header className="header-top-strip py-3">
-        <div className="container-xxl">
+      <header className="header-top-strip py-3 ">
+        <div className="container-xxl m-0" style={{ maxWidth: 1451 }}>
           <div className="row">
             <div className="col-6">
               <div className="flex-col hide-for-medium flex-left">
                 <ul className="nav nav-left medium-nav-center nav-small  nav-divided">
                   <li className="html custom html_topbar_left">
                     <p className="text-end text-white mb-0">
-                      <i class="fa fa-map-marker mr-2"></i>Địa chỉ: 55 Giải
+                      <i className="fa fa-map-marker mr-2"></i>Địa chỉ: 55 Giải
                       Phóng, Hai Bà Trưng, Hà Nội
                     </p>
                   </li>
@@ -95,7 +80,7 @@ const Header = (props) => {
         </div>
       </header>
       <header className="header-upper py-3">
-        <div className="container-xxl">
+        <div className="container-xxl m-0" style={{ maxWidth: 1451 }}>
           <div className="row align-items-center">
             <div className="col-2">
               <h2>
@@ -149,7 +134,6 @@ const Header = (props) => {
                                     </Link> */}
                 </div>
                 <div className="d-flex align-items-center gap-10 text-white text-light">
-                  Xin chào!
                   {welcomeMessage ? (
                     <NavDropdown
                       title={welcomeMessage}
@@ -211,7 +195,7 @@ const Header = (props) => {
         </div>
       </header>
       <header className="header-bottom py-3">
-        <div className="container-xxl">
+        <div className="container-xxl" style={{ maxWidth: 1451 }}>
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-30">

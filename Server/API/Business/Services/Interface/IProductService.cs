@@ -1,6 +1,7 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
 using API.Business.Shared;
 using API.Entities;
+using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
 namespace API.Business.Services.Interface
 {
@@ -10,10 +11,14 @@ namespace API.Business.Services.Interface
 
         Task<IEnumerable<Product>> GetProductByIds(IEnumerable<Guid>? Id);
 
-        Task<Product> GetProductById(Guid? Id);
+        Task<GetAllProductDTO> GetProductById(Guid? Id);
 
         Task Update(UpdateProductDTO product, Guid? Id);
 
         Task deleteProduct(Guid? Id);
+
+        Task<Product> CreateProduct(CreateProductDTO product);
+
+        Task<string> SaveImage(IFormFile imageFile);
     }
 }

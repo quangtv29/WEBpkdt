@@ -6,7 +6,6 @@ namespace API.Entities
     public class OrderDetail : BaseEntity<Guid>
     {
         [ForeignKey("Bill")]
-        [Required]
         public Guid?  BillId { get; set; }
         [ForeignKey("Product")]
         [Required]

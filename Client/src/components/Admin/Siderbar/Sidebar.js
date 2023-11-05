@@ -1,23 +1,16 @@
-import React, { useState } from 'react';
-import '../../../styles/adminlte.min.css';
-import './Siderbar.scss';
-import axios from 'axios';
+import React, { useState } from "react";
+import "../../../styles/adminlte.min.css";
+import "./Siderbar.scss";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = (props) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const welcomeMessage = `Welcome, ${user.name}!`;
-  const logout = async () => {
-    try {
-      await axios.post('/api/logout');
-      // Xóa token khỏi cookie hoặc local storage
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.removeItem('chucvu');
-      // Chuyển hướng trang về trang đăng nhập
-      window.location.href = '/login';
-    } catch (error) {
-      console.log(error);
-    }
+  const user = localStorage.getItem("lastname");
+  const navigate = useNavigate();
+  const welcomeMessage = `Welcome, ${user}!`;
+  const logout = () => {
+    localStorage.clear();
+    navigate("/login", { replace: true });
   };
   return (
     <>
@@ -134,7 +127,7 @@ const Sidebar = (props) => {
                       <p>Đơn hàng bị hủy</p>
                     </a>
                   </li>
-                  <li style={{ textAlign: 'center' }}>
+                  <li style={{ textAlign: "center" }}>
                     <button onClick={() => logout()} className="custom-button">
                       <b>Đăng xuất</b>
                     </button>

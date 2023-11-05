@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
 import prodcompare from "../assets/images/prodcompare.svg";
 import wish from "../assets/images/wish.svg";
@@ -40,7 +39,7 @@ const ProductCard = (props) => {
     const pageSize = 10;
     const response = await axios.post(url, { pageNumber, pageSize });
     setIsLoading(false);
-    console.log(response);
+
     let data = response.data;
 
     switch (condition) {
@@ -90,10 +89,10 @@ const ProductCard = (props) => {
           <Link
             to={`${
               location.pathname === "/"
-                ? `/product/${item.MaSP}`
-                : location.pathname === `/product/${item.MaSP}`
-                ? `/product/${item.MaSP}`
-                : `${item.MaSP}`
+                ? `/product/${item.id}`
+                : location.pathname === `/product/${item.id}`
+                ? `/product/${item.id}`
+                : `${item.id}`
             }`}
             className="product-card position-relative"
           >
@@ -104,10 +103,10 @@ const ProductCard = (props) => {
             </div>
             <div className="product-image">
               <img
-                src={item.image}
+                src={`DATN1610/WEBpkdt/Client/public/Image\\9ff2e9a0-6e2b-4881-821b-a5732cbf24a8.jpg`}
                 className="img-fluid"
                 aria-hidden
-                alt="product image"
+                alt="product image meo"
               />
               <img
                 src={iconcart}

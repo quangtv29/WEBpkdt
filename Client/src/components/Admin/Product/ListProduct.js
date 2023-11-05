@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Product.scss';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import CreateProduct from './CreateProduct';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Product.scss";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CreateProduct from "./CreateProduct";
 const ListProduct = (props) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const [data, setData] = useState([]);
-
+  const pageNumber = 1;
+  const pageSize = 10;
   useEffect(() => {
     const fetchSanPham = async () => {
       try {
-        const response = await axios.get('/api/sanpham');
+        const response = await axios.post(
+          "https://localhost:7295/api/Product/getAllProduct",
+          {
+            pageNumber,
+            pageSize,
+          }
+        );
         setData(response.data);
       } catch (error) {
         console.error(error);
@@ -38,12 +45,12 @@ const ListProduct = (props) => {
       const response = await axios.delete(`/api/sanpham/${productId}`);
       console.log(response.data);
       // Xử lý kết quả trả về khi xóa thành công
-      toast.success('Xóa sản phẩm thành công');
+      toast.success("Xóa sản phẩm thành công");
       window.location.reload();
     } catch (error) {
       console.error(error);
       // Xử lý lỗi khi xóa không thành công
-      toast.error('Xóa sản phẩm thất bại');
+      toast.error("Xóa sản phẩm thất bại");
     }
   };
 
@@ -61,7 +68,7 @@ const ListProduct = (props) => {
       </div> */}
       <div className="row">
         <div className="col-md-8">
-          <table className="table table-striped">
+          <table className="table ">
             <thead>
               <tr>
                 <th>Mã SP</th>
@@ -78,15 +85,15 @@ const ListProduct = (props) => {
             </thead>
             <tbody>
               {data.map((item) => (
-                <tr key={item.MaSP} onClick={() => handleSelectProduct(item)}>
-                  <td>{item.MaSP}</td>
-                  <td>{item.TenSP}</td>
-                  <td>{item.SoLuong}</td>
-                  <td>{item.GiaNhap}</td>
-                  <td>{item.GiaBan}</td>
-                  <td>{item.MaLoaiSP}</td>
-                  <td>{item.NSX}</td>
-                  <td>{item.MoTa}</td>
+                <tr key={item.id} onClick={() => handleSelectProduct(item)}>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.importPrice}</td>
+                  <td>{item.price}</td>
+                  <td>{item.productTypeID}</td>
+                  <td>{item.producer}</td>
+                  <td>{item.describe}</td>
                   <td>
                     <img
                       src={item.imageUrl}
@@ -116,7 +123,7 @@ const ListProduct = (props) => {
             <CreateProduct product={selectedProduct} isEditing={isEditing} />
           ) : (
             <CreateProduct />
-          )}{' '}
+          )}{" "}
         </div>
       </div>
     </div>

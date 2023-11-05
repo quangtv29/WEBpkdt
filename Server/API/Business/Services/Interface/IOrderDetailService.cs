@@ -19,6 +19,7 @@ namespace API.Business.Services.Interface
         Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail);
 
         Task<GetAllOrderDetail> updateOrderDetail(Guid? orderDetailId);
+        Task<OrderDetail> updateOrderDetailBillId(Guid? orderDetailId, Guid? BillId);
         
         Task<GetAllOrderDetail> updateTotal (Guid? Id,  int? quantity);
         Task<IEnumerable<OrderDetail>> getOrderDetailByBillId(Guid? Id);

@@ -20,7 +20,7 @@ namespace API.Business.DTOs.ProductDTO.cs
 
         public string? Describe { get; set; }
 
-        public Decimal? Image { get; set; }
+        public string? Image { get; set; }
 
         public Double? StarRating { get; set; }
       

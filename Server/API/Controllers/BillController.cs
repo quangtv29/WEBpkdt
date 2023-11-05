@@ -98,19 +98,28 @@ namespace API.Controllers
                         StatusCode = HttpStatusCode.BadRequest
                     });
                 }    
-             var status =   await _service.billService.createBill(bill,code);
-                if (status)
+                   var status =  await _service.billService.createBill(bill,code);
+                if (status == null)
+                    return Ok(new ApiResponse
+                    {
+                        Message = "Mã giảm giá không hợp lệ",
+                    });
+                else if (status.CustomerID == null)
                 {
                     return Ok(new ApiResponse
                     {
-                        Message = "Create Success",
-                        StatusCode = HttpStatusCode.Created
+                        Message = "Mã giảm giá đã hết số lượt sử dụng"
                     });
                 }
-                return Ok(new ApiResponse
+               
+                else
                 {
-                    Message = "Discount code has expired "
-                });
+                    return Ok(new 
+                    {
+                        StatusCode = HttpStatusCode.Created,
+                        Data = status
+                    }) ;
+                }
             }
             catch (Exception ex)
             {

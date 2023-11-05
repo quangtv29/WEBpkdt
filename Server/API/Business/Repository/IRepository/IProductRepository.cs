@@ -13,5 +13,9 @@ namespace API.Business.Repository.IRepository
         Task<Product> GetProductById(Guid? Id);
         void delete(Product product);
 
+        void CreateProduct(Product product);
+
+        Task<IEnumerable<Product>> getByTopSeller(ProductParameters productParameters);
+
     }
 }

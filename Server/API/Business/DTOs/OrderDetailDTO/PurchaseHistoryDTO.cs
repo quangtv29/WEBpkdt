@@ -20,7 +20,7 @@ namespace API.Business.DTOs.OrderDetailDTO
 
         public int? TotalMoney { get; set; }
 
-        public Decimal? Image { get; set; }
+        public string? Image { get; set; }
 
     }
 }

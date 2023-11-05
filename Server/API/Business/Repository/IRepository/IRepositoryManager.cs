@@ -11,7 +11,6 @@
         IFeedbackRepository Feedback { get; }
         ISaleRepository Sale { get; }
 
-        IProductListRepository ProductList { get; }
         Task SaveAsync();
     }
 }

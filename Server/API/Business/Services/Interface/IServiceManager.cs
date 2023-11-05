@@ -16,5 +16,7 @@
 
         ISaleService saleService { get; }
 
+        IFeedbackService feedbackService { get; }
+
     }
 }

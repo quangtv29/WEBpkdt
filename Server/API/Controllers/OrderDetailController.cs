@@ -56,7 +56,7 @@ namespace API.Controllers
         }
 
         [HttpGet("history")]
-        [Authorize]
+        [Authorize(Roles ="Manager")]
         public async Task<IActionResult> getHistory (string? CustomerId)
         {
             var history = await _service.orderDetailService.purchaseHistory(CustomerId);
@@ -122,6 +122,17 @@ namespace API.Controllers
                 return BadRequest(HttpStatusCode.NotFound);
             var result = await _service.orderDetailService.getOrderDetailByBillId(Id);
             return Ok(result);
+        }
+
+        [HttpPost("updateOrderDetailBillId")]
+
+        public async Task<IActionResult> updateOrderDetailBillId (UpdateByBillIdDTO update)
+        {
+            var result = await _service.orderDetailService.updateOrderDetailBillId(update.orderDetailId, update.BillId);
+            return Ok(new
+            {
+                Message = "Update success"
+            });
         }
     }
 }

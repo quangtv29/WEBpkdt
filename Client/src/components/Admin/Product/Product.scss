@@ -5,12 +5,15 @@
     flex-direction: column;
     position: relative;
     .row {
-        .col-md-8{
+        margin: 0px;
+        .col-md-8{  
             .table{
+                box-sizing: border-box;
                 th {
                     border: 1px solid #ddd;
                     background-color: #04AA6D;
                     color: white;
+
                 }
                 tr {
                     &:nth-child(even) {
@@ -42,6 +45,9 @@
 
         }
         .col-md-4{
+            .container {
+                padding: 0px;
+            box-sizing: border-box;
             .mb-1{
                 min-width: 100px;
                 .preview{
@@ -81,7 +87,7 @@
                 margin-top: 20px;
             }
         }
-    }    
+    }    }
   }
   
 .fixImage {

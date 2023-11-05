@@ -16,6 +16,7 @@ namespace API.Business.Services
         private readonly Lazy<IProductTypeService> _productTypeService;
         private readonly Lazy<IAuthenticationService> _authenticationService;
         private readonly Lazy<ISaleService> _saleService;
+        private readonly Lazy<IFeedbackService> _feedbackService;
        
 
         public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
@@ -28,6 +29,7 @@ namespace API.Business.Services
             _productTypeService = new Lazy<IProductTypeService>(() => new ProductTypeService(repositoryManager,_mapper));
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(_mapper, userManager,configuration));
             _saleService = new Lazy<ISaleService>(() => new SaleService(repositoryManager,_mapper));
+            _feedbackService = new Lazy<IFeedbackService>(() => new FeedbackService(repositoryManager, _mapper));
         }
 
         public ICustomerService customerService => _customerService.Value;
@@ -44,5 +46,7 @@ namespace API.Business.Services
         public IAuthenticationService authenticationService => _authenticationService.Value;
 
         public ISaleService saleService => _saleService.Value;
+
+        public IFeedbackService feedbackService => _feedbackService.Value;
     }
 }

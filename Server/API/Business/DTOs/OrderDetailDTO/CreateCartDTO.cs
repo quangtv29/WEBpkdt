@@ -3,10 +3,8 @@ namespace API.Business.DTOs.OrderDetailDTO
 {
     public class CreateCartDTO
     {
-
         public Guid? BillId { get; set; }
-
-        public int? Price = 0;
+        public int? Price { get; set; }
 
         public Guid? ProductId { get; set; }
 

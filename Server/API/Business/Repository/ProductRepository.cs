@@ -1,12 +1,9 @@
-﻿using API.Business.DTOs.ProductDTO.cs;
-using API.Business.Repository.IRepository;
+﻿using API.Business.Repository.IRepository;
 using API.Business.Shared;
 using API.Database;
 using API.Entities;
 using API.Exceptions.NotFoundExceptions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System.Linq;
 
 namespace API.Business.Repository
 {
@@ -14,6 +11,11 @@ namespace API.Business.Repository
     {
         public ProductRepository(DataContext db) : base(db)
         {
+        }
+
+        public void CreateProduct(Product product)
+        {
+            Create(product);
         }
 
         public  void delete(Product product)
@@ -31,6 +33,15 @@ namespace API.Business.Repository
             return products;
         }
 
+        public async Task<IEnumerable<Product>> getByTopSeller(ProductParameters productParameters)
+        {
+            var products = await GetAll(false).Where(p => p.isDelete == false)
+                .OrderBy(p=>p.Sold)
+                .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+                .Take(productParameters.PageSize)
+                .ToListAsync();
+            return products;
+        }
 
         public async Task<Product> GetProductById(Guid? Id)
         {

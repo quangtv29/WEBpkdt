@@ -22,6 +22,21 @@ namespace API.Business.Services
 
         }
 
+        public async Task<Product> CreateProduct(CreateProductDTO product)
+        {
+            if (product == null) throw new ArgumentNullException();
+            if (product.Image == null || product.Image.Length == 0)
+            {
+                throw new Exception("Không có ảnh");
+            }
+            var pro = _mapper.Map<Product>(product);
+            string imagePath = await SaveImage(product.Image);
+            pro.Image = imagePath;
+            _repo.Product.CreateProduct(pro);
+            await _repo.SaveAsync();
+            return pro;
+        }
+
         public async Task deleteProduct(Guid? Id)
         {
             var product = await _repo.Product.GetProductById(Id);
@@ -68,11 +83,41 @@ namespace API.Business.Services
 
         }
 
-        public async Task<Product> GetProductById(Guid? Id)
+        public async Task<GetAllProductDTO> GetProductById(Guid? Id)
         {
-           var product = await _repo.Product.GetProductById(Id) ??
-                throw new ProductNotFoundException(Id);
-            return product;
+            var result = await (from pd in _repo.Product.GetAll(false)
+                                join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                                into feedbackGroup
+                                from fb in feedbackGroup.DefaultIfEmpty()
+                                where pd.Id == Id
+                                group fb by new
+                                {
+                                    pd.Id,
+                                    pd.Name,
+                                    pd.Quantity,
+                                    pd.ImportPrice,
+                                    pd.Price,
+                                    pd.ProductTypeID,
+                                    pd.Producer,
+                                    pd.Describe,
+                                    pd.Image,
+                                    pd.Sold
+                                } into g
+                                select new GetAllProductDTO
+                                {
+                                    Id = g.Key.Id,
+                                    Name = g.Key.Name,
+                                    Quantity = g.Key.Quantity,
+                                    ImportPrice = g.Key.ImportPrice,
+                                    Price = g.Key.Price,
+                                    ProductTypeID = g.Key.ProductTypeID,
+                                    Producer = g.Key.Producer,
+                                    Describe = g.Key.Describe,
+                                    Image = g.Key.Image,
+                                    Sold = g.Key.Sold,
+                                    StarRating = g.Sum(f => f.Star) / (double)g.Count()
+                                }).FirstOrDefaultAsync();
+            return result;
         }
 
         public async Task<IEnumerable<Product>> GetProductByIds(IEnumerable<Guid>? Id)
@@ -85,13 +130,25 @@ namespace API.Business.Services
             return product;
         }
 
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
+            string imagePath = Path.Combine("WEBpkdt/Client/public/Image", uniqueFileName); 
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return imagePath;
+        }
+
         public async Task Update(UpdateProductDTO product, Guid? Id)
         {
             var products =  await _repo.Product.GetProductById(Id) ?? 
                 throw new ProductNotFoundException(Id);
                 _mapper.Map(product, products);
-            
              await  _repo.SaveAsync();
         }
+
     }
 }

@@ -22,7 +22,7 @@ namespace API.Entities
 
         public string? Describe { get; set; }
 
-        public Decimal? Image { get; set; }
+        public string? Image { get; set; }
 
         [NotMapped]
         public string? formatPrice{ get; set; }
@@ -33,7 +33,7 @@ namespace API.Entities
 
         public ICollection<Feedback> Feedback { get; set; }
         public ICollection<OrderDetail> OrderDetail { get; set; }
-
+      
 
     }
 }

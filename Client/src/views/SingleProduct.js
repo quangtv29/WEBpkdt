@@ -14,6 +14,10 @@ import { Link } from "react-router-dom";
 // import watch from "../assets/images/watch.jpg";
 import Container from "../components/Container";
 import { CartContext } from "../CartContext";
+import StarRatings from "react-star-ratings";
+import { MyContext } from "../encryptionKey";
+import CryptoJS from "crypto-js";
+
 const SingleProduct = () => {
   const [product, setProduct] = useState(null);
 
@@ -24,27 +28,68 @@ const SingleProduct = () => {
   const [quantity, setQuantity] = useState(1);
 
   const [available, setAvailable] = useState("");
+  const { encryptionKey } = useContext(MyContext);
+  const decryptedId = CryptoJS.AES.decrypt(
+    localStorage.getItem("id"),
+    encryptionKey
+  ).toString(CryptoJS.enc.Utf8);
 
   // const [modalData, setModalData] = useState(null);
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
   };
+  const handleAddCart = async (
+    event,
+    productid,
+    quantity,
+    totalmoney,
+    price
+  ) => {
+    event.preventDefault();
+    try {
+      const result = await axios.post(
+        `https://localhost:7295/api/Bill/createBill`,
+        {
+          customerId: decryptedId,
+          address: "",
+          phoneNumber: "",
+          totalMoney: 0,
+          note: "",
+        },
+        {
+          params: {
+            code: null,
+          },
+        }
+      );
+
+      await axios.post("https://localhost:7295/api/OrderDetail/createCart", {
+        billId: result.data.data.id,
+        price: price,
+        productId: productid,
+        quantity: quantity,
+        totalMoney: totalmoney,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const { id } = useParams();
-  // useEffect(() => {
-  //   axios
-  //     .get(`/api/sanpham/${id}`)
-  //     .then((response) => {
-  //       setProduct(response.data[0]);
-  //       if (response.data[0].SoLuong === 0) {
-  //         setAvailable('Hết Hàng');
-  //       } else {
-  //         setAvailable('Còn Hàng');
-  //       }
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, [id]);
+  useEffect(() => {
+    axios
+      .get(`https://localhost:7295/api/Product/${id}`)
+      .then((response) => {
+        setProduct(response.data.data);
+        if (response.data.data.quantity === 0) {
+          setAvailable("Hết Hàng");
+        } else {
+          setAvailable(response.data.data.quantity);
+        }
+      })
+      .catch((error) => console.error(error));
+  }, [id]);
 
   if (!product) {
     return <div>Loading...</div>;
@@ -54,25 +99,25 @@ const SingleProduct = () => {
     width: 594,
     height: 600,
     zoomWidth: 600,
-    img: product.imageUrl,
+    img: product.image,
   };
 
-  const copyToClipboard = (text) => {
-    console.log("text", text);
-    var textField = document.createElement("textarea");
-    textField.innerText = text;
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand("copy");
-    textField.remove();
-  };
+  // const copyToClipboard = (text) => {
+  //   console.log("text", text);
+  //   var textField = document.createElement("textarea");
+  //   textField.innerText = text;
+  //   document.body.appendChild(textField);
+  //   textField.select();
+  //   document.execCommand("copy");
+  //   textField.remove();
+  // };
   const closeModal = () => {};
 
   const handleAddToCart = () => {
     addToCart({
       ...product,
       quantity: quantity,
-      prices: quantity * product.GiaBan,
+      prices: quantity * product.price,
     });
   };
 
@@ -103,28 +148,27 @@ const SingleProduct = () => {
           <div className="col-6">
             <div className="main-product-details">
               <div className="border-bottom">
-                <h3 className="title">{product.TenSP}</h3>
+                <h3 className="title">{product.name}</h3>
               </div>
               <div className="border-bottom py-3">
                 <p className="price">
-                  {product.GiaBan.toLocaleString("vi-VN", {
+                  {product.price?.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
                 </p>
                 <div className="d-flex align-items-center gap-10">
-                  <ReactStars
-                    count={5}
-                    size={24}
-                    value={4}
-                    edit={false}
-                    activeColor="#ffd700"
+                  <StarRatings
+                    rating={product?.starRating}
+                    starRatedColor="#ffd700"
+                    starEmptyColor="#e4e5e9"
+                    numberOfStars={5}
+                    starDimension="22px"
+                    starSpacing="2px"
+                    isSelectable={false}
                   />
                   <p className="mb-0 t-review">( 2 Reviews )</p>
                 </div>
-                <a className="review-btn" href="#review">
-                  {/* {product.MoTa} */}
-                </a>
               </div>
               <div className=" py-3">
                 {/* <div className="d-flex gap-10 align-items-center my-2">
@@ -144,26 +188,10 @@ const SingleProduct = () => {
                   <p className="product-data">Watch</p>
                 </div> */}
                 <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Sẵn Có:</h3>
+                  <h3 className="product-heading">Kho:</h3>
                   <p className="product-data">{available}</p>
                 </div>
-                <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                  <h3 className="product-heading">Size :</h3>
-                  <div className="d-flex flex-wrap gap-15">
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      S
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      M
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      XL
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      XXL
-                    </span>
-                  </div>
-                </div>
+
                 <div className="d-flex gap-10 flex-column mt-2 mb-3">
                   <h3 className="product-heading">Color :</h3>
                   <Color />
@@ -175,7 +203,7 @@ const SingleProduct = () => {
                       type="number"
                       name=""
                       min={1}
-                      max={10}
+                      max={product?.quantity}
                       className="form-control"
                       style={{ width: "70px" }}
                       value={quantity}
@@ -189,6 +217,15 @@ const SingleProduct = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                       type="button"
+                      onClick={(event) =>
+                        handleAddCart(
+                          event,
+                          product.id,
+                          quantity,
+                          quantity * product.price,
+                          product.price
+                        )
+                      }
                     >
                       Thêm Vào Giỏ Hàng
                     </button>
@@ -197,14 +234,14 @@ const SingleProduct = () => {
                 </div>
                 <div className="d-flex align-items-center gap-15">
                   <div>
-                    <a href="">
+                    <Link>
                       <TbGitCompare className="fs-5 me-2" /> Add to Compare
-                    </a>
+                    </Link>
                   </div>
                   <div>
-                    <a href="">
+                    <Link>
                       <AiOutlineHeart className="fs-5 me-2" /> Add to Wishlist
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="d-flex gap-10 flex-column  my-3">
@@ -214,19 +251,6 @@ const SingleProduct = () => {
                     ship all US domestic orders within
                     <b>5-10 business days!</b>
                   </p>
-                </div>
-                <div className="d-flex gap-10 align-items-center my-3">
-                  <h3 className="product-heading">Product Link:</h3>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => {
-                      copyToClipboard(
-                        "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
-                      );
-                    }}
-                  >
-                    Copy Product Link
-                  </a>
                 </div>
               </div>
             </div>
@@ -238,7 +262,7 @@ const SingleProduct = () => {
           <div className="col-12">
             <h4>Mô tả</h4>
             <div className="bg-white p-3">
-              <p>{product.MoTa}</p>
+              <p>{product?.describe}</p>
             </div>
           </div>
         </div>
@@ -264,9 +288,12 @@ const SingleProduct = () => {
                 </div>
                 {orderedProduct && (
                   <div>
-                    <a className="text-dark text-decoration-underline" href="#">
+                    <Link
+                      className="text-dark text-decoration-underline"
+                      to="#"
+                    >
                       Write a Review
-                    </a>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -274,12 +301,14 @@ const SingleProduct = () => {
                 <h4>Write a Review</h4>
                 <form action="" className="d-flex flex-column gap-15">
                   <div>
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={true}
-                      activeColor="#ffd700"
+                    <StarRatings
+                      rating={product?.starRating}
+                      starRatedColor="#ffd700"
+                      starEmptyColor="#e4e5e9"
+                      numberOfStars={5}
+                      starDimension="22px"
+                      starSpacing="2px"
+                      isSelectable={false}
                     />
                   </div>
                   <div>
@@ -338,7 +367,6 @@ const SingleProduct = () => {
         id="staticBackdrop"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
-        tabindex="-1"
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
@@ -350,20 +378,28 @@ const SingleProduct = () => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={() => handleAddToCart()}
+                onClick={(e) =>
+                  handleAddToCart(
+                    e,
+                    product.id,
+                    quantity,
+                    quantity * product.price,
+                    product.price
+                  )
+                }
               ></button>
             </div>
             <div className="modal-body py-0">
               <div className="d-flex align-items-center">
                 <div className="flex-grow-1 w-50">
                   <img
-                    src={product.imageUrl}
+                    src={product?.image}
                     className="img-fluid"
                     alt="product img"
                   />
                 </div>
                 <div className="d-flex flex-column flex-grow-1 w-50">
-                  <h6 className="mb-3">{product.TenSP}</h6>
+                  <h6 className="mb-3">{product?.name}</h6>
                   <p className="mb-1">Số lượng: {quantity}</p>
                   <p className="mb-1">Màu: Không có</p>
                   <p className="mb-1">Size: Không có</p>

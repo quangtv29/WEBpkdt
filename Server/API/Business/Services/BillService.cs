@@ -4,6 +4,7 @@ using API.Business.Services.Interface;
 using API.Entities;
 using API.Exceptions.NotFoundExceptions;
 using AutoMapper;
+using System.Reflection.Metadata.Ecma335;
 
 namespace API.Business.Services
 {
@@ -19,7 +20,7 @@ namespace API.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> createBill(CreateBillDTO bill, string code)
+        public async Task<Bill> createBill(CreateBillDTO bill, string code)
         {
             var bills =  _mapper.Map<Bill>(bill);
             if (code == null)
@@ -28,14 +29,14 @@ namespace API.Business.Services
                 bills.IntoMoney = bills.TotalMoney;
                 _repo.Bill.createBill(bills);
                 await _repo.SaveAsync();
-                return true;
+                return bills;
             }
             else
             {
                 var sale = await _repo.Sale.GetSaleByCode(code);
                 if (sale == null)
                 {
-                    return false;
+                    return null;
                 }
                 double? discount = 0;
                 if (bills.TotalMoney > sale.MinBill)
@@ -54,9 +55,9 @@ namespace API.Business.Services
                     sale.Count += 1;
                     _repo.Bill.createBill(bills);
                     await _repo.SaveAsync();
-                    return true;
+                    return bills;   
                 }
-                return false;
+                return new Bill { };
             }
         }
 

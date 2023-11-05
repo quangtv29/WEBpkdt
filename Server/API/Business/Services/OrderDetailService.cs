@@ -159,5 +159,13 @@ namespace API.Business.Services
             var result = await _repo.OrderDetail.GetOrderDetailByBillID(Id);
             return result;
         }
+
+        public async Task<OrderDetail> updateOrderDetailBillId(Guid? orderDetailId, Guid? BillId)
+        {
+            var order = await _repo.OrderDetail.GetOrderDetailById(orderDetailId);
+            order.BillId = BillId;
+            await _repo.SaveAsync();
+            return order;
+        }
     }
 }

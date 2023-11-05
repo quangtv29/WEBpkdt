@@ -17,6 +17,18 @@ export const Cart = () => {
     removeFromCart(item);
   };
 
+  const [selectedInvoices, setSelectedInvoices] = useState([]);
+  const [totalMoney, setTotalMoney] = useState(0);
+  console.log(selectedInvoices);
+  const handleSelectInvoice = (event, invoiceId, money) => {
+    if (event.target.checked) {
+      setSelectedInvoices([...selectedInvoices, invoiceId]);
+      setTotalMoney(totalMoney + money);
+    } else {
+      setSelectedInvoices(selectedInvoices.filter((id) => id !== invoiceId));
+      setTotalMoney(totalMoney - money);
+    }
+  };
   const { encryptionKey } = useContext(MyContext);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -67,6 +79,42 @@ export const Cart = () => {
         // setTotal(updatedTotal);
       });
   };
+  const handleCreateBill = async (event) => {
+    event.preventDefault();
+    try {
+      const result = await axios.post(
+        `https://localhost:7295/api/Bill/createBill`,
+        {
+          customerId: decryptedId,
+          address: "",
+          phoneNumber: "",
+          totalMoney: totalMoney,
+          note: "",
+        },
+        {
+          params: {
+            code: null,
+          },
+        }
+      );
+
+      selectedInvoices.map(async (item) => {
+        await axios
+          .post(
+            "https://localhost:7295/api/OrderDetail/updateOrderDetailBillId",
+            {
+              orderDetailId: item,
+              BillId: result.data.data.id,
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+          });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -87,6 +135,13 @@ export const Cart = () => {
                 key={item.id}
                 className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center"
               >
+                <input
+                  type="checkbox"
+                  checked={selectedInvoices.includes(item.id)}
+                  onChange={(event) =>
+                    handleSelectInvoice(event, item.id, item.totalMoney)
+                  }
+                />
                 <div className="cart-col-1 gap-15 d-flex align-items-center">
                   <div className="w-25">
                     <img
@@ -156,14 +211,18 @@ export const Cart = () => {
               </Link>
               <div className="d-flex flex-column align-items-end">
                 <h4>
-                  Tổng tiền:{" "}
-                  {totalPrice.toLocaleString("vi-VN", {
+                  Tổng tiền:
+                  {totalMoney.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
                 </h4>
                 <p>Taxes and shipping calculated at checkout</p>
-                <Link to="/checkout" className="button">
+                <Link
+                  to="/checkout"
+                  className="button"
+                  onClick={(e) => handleCreateBill(e)}
+                >
                   Thanh toán
                 </Link>
               </div>

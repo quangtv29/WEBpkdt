@@ -3,6 +3,7 @@ import axios from "axios";
 import { MyContext } from "../../encryptionKey";
 import CryptoJS from "crypto-js";
 import Confirmm from "../Confirm";
+import Meta from "../Meta";
 
 const Confirm = () => {
   const [data, setData] = useState([]);
@@ -28,7 +29,7 @@ const Confirm = () => {
         setData(response.data);
       })
       .catch((err) => {});
-  }, []);
+  }, [decryptedId]);
 
   // const handleCancel = (id) => {
   //   axios
@@ -46,15 +47,17 @@ const Confirm = () => {
   // };
   return (
     <>
+      <Meta title="Chờ xác nhận" />
       <div
-        className="container "
+        className=" "
         style={{
-          backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#fff",
+          backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#e7ecf0",
           height: "100%",
+          boxSizing: "border-box",
         }}
       >
-        <ul style={{ padding: "0px", minHeight: 350 }}>
-          <li className="row d-flex">
+        <ul style={{ padding: "0px", backgroundColor: "#fff" }}>
+          <li className="row d-flex border">
             <div className="col-1 d-flex text-center ">Mã hoá đơn</div>
             <div className="col-3 d-flex justify-content-center text-center">
               Địa chỉ
@@ -70,59 +73,64 @@ const Confirm = () => {
             <div className="col-1 d-flex justify-content-center">Tổng tiền</div>
             <div className="col-2 d-flex justify-content-center"></div>
           </li>
-          {data.map((item, index) => (
-            <div key={item.index}>
-              {item.status === 3 && (
-                <li className="row d-flex align-items-center mt-2 border ">
-                  <div className="col-1 d-flex justify-content-center">
-                    {index + 1}
-                  </div>
-                  <div className="col-3 d-flex justify-content-center ">
-                    {item.address}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.phoneNumber}
-                  </div>
-                  <div className="col-2 font-weight-bold  d-flex justify-content-center ">
-                    {item.formatDate}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "#ee4d2d" }}
+          <li>
+            {data.map((item, index) => (
+              <div key={item.id} className="border">
+                {item.status === 3 && (
+                  <li
+                    className="row d-flex align-items-center mt-2  "
+                    style={{ padding: 0 }}
                   >
-                    {item.totalMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "rgba(0,0,0,.87)" }}
-                  >
-                    {item.discount?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.intoMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div className="col-2 d-flex justify-content-center">
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => handleOnclick()}
+                    <div className="col-1 d-flex justify-content-center">
+                      {index + 1}
+                    </div>
+                    <div className="col-3 d-flex justify-content-center ">
+                      {item.address}
+                    </div>
+                    <div className="col-1 d-flex justify-content-center">
+                      {item.phoneNumber}
+                    </div>
+                    <div className="col-2 font-weight-bold  d-flex justify-content-center ">
+                      {item.formatDate}
+                    </div>
+                    <div
+                      className="col-1 d-flex justify-content-center"
+                      style={{ color: "#ee4d2d" }}
                     >
-                      Huỷ
-                    </button>
-                  </div>
-                </li>
-              )}
-            </div>
-          ))}
+                      {item.totalMoney?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div
+                      className="col-1 d-flex justify-content-center"
+                      style={{ color: "rgba(0,0,0,.87)" }}
+                    >
+                      {item.discount?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div className="col-1 d-flex justify-content-center">
+                      {item.intoMoney?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div className="col-2 d-flex justify-content-center">
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => handleOnclick()}
+                      >
+                        Huỷ
+                      </button>
+                    </div>
+                  </li>
+                )}
+              </div>
+            ))}
+          </li>
           {isOpen && (
             <Confirmm
               message="Bạn có chắc chắn muốn huỷ hoá đơn?"

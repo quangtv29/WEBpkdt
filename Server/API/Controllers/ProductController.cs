@@ -41,7 +41,21 @@ namespace API.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost("CreateProduct")]
 
+        public async Task<IActionResult> createProduct ([FromForm] CreateProductDTO product)
+        {
+            try
+            {
+                var result = await _service.productService.CreateProduct(product);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+    
 
         [HttpPost("GetProductByIds")]
 

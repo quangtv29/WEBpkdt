@@ -13,6 +13,5 @@ namespace API.Business.DTOs.AccountDTO
         public string? Email { get; init; }
         public string? PhoneNumber { get; init; }
         public ICollection<string>? Roles = new List<string> { "Customer" };
-
     }
 }

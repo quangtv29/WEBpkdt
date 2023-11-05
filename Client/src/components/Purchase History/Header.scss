@@ -1,0 +1,27 @@
+.container-fluid {
+    background-color: #e7ecf0;
+  .row{ 
+.vip {
+li{
+    background-color: #39527b;
+    color: #fff;
+    box-sizing: border-box;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.14);
+    a:hover{
+       color:#fff;
+    }
+    a:focus {
+        color : #fff;
+    }
+}
+li:hover {
+    background-color: #DB142F;
+    color: #fff;
+}
+li:focus {
+    color:"#fff";
+    background-color: #DB142F;
+}
+}
+  }
+}

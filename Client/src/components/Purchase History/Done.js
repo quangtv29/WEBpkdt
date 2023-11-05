@@ -3,7 +3,7 @@ import axios from "axios";
 import { MyContext } from "../../encryptionKey";
 import CryptoJS from "crypto-js";
 import { Link } from "react-router-dom";
-
+import Meta from "../Meta";
 const Done = () => {
   const [data, setData] = useState([]);
   const { encryptionKey } = useContext(MyContext);
@@ -15,6 +15,7 @@ const Done = () => {
     localStorage.getItem("id"),
     encryptionKey
   ).toString(CryptoJS.enc.Utf8);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     axios
       .get(`https://localhost:7295/api/Bill/${decryptedId}/bills`)
@@ -24,7 +25,7 @@ const Done = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [decryptedId]);
 
   // const handleCancel = (id) => {
   //   axios
@@ -42,6 +43,7 @@ const Done = () => {
   // };
   return (
     <>
+      <Meta title="Đã hoàn thành" />
       <div className="container mt-2">
         <ul
           style={{
@@ -78,7 +80,7 @@ const Done = () => {
             <div className="col-2 d-flex justify-content-center text-bold"></div>
           </li>
           {data.map((item, index) => (
-            <div key={item.index}>
+            <div key={index}>
               {item.status === 3 && (
                 <li className="row d-flex align-items-center mt-2 border ">
                   <div className="col-1 d-flex justify-content-center">
