@@ -19,12 +19,17 @@ export const Cart = () => {
 
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [totalMoney, setTotalMoney] = useState(0);
-  console.log(selectedInvoices);
-  const handleSelectInvoice = (event, invoiceId, money) => {
+  const handleSelectInvoice = (event, invoiceId, money, index) => {
     if (event.target.checked) {
+      const newChecked = [...checked];
+      newChecked[index] = true;
+      setChecked(newChecked);
       setSelectedInvoices([...selectedInvoices, invoiceId]);
       setTotalMoney(totalMoney + money);
     } else {
+      const newChecked = [...checked];
+      newChecked[index] = false;
+      setChecked(newChecked);
       setSelectedInvoices(selectedInvoices.filter((id) => id !== invoiceId));
       setTotalMoney(totalMoney - money);
     }
@@ -48,6 +53,7 @@ export const Cart = () => {
     const updatedQuantity = Math.min(Math.max(quantity, 1), 10);
     updateCart(item, updatedQuantity);
   };
+  const [checked, setChecked] = useState([false]);
   const [quantities, setQuantities] = useState([]);
   const [total, setTotal] = useState([]);
   useEffect(() => {
@@ -139,7 +145,7 @@ export const Cart = () => {
                   type="checkbox"
                   checked={selectedInvoices.includes(item.id)}
                   onChange={(event) =>
-                    handleSelectInvoice(event, item.id, item.totalMoney)
+                    handleSelectInvoice(event, item.id, total[index], index)
                   }
                 />
                 <div className="cart-col-1 gap-15 d-flex align-items-center">
@@ -179,9 +185,13 @@ export const Cart = () => {
                         newQuantities[index] = parseInt(event.target.value);
                         setQuantities(newQuantities);
                         const newTotal = [...total];
+                        const change =
+                          newQuantities[index] * item.price - total[index];
                         newTotal[index] = newQuantities[index] * item.price;
-                        console.log(newTotal[index]);
                         setTotal(newTotal);
+                        if (checked[index]) {
+                          setTotalMoney(totalMoney + change);
+                        }
                         UpdateCart(event, item.id, newQuantities[index]);
                       }}
                     />

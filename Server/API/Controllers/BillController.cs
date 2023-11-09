@@ -56,6 +56,7 @@ namespace API.Controllers
             }
 
         }
+        [Authorize(Roles ="Manager")]
         [HttpGet("{customerId}/bills")]
         public async Task<IActionResult> getAllBillFromCustomer (string? customerId)
         {

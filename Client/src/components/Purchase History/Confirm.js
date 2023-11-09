@@ -22,14 +22,16 @@ const Confirm = () => {
     localStorage.getItem("id"),
     encryptionKey
   ).toString(CryptoJS.enc.Utf8);
+  const accessToken = localStorage.getItem("accessToken");
   useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     axios
       .get(`https://localhost:7295/api/Bill/${decryptedId}/bills`)
       .then((response) => {
         setData(response.data);
       })
       .catch((err) => {});
-  }, [decryptedId]);
+  }, []);
 
   // const handleCancel = (id) => {
   //   axios

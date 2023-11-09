@@ -14,6 +14,7 @@ namespace API.Business.Services.Interface
         Task<TokenDTO> RefreshToken(TokenDTO tokenDto);
 
         Task<User> getInfo (string userId);
+        public Task<IEnumerable<string>> getRole(string UserId);
 
         Task<int> isUserExists (string userId);
 

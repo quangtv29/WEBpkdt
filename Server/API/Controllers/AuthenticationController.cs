@@ -2,6 +2,7 @@
 using API.Business.DTOs.AccountDTO;
 using API.Business.Helper;
 using API.Business.Services.Interface;
+using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -52,8 +53,9 @@ namespace API.Controllers
                 StatusCode = HttpStatusCode.OK,
                 Data = await _serviceManager.authenticationService.CreateToken(true),
                 Message = "Login Success",
-                User = await _serviceManager.authenticationService.getInfo(login.UserName)
-            }) ;
+                User = await _serviceManager.authenticationService.getInfo(login.UserName),
+                role = await _serviceManager.authenticationService.getRole(login.UserName)
+        }) ;
         }
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] TokenDTO tokenDto)

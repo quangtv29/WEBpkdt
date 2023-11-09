@@ -155,6 +155,12 @@ List<Claim> claims)
             return await _userManager.FindByNameAsync(userId); ;
         }
 
+        public async Task<IEnumerable<string>> getRole (string UserId)
+        {
+            var users =  await _userManager.FindByNameAsync(UserId);
+            return await _userManager.GetRolesAsync(users);
+        }
+            
         public async Task<int> isUserExists(string userId)
         {
             if (userId == null)

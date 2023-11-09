@@ -23,29 +23,41 @@ const Login = () => {
         Password,
       })
       .then((response) => {
-        const accessToken = response.data.data.accessToken;
-        sessionStorage.setItem("meo", "meo");
-        const encryptedId = CryptoJS.AES.encrypt(
-          response.data.user.id,
-          encryptionKey
-        ).toString();
-        localStorage.setItem("meo", encryptedId);
-        document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        localStorage.setItem(
-          "lastname",
-          response.data.user.firstName + " " + response.data.user.lastName
-        );
-        const decryptedId = CryptoJS.AES.decrypt(
-          encryptedId,
-          encryptionKey
-        ).toString(CryptoJS.enc.Utf8);
-        console.log(decryptedId);
-        localStorage.setItem("id", encryptedId);
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`;
-        navigate("/", { replace: true });
+        if (response.data.role[0] === "Manager") {
+          const accessToken = response.data.data.accessToken;
+          const encryptedId = CryptoJS.AES.encrypt(
+            response.data.user.id,
+            encryptionKey
+          ).toString();
+          localStorage.setItem("accessToken", accessToken);
+          document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
+          localStorage.setItem("refreshToken", response.data.data.refreshToken);
+          localStorage.setItem(
+            "lastname",
+            response.data.user.firstName + " " + response.data.user.lastName
+          );
+          localStorage.setItem("id", encryptedId);
+          // navigate("/admin", { replace: true });
+          window.location.href = "/admin";
+        } else {
+          const accessToken = response.data.data.accessToken;
+          const encryptedId = CryptoJS.AES.encrypt(
+            response.data.user.id,
+            encryptionKey
+          ).toString();
+          localStorage.setItem("accessToken", accessToken);
+          document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
+          localStorage.setItem("refreshToken", response.data.data.refreshToken);
+          localStorage.setItem(
+            "lastname",
+            response.data.user.firstName + " " + response.data.user.lastName
+          );
+          localStorage.setItem("id", encryptedId);
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${accessToken}`;
+          navigate("/", { replace: true });
+        }
       })
       .catch((err) => {
         setLogin(false);
