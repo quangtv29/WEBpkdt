@@ -48,10 +48,6 @@ const Login = () => {
           localStorage.setItem("accessToken", accessToken);
           document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
           localStorage.setItem("refreshToken", response.data.data.refreshToken);
-          localStorage.setItem(
-            "lastname",
-            response.data.user.firstName + " " + response.data.user.lastName
-          );
           localStorage.setItem("id", encryptedId);
           axios.defaults.headers.common[
             "Authorization"

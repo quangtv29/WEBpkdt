@@ -17,7 +17,7 @@ namespace API.Business.Services.Interface
         public Task<IEnumerable<string>> getRole(string UserId);
 
         Task<int> isUserExists (string userId);
-
+        public Task<User> getInfoById(string? Id);
 
     }
 }

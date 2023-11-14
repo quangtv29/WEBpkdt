@@ -133,7 +133,7 @@ namespace API.Business.Services
         public async Task<string> SaveImage(IFormFile imageFile)
         {
             string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
-            string imagePath = Path.Combine("WEBpkdt/Client/public/Image", uniqueFileName); 
+            string imagePath = Path.Combine("Business/Image", uniqueFileName); 
             using (var stream = new FileStream(imagePath, FileMode.Create))
             {
                 await imageFile.CopyToAsync(stream);

@@ -103,7 +103,7 @@ const ProductCard = (props) => {
             </div>
             <div className="product-image">
               <img
-                src={`DATN1610/WEBpkdt/Client/public/Image\\9ff2e9a0-6e2b-4881-821b-a5732cbf24a8.jpg`}
+                src={"193f4237-a570-4b05-a8ff-fbfaeb2b67fc.jpg"}
                 className="img-fluid"
                 aria-hidden
                 alt="product image meo"

@@ -36,5 +36,13 @@ namespace API.Business.Repository
                 .FirstOrDefaultAsync();
              return bill;
         }
+
+        public async Task<Bill> updateBillById(Guid? Id)
+        {
+            var bill = await GetAllByCondition(p => p.Id == Id, true)
+                .Where(p => p.isDelete == false)
+                .FirstOrDefaultAsync();
+            return bill;
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace API.Business.Repository.IRepository
         Task<IEnumerable<Bill>> GetAllBillFromCustomer (string? customerId, bool trackChanges);
 
         void createBill (Bill bill);
+
+        Task<Bill> updateBillById(Guid? Id);
     }
 }

@@ -180,5 +180,11 @@ List<Claim> claims)
                 }
             }
         }
+
+        public async Task<User> getInfoById (string? Id)
+        {
+            var result = await _userManager.FindByIdAsync(Id);
+            return result;
+        }
     }
 }

@@ -10,7 +10,9 @@ namespace API.Business.Services.Interface
 
         Task<Bill> createBill(CreateBillDTO bill, string code);
 
-       
+        Task<GetAllBillDTO> getBillById(Guid? Id);
+
+        Task<Bill> updateBillById(UpdateBillDTO bill);
 
     }
 }

@@ -4,7 +4,6 @@ using API.Business.Services.Interface;
 using API.Entities;
 using API.Exceptions.NotFoundExceptions;
 using AutoMapper;
-using System.Reflection.Metadata.Ecma335;
 
 namespace API.Business.Services
 {
@@ -78,6 +77,21 @@ namespace API.Business.Services
                     return bill;
         }
 
-       
+        public async Task<GetAllBillDTO> getBillById(Guid? Id)
+        {
+            var result = await _repo.Bill.getBillById(Id);
+            return _mapper.Map<GetAllBillDTO>(result);
+        }
+
+        public async Task<Bill> updateBillById(UpdateBillDTO bill)
+        {
+            var bills = await _repo.Bill.updateBillById(bill.Id);
+            bills.Discount = bill.Discount;
+            bills.IntoMoney = bill.IntoMoney;
+            bills.Address = bill.Address; 
+            bills.PhoneNumber = bill.PhoneNumber;
+            await _repo.SaveAsync();
+            return bills;
+        }
     }
 }

@@ -95,5 +95,11 @@ namespace API.Controllers
                 });
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> getInfoById(string? id)
+        {
+            var result = await _serviceManager.authenticationService.getInfoById(id);
+            return Ok(result);
+        }
     }
 }

@@ -85,8 +85,7 @@ export const Cart = () => {
         // setTotal(updatedTotal);
       });
   };
-  const handleCreateBill = async (event) => {
-    event.preventDefault();
+  const handleCreateBill = async () => {
     try {
       const result = await axios.post(
         `https://localhost:7295/api/Bill/createBill`,
@@ -114,7 +113,8 @@ export const Cart = () => {
             }
           )
           .then((res) => {
-            console.log(res.data);
+            localStorage.setItem("billid1", result.data.data.id);
+            window.location.href = "/checkout";
           });
       });
     } catch (error) {
@@ -228,11 +228,7 @@ export const Cart = () => {
                   })}
                 </h4>
                 <p>Taxes and shipping calculated at checkout</p>
-                <Link
-                  to="/checkout"
-                  className="button"
-                  onClick={(e) => handleCreateBill(e)}
-                >
+                <Link className="button" onClick={() => handleCreateBill()}>
                   Thanh toán
                 </Link>
               </div>

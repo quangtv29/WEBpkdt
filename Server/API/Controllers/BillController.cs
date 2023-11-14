@@ -7,7 +7,6 @@ using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
 using Microsoft.AspNetCore.Authorization;
 
-
 namespace API.Controllers
 {
     public class BillController : BaseApiController
@@ -26,7 +25,6 @@ namespace API.Controllers
 
 
         [HttpGet("getAll")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> getAll()
         {
             try
@@ -38,7 +36,8 @@ namespace API.Controllers
                     return BadRequest(HttpStatusCode.NotFound);
                 }
                 var convert = bills.Select(
-                   p => {
+                   p =>
+                   {
                        p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
                        p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
                        return p;
@@ -48,7 +47,7 @@ namespace API.Controllers
                 {
                     message = "Success",
                     data = _mapper.Map<List<GetAllBillDTO>>(convert)
-                }) ;
+                });
             }
             catch (Exception ex)
             {
@@ -56,13 +55,13 @@ namespace API.Controllers
             }
 
         }
-        [Authorize(Roles ="Manager")]
+        [Authorize(Roles = "Manager")]
         [HttpGet("{customerId}/bills")]
-        public async Task<IActionResult> getAllBillFromCustomer (string? customerId)
+        public async Task<IActionResult> getAllBillFromCustomer(string? customerId)
         {
-           try
+            try
             {
-                var bills = await _service.billService.GetAllBillFromCustomer(customerId,trackChanges: false);
+                var bills = await _service.billService.GetAllBillFromCustomer(customerId, trackChanges: false);
                 //var convert = bills.Select(
                 //    p => {
                 //        p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
@@ -76,7 +75,7 @@ namespace API.Controllers
                     p.FormatDate = p.Time.ToString("dd/MM/yyyy HH:mm:ss");
                     return p;
                 }).ToList();
-                
+
                 return Ok(_mapper.Map<List<GetAllBillDTO>>(convert));
             }
             catch (Exception ex)
@@ -87,19 +86,19 @@ namespace API.Controllers
 
         [HttpPost("createBill")]
 
-        public async Task<IActionResult> createBillWithDiscountCode (CreateBillDTO bill,string code) 
+        public async Task<IActionResult> createBillWithDiscountCode(CreateBillDTO bill, string code)
         {
             try
             {
-                if ( bill == null)
+                if (bill == null)
                 {
                     return Ok(new ApiResponse
                     {
                         Message = "Bill is null",
                         StatusCode = HttpStatusCode.BadRequest
                     });
-                }    
-                   var status =  await _service.billService.createBill(bill,code);
+                }
+                var status = await _service.billService.createBill(bill, code);
                 if (status == null)
                     return Ok(new ApiResponse
                     {
@@ -112,14 +111,14 @@ namespace API.Controllers
                         Message = "Mã giảm giá đã hết số lượt sử dụng"
                     });
                 }
-               
+
                 else
                 {
-                    return Ok(new 
+                    return Ok(new
                     {
                         StatusCode = HttpStatusCode.Created,
                         Data = status
-                    }) ;
+                    });
                 }
             }
             catch (Exception ex)
@@ -129,9 +128,52 @@ namespace API.Controllers
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = ex.Message
-                }) ;
+                });
+            }
+        }
+        [HttpPost("getBillById")]
+        public async Task<IActionResult> getBillById(Guid? Id)
+        {
+            try
+            {
+                if (Id == null)
+                {
+                    return Ok(
+                        new
+                        {
+                            StatusCode = HttpStatusCode.NotFound
+                        });
+                }
+                var result = await _service.billService.getBillById(Id);
+                 result.FormatDate = result.Time.ToString("dd/MM/yyyy HH:mm:ss");
+                return Ok(result);
+            }
+
+            catch (Exception ex)
+            {
+                return Ok(new ApiResponse
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    Message = ex.Message
+                });
             }
         }
 
+        [HttpPost("updateBill")]
+        public async Task<IActionResult> updateBillById (UpdateBillDTO bill)
+        {
+            try
+            {
+                var bills = await _service.billService.updateBillById(bill);
+                return Ok("done");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = ex.Message
+                });
+            }
+        }
     }
 }

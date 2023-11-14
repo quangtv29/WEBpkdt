@@ -16,15 +16,44 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { useEffect } from "react";
+import axios from "axios";
+import { MyContext } from "../encryptionKey";
+import CryptoJS from "crypto-js";
 const Header = (props) => {
   const { cartCount, totalPrice, setSearchTerm } = useContext(CartContext);
   const [search, setSearch] = useState("");
-  const u = localStorage.getItem("lastname");
-  const welcomeMessage = u;
+  const [customer, setCustomer] = useState();
   const chucvu = localStorage.getItem("chucvu");
   const isAorN = chucvu === "Nhân viên" || chucvu === "Admin";
   const [isLogin, setIsLogin] = useState(false);
+  const { encryptionKey } = useContext(MyContext);
 
+  const decryptedId = isLogin
+    ? CryptoJS.AES.decrypt(localStorage.getItem("id"), encryptionKey).toString(
+        CryptoJS.enc.Utf8
+      )
+    : null;
+
+  useEffect(() => {
+    if (isLogin) {
+      axios
+        .get("https://localhost:7295/api/Authentication", {
+          params: {
+            id: decryptedId,
+          },
+        })
+        .then((res) => {
+          setCustomer(res.data);
+        });
+    }
+  }, []);
+  let welcomeMessage = "";
+  const u = customer?.firstName + " " + customer?.lastName;
+  if (u === "undefined undefined") {
+    welcomeMessage = undefined;
+  } else {
+    welcomeMessage = u;
+  }
   const logout = () => {
     localStorage.clear();
     setIsLogin(false);
