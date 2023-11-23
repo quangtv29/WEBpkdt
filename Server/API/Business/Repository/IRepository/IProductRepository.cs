@@ -17,5 +17,7 @@ namespace API.Business.Repository.IRepository
 
         Task<IEnumerable<Product>> getByTopSeller(ProductParameters productParameters);
 
+        Task<IEnumerable<Product>> getProductByProductTypeId(Guid? ProductTypeId, ProductParameters productParameters);
+
     }
 }

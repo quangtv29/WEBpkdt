@@ -1,5 +1,6 @@
 ﻿using API.Business.Repository.IRepository;
 using API.Database;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace API.Business.Repository
 {
@@ -45,6 +46,11 @@ namespace API.Business.Repository
         public async Task SaveAsync()
         {
             await _db.SaveChangesAsync();
+        }
+
+        public IDbContextTransaction Transaction()
+        {
+           return _db.Database.BeginTransaction();    
         }
     }
 }

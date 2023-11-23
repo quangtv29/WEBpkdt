@@ -90,6 +90,7 @@ namespace API.Business.Services
             bills.IntoMoney = bill.IntoMoney;
             bills.Address = bill.Address; 
             bills.PhoneNumber = bill.PhoneNumber;
+            bills.Status = bill.status;
             await _repo.SaveAsync();
             return bills;
         }

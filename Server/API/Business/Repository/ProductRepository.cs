@@ -60,6 +60,14 @@ namespace API.Business.Repository
             return product;
         }
 
-      
+        public async Task<IEnumerable<Product>> getProductByProductTypeId(Guid? ProductTypeId, ProductParameters productParameters)
+        {
+            var results = await GetAllByCondition(p => p.ProductTypeID == ProductTypeId, false)
+                 .Where(p => p.isDelete == false)
+                 .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+                 .Take(productParameters.PageSize)
+                 .ToListAsync();
+            return results;
+        }
     }
 }

@@ -4,6 +4,7 @@ using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace API.Business.Services
 {
@@ -94,29 +95,51 @@ namespace API.Business.Services
         }
 
 
-        public async Task<GetAllOrderDetail> updateOrderDetail(Guid? orderDetailId)
+        public async Task<IEnumerable<OrderDetail>> updateOrderDetail(Guid? orderDetailId, string? isCart)
         {
-            var orderDetail = await _repo.OrderDetail.GetOrderDetailById(orderDetailId);
-            var product = await _repo.Product.GetProductById(orderDetail.ProductId);
-            if (product.Quantity >= orderDetail.Quantity && orderDetail.isCart == "Cart")
+            using (var transaction = _repo.Transaction())
             {
-                orderDetail.isCart = "Bought";
-                product.Quantity -= orderDetail.Quantity;
-                product.Sold += 1;
-                await _repo.SaveAsync();
-                return _mapper.Map<GetAllOrderDetail>(orderDetail);
-            }
-            else if (orderDetail.isCart == "Bought")
-            {
-                return new GetAllOrderDetail(
+                    var bill = await _repo.OrderDetail.GetOrderDetailByBillID(orderDetailId);
+                    foreach ( var order in bill)
+                    {
+                        var product = await _repo.Product.GetProductById(order.ProductId);
+                        if (product.Quantity >= order.Quantity)
+                        {
+                            if (isCart == "canceled")
+                            {
+                                if (order.isCart == "Cart")
+                                {
+                                    order.isCart = "Canceled";
 
-                    );
+                                }
+                                else if (order.isCart == "Delivering")
+                                {
+                                    order.isCart = "Canceled";
+                                    product.Quantity += order.Quantity;
+                                }
+                            }
+                            else if (isCart == "delivering")
+                            {
+                                order.isCart = "Delivering";
+                                product.Quantity -= order.Quantity;
+                            }
+                            else if (isCart == "confirm")
+                            {
+                                order.isCart = "Confirm";
+                                product.Sold += 1;
+                            }
+                        _repo.OrderDetail.UpdateOrder(order);
+                        await _repo.SaveAsync();
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                             return null;
+                        }
+                    }
+                    transaction.Commit();
+                return bill;
             }
-            else
-            {
-                return null;
-            }
-
         }
         public async Task<IEnumerable<PurchaseHistoryDTO>> listCart(string? CustomerId)
         {
@@ -135,7 +158,8 @@ namespace API.Business.Services
                                     ProductId = order.Id,
                                     Image = product.Image,
                                     TotalMoney = order.TotalMoney,
-                                    Time = bill.Time
+                                    Time = bill.Time,
+                                    Warehouse = product.Quantity
                                 }
 
             ).ToListAsync();
@@ -166,6 +190,38 @@ namespace API.Business.Services
             order.BillId = BillId;
             await _repo.SaveAsync();
             return order;
+        }
+
+        public async Task<CountCartDTO> countCart(string? customerId)
+        {
+            var result = await (from kh in _repo.Customer.GetAll(false)
+                                join bill in _repo.Bill.GetAll(false) on kh.Id equals bill.CustomerID
+                                join order in _repo.OrderDetail.GetAll(false) on bill.Id equals order.BillId
+                                join product in _repo.Product.GetAll(false) on order.ProductId equals product.Id
+                                where kh.Id == customerId && order.isCart == "Cart"
+                                select new PurchaseHistoryDTO
+                                {
+                                    TotalMoney=order.TotalMoney
+                                }).CountAsync();
+            var results = await (from kh in _repo.Customer.GetAll(false)
+                                join bill in _repo.Bill.GetAll(false) on kh.Id equals bill.CustomerID
+                                join order in _repo.OrderDetail.GetAll(false) on bill.Id equals order.BillId
+                                join product in _repo.Product.GetAll(false) on order.ProductId equals product.Id
+                                where kh.Id == customerId && order.isCart == "Cart"
+                                select new PurchaseHistoryDTO
+                                {
+                                    TotalMoney = order.TotalMoney
+                                }).ToListAsync();
+            int? sum = 0;
+            foreach (var re in results)
+            {
+                sum += re.TotalMoney;
+            }    
+            return new CountCartDTO
+            {
+                Count = result,
+                TotalMoney = sum
+            };
         }
     }
 }

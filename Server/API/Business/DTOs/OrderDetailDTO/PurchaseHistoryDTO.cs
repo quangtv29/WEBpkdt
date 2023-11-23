@@ -21,6 +21,7 @@ namespace API.Business.DTOs.OrderDetailDTO
         public int? TotalMoney { get; set; }
 
         public string? Image { get; set; }
+        public int? Warehouse { get; set; }
 
     }
 }

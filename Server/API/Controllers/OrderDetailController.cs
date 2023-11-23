@@ -134,5 +134,41 @@ namespace API.Controllers
                 Message = "Update success"
             });
         }
+
+        [HttpPost ("updateOrderDetail")]
+
+        public async Task<IActionResult> updateOrderDetail (Guid? Id, string? isCart)
+        {
+            var result = await _service.orderDetailService.updateOrderDetail(Id, isCart);
+            if (result != null)
+            {
+                return Ok("update done");
+            }
+            else
+            {
+                return Ok(new
+                {
+                    Message = "Thêm hoá đơn bị lỗi"
+                });
+            }
+        }
+        [HttpPost ("Count")]
+
+        public async Task<IActionResult> countCart (string? CustomerId)
+        {
+            try
+            {
+                if (CustomerId == null)
+                {
+                    return BadRequest(HttpStatusCode.NotFound);
+                }    
+                var result = await _service.orderDetailService.countCart(CustomerId);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

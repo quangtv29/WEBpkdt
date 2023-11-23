@@ -46,6 +46,9 @@ namespace API.Business.Repository
             return orderDetails;
         }
 
-       
+        public void UpdateOrder(OrderDetail orderDetail)
+        {
+            Update(orderDetail);
+        }
     }
 }

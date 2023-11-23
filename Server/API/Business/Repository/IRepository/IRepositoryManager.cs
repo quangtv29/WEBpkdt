@@ -1,4 +1,6 @@
-﻿namespace API.Business.Repository.IRepository
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace API.Business.Repository.IRepository
 {
     public interface IRepositoryManager
     {
@@ -11,6 +13,7 @@
         IFeedbackRepository Feedback { get; }
         ISaleRepository Sale { get; }
 
+        IDbContextTransaction Transaction();
         Task SaveAsync();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
+using API.Business.Helper;
 using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Business.Shared;
@@ -6,7 +7,10 @@ using API.Entities;
 using API.Exceptions.BadRequestExceptions;
 using API.Exceptions.NotFoundExceptions;
 using AutoMapper;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace API.Business.Services
 {
@@ -14,12 +18,20 @@ namespace API.Business.Services
     {
         private readonly IRepositoryManager _repo;
         private readonly IMapper _mapper;
+        private readonly Cloudinary _cloudinary;
 
-        public ProductService(IRepositoryManager repo, IMapper mapper)
+
+
+        public ProductService(IRepositoryManager repo, IMapper mapper, IOptions<CloudinarySettings> config)
         {
             _repo = repo;
             _mapper = mapper;
+            var account = new Account(
+           "dimu08wco",
+           "672165145915545",
+          "8xiFHI16qD8YS2TYiZ3xNKmm108");
 
+                    _cloudinary = new Cloudinary(account);
         }
 
         public async Task<Product> CreateProduct(CreateProductDTO product)
@@ -132,14 +144,21 @@ namespace API.Business.Services
 
         public async Task<string> SaveImage(IFormFile imageFile)
         {
-            string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
-            string imagePath = Path.Combine("Business/Image", uniqueFileName); 
-            using (var stream = new FileStream(imagePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(stream);
-            }
+            var publicId = Guid.NewGuid().ToString();
 
-            return imagePath;
+          
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(imageFile.FileName, imageFile.OpenReadStream()),
+                PublicId = publicId
+            };
+
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+          
+            var imageUrl = uploadResult.SecureUrl.ToString();
+
+            return imageUrl;
         }
 
         public async Task Update(UpdateProductDTO product, Guid? Id)
@@ -149,6 +168,10 @@ namespace API.Business.Services
                 _mapper.Map(product, products);
              await  _repo.SaveAsync();
         }
-
+        public async Task<IEnumerable<Product>> getProductByProductTypeId(Guid? ProductTypeId, ProductParameters productParameters)
+        {
+            var result = await _repo.Product.getProductByProductTypeId(ProductTypeId, productParameters);
+            return result;
+        }
     }
 }

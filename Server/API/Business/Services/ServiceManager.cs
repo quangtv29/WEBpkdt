@@ -1,8 +1,12 @@
-﻿using API.Business.Repository.IRepository;
+﻿using API.Business.Helper;
+using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
+using CloudinaryDotNet;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace API.Business.Services
 {
@@ -19,13 +23,13 @@ namespace API.Business.Services
         private readonly Lazy<IFeedbackService> _feedbackService;
        
 
-        public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
+        public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IOptions<CloudinarySettings> config)
         {
             _mapper = mapper;
             _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, _mapper));
             _billservice = new Lazy<IBillService>(() => new BillService(repositoryManager, _mapper));
             _orderDetailService = new Lazy<IOrderDetailService>(() => new OrderDetailService(repositoryManager,_mapper));
-            _productService = new Lazy<IProductService> (() => new ProductService(repositoryManager,_mapper));
+            _productService = new Lazy<IProductService> (() => new ProductService(repositoryManager,_mapper, config));
             _productTypeService = new Lazy<IProductTypeService>(() => new ProductTypeService(repositoryManager,_mapper));
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(_mapper, userManager,configuration));
             _saleService = new Lazy<ISaleService>(() => new SaleService(repositoryManager,_mapper));

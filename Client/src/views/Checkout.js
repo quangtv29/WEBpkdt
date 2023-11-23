@@ -8,6 +8,7 @@ import axios from "axios";
 import { faCommentsDollar } from "@fortawesome/free-solid-svg-icons";
 import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
+import { PopoverHeader } from "react-bootstrap";
 const Checkout = () => {
   const { cartItems, totalPrice } = useContext(CartContext);
   const [address, setAddress] = useState({});
@@ -20,6 +21,7 @@ const Checkout = () => {
   const [name, setName] = useState();
   const [phone, setPhone] = useState();
   const { encryptionKey } = useContext(MyContext);
+  const [statusPhone, setStatusPhone] = useState(true);
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
@@ -28,6 +30,51 @@ const Checkout = () => {
   //   setAddress(newAddress);
   // };
   // const { id } = useState('1');
+  const handleOrder = (totalMoney, e) => {
+    if (phone == null) {
+      setStatusPhone(false);
+      alert("Bạn cần nhập số điện thoại");
+    } else {
+      console.log(localStorage.getItem("billid1"));
+      console.log(checkdiscount);
+
+      axios
+        .post("https://localhost:7295/api/bill/updateBill", {
+          id: localStorage.getItem("billid1"),
+          discount: checkdiscount,
+          intoMoney: totalMoney - checkdiscount,
+          address: "",
+          phoneNumber: phone,
+          status: 3,
+        })
+        .then(() => {
+          axios
+            .post(
+              "https://localhost:7295/api/orderdetail/updateOrderDetail",
+              {},
+              {
+                params: {
+                  Id: localStorage.getItem("billid1"),
+                  isCart: "delivering",
+                },
+              }
+            )
+            .then((res) => {
+              if (res.data.message == "Thêm hoá đơn bị lỗi") {
+                alert("Số lượng sản phẩm trong kho không đủ!");
+                window.location.href = "/cart";
+              } else {
+                alert("Đặt hàng thành công");
+              }
+            })
+            .catch(() => {
+              alert("Số lượng sản phẩm trong kho không đủ!");
+              window.location.href = "/cart";
+            });
+        });
+    }
+  };
+
   const handleCheckCode = (event) => {
     event.preventDefault();
     axios
@@ -50,6 +97,7 @@ const Checkout = () => {
       })
       .then((res) => {
         setCustomer(res.data);
+        setPhone(res.data.phoneNumber);
       });
   }, []);
   useEffect(() => {
@@ -267,9 +315,9 @@ const Checkout = () => {
                       Tiếp tục mua sắm
                     </Link>
                     <Link
-                      to="/order"
                       className="button"
                       // onClick={handleOrder(invoice, invoiceDetails)}
+                      onClick={(e) => handleOrder(data.totalMoney, e)}
                     >
                       Đặt hàng
                     </Link>
@@ -292,14 +340,14 @@ const Checkout = () => {
                       </span>
                       <img
                         className="img-fluid"
-                        src={item.imageUrl}
+                        src={item?.image}
                         alt="product"
                       />
                     </div>
                     <div>
                       <h5 className="total-price">{item.TenSP}</h5>
                       <p className="total-price">
-                        {item.GiaBan.toLocaleString("vi-VN", {
+                        {item.GiaBan?.toLocaleString("vi-VN", {
                           style: "currency",
                           currency: "VND",
                         })}
@@ -308,7 +356,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex-grow-1">
                     <h5 className="total">
-                      {item.prices.toLocaleString("vi-VN", {
+                      {item.prices?.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}

@@ -13,7 +13,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const [checkuser, setCheckUser] = useState("");
-  const checkInput = (e) => {
+  const   checkInput = (e) => {
     e.preventDefault();
     if (
       firstName !== "" &&

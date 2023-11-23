@@ -1,7 +1,7 @@
 DesignTimeBuild/
 
 FileContentIndex/
-
+Logs/
 .DS_STORE
 node_modules/
 scripts/flow/*/.flowconfig

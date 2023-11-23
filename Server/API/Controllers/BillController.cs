@@ -8,7 +8,7 @@ using API.Business.Helper;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
-{
+{   
     public class BillController : BaseApiController
     {
 
