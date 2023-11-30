@@ -3,8 +3,11 @@ using API.Business.DTOs.AccountDTO;
 using API.Business.Helper;
 using API.Business.Services.Interface;
 using API.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Controllers
 {
@@ -12,11 +15,12 @@ namespace API.Controllers
     public class AuthenticationController : BaseApiController
     {
         public readonly IServiceManager _serviceManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AuthenticationController(IServiceManager serviceManager )
+        public AuthenticationController(IServiceManager serviceManager, SignInManager<User> signInManager)
         {
             _serviceManager = serviceManager;
-             
+            _signInManager = signInManager;
         }
 
         [HttpPost]
@@ -100,6 +104,12 @@ namespace API.Controllers
         {
             var result = await _serviceManager.authenticationService.getInfoById(id);
             return Ok(result);
+        }
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
         }
     }
 }

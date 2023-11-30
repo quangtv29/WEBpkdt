@@ -29,7 +29,7 @@ namespace API.Business.Services
             _customerService = new Lazy<ICustomerService>(() => new CustomerService(repositoryManager, _mapper));
             _billservice = new Lazy<IBillService>(() => new BillService(repositoryManager, _mapper));
             _orderDetailService = new Lazy<IOrderDetailService>(() => new OrderDetailService(repositoryManager,_mapper));
-            _productService = new Lazy<IProductService> (() => new ProductService(repositoryManager,_mapper, config));
+            _productService = new Lazy<IProductService> (() => new ProductService(repositoryManager,_mapper, config, configuration));
             _productTypeService = new Lazy<IProductTypeService>(() => new ProductTypeService(repositoryManager,_mapper));
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(_mapper, userManager,configuration));
             _saleService = new Lazy<ISaleService>(() => new SaleService(repositoryManager,_mapper));

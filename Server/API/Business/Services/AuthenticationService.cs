@@ -3,6 +3,7 @@ using API.Business.DTOs.AccountDTO;
 using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Fluent;
@@ -44,8 +45,12 @@ namespace API.Business.Services
             var result = (_user != null && await _userManager.CheckPasswordAsync(_user, login.Password));
             if (!result)
             {
+               _user.AccessFailedCount += 1;
+               await _userManager.UpdateAsync(_user);
                 return false;
             }
+            _user.AccessFailedCount = 0;
+            await _userManager.UpdateAsync(_user);
             return true;
         }
            
@@ -79,7 +84,7 @@ List<Claim> claims)
             issuer: jwtSettings["validIssuer"],
             audience: jwtSettings["validAudience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["expires"])),
+            expires: DateTime.Now.AddDays(Convert.ToDouble(jwtSettings["expires"])),
             signingCredentials: signingCredentials
             );
             return tokenOptions;
@@ -186,5 +191,7 @@ List<Claim> claims)
             var result = await _userManager.FindByIdAsync(Id);
             return result;
         }
+
+       
     }
 }

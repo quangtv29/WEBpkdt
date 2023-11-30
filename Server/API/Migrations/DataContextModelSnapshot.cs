@@ -27,7 +27,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("a536d8af-aad0-490f-a13e-0da311108227"));
+                        .HasDefaultValue(new Guid("090a6382-9b97-414f-a8fd-858c9b9f0ac8"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -125,7 +125,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("ad2bb85b-7351-460b-9a01-eb79ae12aefc"));
+                        .HasDefaultValue(new Guid("9304e30e-d230-43cf-8058-70073f50812a"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -161,7 +161,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("8acf6758-d7ff-4f47-a013-00760680072c"));
+                        .HasDefaultValue(new Guid("cc602e0f-5e88-441b-9a3f-b539265c4a23"));
 
                     b.Property<Guid?>("BillId")
                         .HasColumnType("uniqueidentifier");
@@ -210,7 +210,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("cbe2bee0-1fbf-400d-bf44-fa15d5a39a98"));
+                        .HasDefaultValue(new Guid("0a44e688-640b-433d-adc9-c94e9c4ee117"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -267,7 +267,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("0d4e26c8-826f-420e-b292-2a786ddcc80b"));
+                        .HasDefaultValue(new Guid("a678b8d9-d3fe-4391-bc21-6db14a6d225a"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -294,7 +294,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("10a61cca-bda6-40eb-b51b-e3148d196e8e"));
+                        .HasDefaultValue(new Guid("48584d68-fd06-42b7-af7a-8963cd43052b"));
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");
@@ -365,22 +365,22 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c6c06e1b-1d2f-4b3b-bdce-09e5f8499793",
-                            ConcurrencyStamp = "1fb2394d-3713-46d9-9dfd-5e2379955aae",
+                            Id = "b4d3edca-eb18-415b-8a30-5b4af90077ed",
+                            ConcurrencyStamp = "6cbc1a00-55cf-434d-aba9-7d5bac9672ca",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "072701e4-d292-47f8-a9fa-2c6a9d4e14ef",
-                            ConcurrencyStamp = "b1927570-c3e7-482d-a56e-c75940ba2252",
+                            Id = "c9c98c8a-f7e6-48ef-9441-0938c96f2648",
+                            ConcurrencyStamp = "f4d33eaf-287c-4512-bf85-13a871527f89",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "1f1c820d-0bbb-469f-be25-43ed07b9796c",
-                            ConcurrencyStamp = "7dd5044e-9c07-486b-b031-c3a92f80efa9",
+                            Id = "4c1ce0ca-2532-4d60-9514-3c04753b3a55",
+                            ConcurrencyStamp = "01a6fb82-8f8b-4c90-a2b4-4a0652cee2ea",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -568,6 +568,9 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateTime>("CreateAccount")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");

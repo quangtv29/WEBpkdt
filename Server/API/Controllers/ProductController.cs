@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Runtime.InteropServices;
 
 namespace API.Controllers
 {
@@ -150,6 +151,14 @@ namespace API.Controllers
                 Message = "Success",
                 StatusCode = HttpStatusCode.OK
             });
+        }
+
+        [HttpPost("searchByName")]
+
+        public async Task<IActionResult> searchByName (string name, ProductParameters productParameters)
+        {
+            var result = await _service.productService.searchByName(name, productParameters);
+            return Ok( new { result.Item1, result.Item2 });
         }
     }
 }

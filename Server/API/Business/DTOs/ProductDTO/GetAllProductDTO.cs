@@ -23,6 +23,8 @@ namespace API.Business.DTOs.ProductDTO.cs
         public string? Image { get; set; }
 
         public Double? StarRating { get; set; }
+
+       
       
     }
 }

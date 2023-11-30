@@ -5,11 +5,19 @@ import ReactStars from "react-rating-stars-component";
 import ProductCard from "../components/ProductCard";
 import Color from "../components/Color";
 import Container from "../components/Container";
+import { SearchContext } from "../SearchContext";
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
   const [condition, setCondition] = useState("Liên Quan");
   const handleConditionChange = (event) => {
     setCondition(event.target.value);
+  };
+  const { record } = useContext(SearchContext);
+  const fix = record / 6;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
   return (
     <>
@@ -170,30 +178,20 @@ const OurStore = () => {
               </div>
             </div>
             <div className="filter-card mb-3">
-              <h3 className="filter-title">Filter By</h3>
+              <h3 className="filter-title">Lọc</h3>
               <div>
-                <h5 className="sub-title">Availablity</h5>
+                <h5 className="sub-title">Sẵn có</h5>
                 <div>
                   <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id=""
-                    />
+                    <input className="form-check-input" type="checkbox" />
                     <label className="form-check-label" htmlFor="">
-                      In Stock (1)
+                      Còn hàng
                     </label>
                   </div>
                   <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id=""
-                    />
+                    <input className="form-check-input" type="checkbox" />
                     <label className="form-check-label" htmlFor="">
-                      Out of Stock(0)
+                      Hết hàng
                     </label>
                   </div>
                 </div>
@@ -344,48 +342,41 @@ const OurStore = () => {
                   </select>
                 </div>
                 <div className="d-flex align-items-center gap-10">
-                  <p className="totalproducts mb-0">21 Products</p>
-                  <div className="d-flex gap-10 align-items-center grid">
-                    <img
-                      onClick={() => {
-                        setGrid(3);
-                      }}
-                      src="../assets/images/gr4.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-                    <img
-                      onClick={() => {
-                        setGrid(4);
-                      }}
-                      src="../assets/images/gr3.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-                    <img
-                      onClick={() => {
-                        setGrid(6);
-                      }}
-                      src="../assets/images/gr2.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-
-                    <img
-                      onClick={() => {
-                        setGrid(12);
-                      }}
-                      src="../assets/images/gr.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-                  </div>
+                  <p className="totalproducts mb-0 mr-4">
+                    <b>{record} sản phẩm</b>
+                  </p>
                 </div>
               </div>
             </div>
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
-                <ProductCard grid={grid} condition={condition} />
+                <ProductCard
+                  grid={grid}
+                  condition={condition}
+                  currentPage={currentPage}
+                />
+              </div>
+            </div>
+            <div className="pagination d-flex justify-content-center">
+              <div className="pagination-info">
+                <span>
+                  Page <b>{currentPage}</b> of <b>{Math.ceil(fix)}</b>
+                </span>
+              </div>
+              <div className="pagination-buttons">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="mr-3 ml-1"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === Math.ceil(fix)}
+                >
+                  Next
+                </button>
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ using System.Net;
 using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
 using Microsoft.AspNetCore.Authorization;
+using API.Entities.Enum;
 
 namespace API.Controllers
 {   
@@ -56,12 +57,12 @@ namespace API.Controllers
 
         }
         [Authorize(Roles = "Manager")]
-        [HttpGet("{customerId}/bills")]
-        public async Task<IActionResult> getAllBillFromCustomer(string? customerId)
+        [HttpPost("{customerId}/bills")]
+        public async Task<IActionResult> getAllBillFromCustomer(string? customerId, Status status)
         {
             try
             {
-                var bills = await _service.billService.GetAllBillFromCustomer(customerId, trackChanges: false);
+                var bills = await _service.billService.GetAllBillFromCustomer(customerId, trackChanges: false, status );
                 //var convert = bills.Select(
                 //    p => {
                 //        p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
@@ -174,6 +175,14 @@ namespace API.Controllers
                     message = ex.Message
                 });
             }
+        }
+
+        [HttpPost("getInfoOrder")]
+
+        public async Task<IActionResult> getInfoOrder (string? Id)
+        {
+            var result = await _service.billService.getInfoOrder(Id);
+            return Ok(result);
         }
     }
 }

@@ -2,26 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import Container from "../components/Container";
-import { CartContext } from "../CartContext";
-import AddressForm from "../components/AddressForm";
 import axios from "axios";
-import { faCommentsDollar } from "@fortawesome/free-solid-svg-icons";
 import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
-import { PopoverHeader } from "react-bootstrap";
 const Checkout = () => {
-  const { cartItems, totalPrice } = useContext(CartContext);
   const [address, setAddress] = useState({});
   const [customer, setCustomer] = useState();
-  const [invoice, setInvoice] = useState({});
-  const [invoiceDetails, setInvoiceDetails] = useState([]);
   const [data, setData] = useState();
   const [checkdiscount, setCheckDiscount] = useState(0);
   const [discountCode, setDiscountCode] = useState();
   const [name, setName] = useState();
   const [phone, setPhone] = useState();
   const { encryptionKey } = useContext(MyContext);
-  const [statusPhone, setStatusPhone] = useState(true);
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
@@ -32,12 +24,8 @@ const Checkout = () => {
   // const { id } = useState('1');
   const handleOrder = (totalMoney, e) => {
     if (phone == null) {
-      setStatusPhone(false);
       alert("Bạn cần nhập số điện thoại");
     } else {
-      console.log(localStorage.getItem("billid1"));
-      console.log(checkdiscount);
-
       axios
         .post("https://localhost:7295/api/bill/updateBill", {
           id: localStorage.getItem("billid1"),
@@ -60,7 +48,7 @@ const Checkout = () => {
               }
             )
             .then((res) => {
-              if (res.data.message == "Thêm hoá đơn bị lỗi") {
+              if (res.data.message === "Thêm hoá đơn bị lỗi") {
                 alert("Số lượng sản phẩm trong kho không đủ!");
                 window.location.href = "/cart";
               } else {
@@ -99,7 +87,7 @@ const Checkout = () => {
         setCustomer(res.data);
         setPhone(res.data.phoneNumber);
       });
-  }, []);
+  }, [decryptedId]);
   useEffect(() => {
     axios
       .post(
@@ -327,7 +315,7 @@ const Checkout = () => {
             </div>
           </div>
           <div className="col-5">
-            {cartItems.map((item) => (
+            {/* {cartItems.map((item) => (
               <div key={item.MaSP} className="border-bottom py-4">
                 <div className="d-flex gap-10 mb-2 align-align-items-center">
                   <div className="w-75 d-flex gap-10">
@@ -364,7 +352,7 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))} */}
             <div className="border-bottom py-4">
               <div className="d-flex justify-content-between align-items-center">
                 <p className="total">Tổng tiền hàng</p>

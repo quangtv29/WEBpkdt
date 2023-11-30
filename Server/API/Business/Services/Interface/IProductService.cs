@@ -21,5 +21,6 @@ namespace API.Business.Services.Interface
 
         Task<string> SaveImage(IFormFile imageFile);
          Task<IEnumerable<Product>> getProductByProductTypeId(Guid? ProductTypeId, ProductParameters productParameters);
+        Task<(IEnumerable<GetAllProductDTO>, int)> searchByName(string name, ProductParameters productParameters);
     }
 }

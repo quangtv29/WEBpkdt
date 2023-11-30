@@ -13,15 +13,18 @@ import { CartContext } from "../CartContext";
 import _ from "lodash";
 import LoadingBox from "./LoadingBox";
 import StarRatings from "react-star-ratings";
+import { SearchContext } from "../SearchContext";
 
 const ProductCard = (props) => {
   const { grid } = props;
   const { condition } = props;
   let location = useLocation();
   const [products, setProducts] = useState([]);
+  const { currentPage } = props;
   const { searchTerm } = useContext(CartContext);
   const [topSeller, setTopSeller] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { search, setRecord, status, setStatus } = useContext(SearchContext);
 
   // const fetchTopSeller = async () => {
   //   await axios.get('/api/sanpham/topseller').then((response) => {
@@ -30,17 +33,22 @@ const ProductCard = (props) => {
   // };
 
   const fetchProducts = async () => {
-    let url = "https://localhost:7295/api/Product/getAllProduct";
-    let config = {};
-    if (searchTerm) {
-      config.params = { searchTerm };
-    }
-    const pageNumber = 1;
-    const pageSize = 10;
-    const response = await axios.post(url, { pageNumber, pageSize });
+    let url = "https://localhost:7295/api/Product/searchByName";
+    const pageNumber = currentPage;
+    const pageSize = 6;
+    const response = await axios.post(
+      url,
+      { pageNumber, pageSize },
+      {
+        params: {
+          name: search,
+        },
+      }
+    );
     setIsLoading(false);
 
-    let data = response.data;
+    let data = response.data.item1;
+    setRecord(response.data.item2);
 
     switch (condition) {
       case "Bán Chạy":
@@ -73,8 +81,8 @@ const ProductCard = (props) => {
     fetchProducts();
     // fetchTopSeller();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, condition]);
-
+  }, [status, condition, currentPage]);
+  setStatus(false);
   if (isLoading) {
     return <LoadingBox />;
   }
@@ -122,6 +130,7 @@ const ProductCard = (props) => {
               >
                 <p>{item.name}</p>
               </h5>
+              <h6>Kho {item?.quantity}</h6>
               <div className="d-flex">
                 {/* <ReactStars
                   count={5}

@@ -68,7 +68,7 @@ namespace API.Controllers
                 {
                     statusCode = HttpStatusCode.OK,
                     message = "succcess",
-                    data = _mapper.Map<List<GetAllCustomerDTO>>(convert)
+                    data = convert
                 };
                 return Ok(message);
             }

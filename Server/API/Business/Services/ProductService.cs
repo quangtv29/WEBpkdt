@@ -19,18 +19,20 @@ namespace API.Business.Services
         private readonly IRepositoryManager _repo;
         private readonly IMapper _mapper;
         private readonly Cloudinary _cloudinary;
+        private readonly IConfiguration _configuration;
 
 
 
-        public ProductService(IRepositoryManager repo, IMapper mapper, IOptions<CloudinarySettings> config)
+
+        public ProductService(IRepositoryManager repo, IMapper mapper, IOptions<CloudinarySettings> config, IConfiguration configuration)
         {
+            _configuration = configuration;
             _repo = repo;
             _mapper = mapper;
             var account = new Account(
-           "dimu08wco",
-           "672165145915545",
-          "8xiFHI16qD8YS2TYiZ3xNKmm108");
-
+           _configuration.GetValue<string>("CloudinarySettings:CloudName"),
+           _configuration.GetValue<string>("CloudinarySettings:ApiKey"),
+           _configuration.GetValue<string>("CloudinarySettings:ApiSecret"));
                     _cloudinary = new Cloudinary(account);
         }
 
@@ -172,6 +174,98 @@ namespace API.Business.Services
         {
             var result = await _repo.Product.getProductByProductTypeId(ProductTypeId, productParameters);
             return result;
+        }
+
+        public async Task<(IEnumerable<GetAllProductDTO>,int)> searchByName(string name, ProductParameters productParameters)
+        {
+                var result = new List<GetAllProductDTO>();
+                int totalRecords = 0;
+
+                if (name == null)
+                {
+                    var query = from pd in _repo.Product.GetAll(false)
+                                join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                                into feedbackGroup
+                                from fb in feedbackGroup.DefaultIfEmpty()
+                                group fb by new
+                                {
+                                    pd.Id,
+                                    pd.Name,
+                                    pd.Quantity,
+                                    pd.ImportPrice,
+                                    pd.Price,
+                                    pd.ProductTypeID,
+                                    pd.Producer,
+                                    pd.Describe,
+                                    pd.Image,
+                                    pd.Sold
+                                } into g
+                                orderby g.Key.Sold descending
+                                select new GetAllProductDTO
+                                {
+                                    Id = g.Key.Id,
+                                    Name = g.Key.Name,
+                                    Quantity = g.Key.Quantity,
+                                    ImportPrice = g.Key.ImportPrice,
+                                    Price = g.Key.Price,
+                                    ProductTypeID = g.Key.ProductTypeID,
+                                    Producer = g.Key.Producer,
+                                    Describe = g.Key.Describe,
+                                    Image = g.Key.Image,
+                                    Sold = g.Key.Sold,
+                                    StarRating = g.Sum(f => f.Star) / (double)g.Count()
+                                };
+
+                    totalRecords = await query.CountAsync();
+
+                    result = await query.Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+                                        .Take(productParameters.PageSize)
+                                        .ToListAsync();
+                }
+                else
+                {
+                    var query = from pd in _repo.Product.GetAll(false)
+                                join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                                into feedbackGroup
+                                from fb in feedbackGroup.DefaultIfEmpty()
+                                where pd.Name.Contains(name)
+                                group fb by new
+                                {
+                                    pd.Id,
+                                    pd.Name,
+                                    pd.Quantity,
+                                    pd.ImportPrice,
+                                    pd.Price,
+                                    pd.ProductTypeID,
+                                    pd.Producer,
+                                    pd.Describe,
+                                    pd.Image,
+                                    pd.Sold
+                                } into g
+                                select new GetAllProductDTO
+                                {
+                                    Id = g.Key.Id,
+                                    Name = g.Key.Name,
+                                    Quantity = g.Key.Quantity,
+                                    ImportPrice = g.Key.ImportPrice,
+                                    Price = g.Key.Price,
+                                    ProductTypeID = g.Key.ProductTypeID,
+                                    Producer = g.Key.Producer,
+                                    Describe = g.Key.Describe,
+                                    Image = g.Key.Image,
+                                    Sold = g.Key.Sold,
+                                    StarRating = g.Sum(f => f.Star) / (double)g.Count()
+                                };
+
+                    totalRecords = await query.CountAsync();
+
+                    result = await query.Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+                                        .Take(productParameters.PageSize)
+                                        .ToListAsync();
+                }
+
+                return (result, totalRecords);
+            
         }
     }
 }

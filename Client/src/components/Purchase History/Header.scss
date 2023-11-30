@@ -1,18 +1,26 @@
 .container-fluid {
     background-color: #e7ecf0;
-  .row{ 
+  
 .vip {
+    display: flex;
 li{
+    text-align: center;
+    border-right: 1px solid black ;
+    width: 25%;
     background-color: #39527b;
     color: #fff;
     box-sizing: border-box;
     border-bottom: solid 1px rgba(0, 0, 0, 0.14);
+    
     a:hover{
        color:#fff;
     }
     a:focus {
         color : #fff;
     }
+}
+li.active {
+    background-color: #DB142F;
 }
 li:hover {
     background-color: #DB142F;
@@ -23,5 +31,5 @@ li:focus {
     background-color: #DB142F;
 }
 }
-  }
+  
 }

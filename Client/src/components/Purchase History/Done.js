@@ -2,30 +2,46 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { MyContext } from "../../encryptionKey";
 import CryptoJS from "crypto-js";
-import { Link } from "react-router-dom";
+import Confirmm from "../Confirm";
 import Meta from "../Meta";
+
 const Done = () => {
   const [data, setData] = useState([]);
   const { encryptionKey } = useContext(MyContext);
-  const handleClick = (id) => {
-    localStorage.removeItem("billid");
-    localStorage.setItem("billid", id);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleConfirm = () => {
+    console.log("meomeo");
+  };
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
+  const handleOnclick = () => {
+    setIsOpen(true);
   };
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
   ).toString(CryptoJS.enc.Utf8);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const accessToken = localStorage.getItem("accessToken");
   useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     axios
-      .get(`https://localhost:7295/api/Bill/${decryptedId}/bills`)
+      .post(
+        `https://localhost:7295/api/Bill/${decryptedId}/bills`,
+        {},
+        {
+          params: {
+            Status: 0,
+          },
+        }
+      )
       .then((response) => {
         setData(response.data);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [decryptedId]);
+  }, []);
 
   // const handleCancel = (id) => {
   //   axios
@@ -44,47 +60,42 @@ const Done = () => {
   return (
     <>
       <Meta title="Đã hoàn thành" />
-      <div className="container mt-2">
+      <div
+        className=" "
+        style={{
+          backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#e7ecf0",
+          height: "100%",
+          boxSizing: "border-box",
+        }}
+      >
         <ul
-          style={{
-            padding: "0px",
-            height: 500,
-            position: "relative",
-          }}
+          style={{ padding: "0px", backgroundColor: "#fff", listStyle: "none" }}
         >
-          <li
-            className="row d-flex"
-            style={{ borderBottom: "1px solid black" }}
-          >
-            <div className="col-1 d-flex text-center text-bold ">
-              Mã hoá đơn
+          <li className="row d-flex border m-0">
+            <div className="col-1 d-flex text-center ">Mã hoá đơn</div>
+            <div className="col-3 d-flex justify-content-center text-center">
+              Địa chỉ
             </div>
-            <div className="col-3 d-flex justify-content-center text-center text-bold">
-              Địa chỉ nhận hàng
-            </div>
-            <div className="col-1 d-flex justify-content-center text-center text-bold">
+            <div className="col-1 d-flex justify-content-center text-center">
               Số điện thoại
             </div>
-            <div className="col-2 d-flex justify-content-center text-bold">
+            <div className="col-2 d-flex justify-content-center">
               Thời gian đặt hàng
             </div>
-            <div className="col-1 d-flex justify-content-center text-bold">
-              Tạm tính{" "}
-            </div>
-            <div className="col-1 d-flex justify-content-center text-bold">
-              Giảm giá
-            </div>
-            <div className="col-1 d-flex justify-content-center text-bold">
-              Tổng tiền
-            </div>
-            <div className="col-2 d-flex justify-content-center text-bold"></div>
+            <div className="col-1 d-flex justify-content-center">Tạm tính </div>
+            <div className="col-1 d-flex justify-content-center">Giảm giá</div>
+            <div className="col-1 d-flex justify-content-center">Tổng tiền</div>
+            <div className="col-2 d-flex justify-content-center"></div>
           </li>
-          {data.map((item, index) => (
-            <div key={index}>
-              {item.status === 3 && (
-                <li className="row d-flex align-items-center mt-2 border ">
+          <li>
+            {data.map((item, index) => (
+              <div key={item.id} className="border">
+                <li
+                  className="row d-flex align-items-center mt-2  "
+                  style={{ padding: 0 }}
+                >
                   <div className="col-1 d-flex justify-content-center">
-                    {index + 1}
+                    {item.id}
                   </div>
                   <div className="col-3 d-flex justify-content-center ">
                     {item.address}
@@ -95,7 +106,10 @@ const Done = () => {
                   <div className="col-2 font-weight-bold  d-flex justify-content-center ">
                     {item.formatDate}
                   </div>
-                  <div className="col-1 d-flex justify-content-center">
+                  <div
+                    className="col-1 d-flex justify-content-center"
+                    style={{ color: "#ee4d2d" }}
+                  >
                     {item.totalMoney?.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
@@ -110,10 +124,7 @@ const Done = () => {
                       currency: "VND",
                     })}
                   </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "#ee4d2d" }}
-                  >
+                  <div className="col-1 d-flex justify-content-center">
                     {item.intoMoney?.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
@@ -122,22 +133,23 @@ const Done = () => {
                   <div className="col-2 d-flex justify-content-center">
                     <button
                       type="button"
-                      className="btn"
-                      style={{ backgroundColor: "#ee4d2d" }}
+                      className="btn btn-danger"
+                      onClick={() => handleOnclick()}
                     >
-                      <Link
-                        to="/to-pay/orderDetail"
-                        onClick={() => handleClick(item.id)}
-                        className="text-light"
-                      >
-                        Xem chi tiết
-                      </Link>
+                      Huỷ
                     </button>
                   </div>
                 </li>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </li>
+          {isOpen && (
+            <Confirmm
+              message="Bạn có chắc chắn muốn huỷ hoá đơn?"
+              onConfirm={handleConfirm}
+              onCancel={handleCancel}
+            />
+          )}
         </ul>
       </div>
     </>

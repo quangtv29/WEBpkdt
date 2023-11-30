@@ -4,6 +4,7 @@ import { MyContext } from "../../encryptionKey";
 import CryptoJS from "crypto-js";
 import Confirmm from "../Confirm";
 import Meta from "../Meta";
+import { Link } from "react-router-dom";
 
 const Confirm = () => {
   const [data, setData] = useState([]);
@@ -26,11 +27,21 @@ const Confirm = () => {
   useEffect(() => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     axios
-      .get(`https://localhost:7295/api/Bill/${decryptedId}/bills`)
+      .post(
+        `https://localhost:7295/api/Bill/${decryptedId}/bills`,
+        {},
+        {
+          params: {
+            Status: 3,
+          },
+        }
+      )
       .then((response) => {
         setData(response.data);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   // const handleCancel = (id) => {
@@ -58,8 +69,10 @@ const Confirm = () => {
           boxSizing: "border-box",
         }}
       >
-        <ul style={{ padding: "0px", backgroundColor: "#fff" }}>
-          <li className="row d-flex border">
+        <ul
+          style={{ padding: "0px", backgroundColor: "#fff", listStyle: "none" }}
+        >
+          <li className="row d-flex border m-0">
             <div className="col-1 d-flex text-center ">Mã hoá đơn</div>
             <div className="col-3 d-flex justify-content-center text-center">
               Địa chỉ
@@ -84,7 +97,7 @@ const Confirm = () => {
                     style={{ padding: 0 }}
                   >
                     <div className="col-1 d-flex justify-content-center">
-                      {index + 1}
+                      {item.id}
                     </div>
                     <div className="col-3 d-flex justify-content-center ">
                       {item.address}
@@ -119,13 +132,24 @@ const Confirm = () => {
                         currency: "VND",
                       })}
                     </div>
-                    <div className="col-2 d-flex justify-content-center">
+                    <div className="col-1 d-flex justify-content-center">
                       <button
                         type="button"
                         className="btn btn-danger"
                         onClick={() => handleOnclick()}
                       >
                         Huỷ
+                      </button>
+                    </div>
+                    <div className="col-1 d-flex justify-content-center">
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => {
+                          localStorage.setItem("billid11", item.id);
+                        }}
+                      >
+                        <Link to="orderDetail"> Chi tiết</Link>
                       </button>
                     </div>
                   </li>

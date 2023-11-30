@@ -14,10 +14,12 @@ namespace API.Business.Services.Interface
         Task<TokenDTO> RefreshToken(TokenDTO tokenDto);
 
         Task<User> getInfo (string userId);
-        public Task<IEnumerable<string>> getRole(string UserId);
+       Task<IEnumerable<string>> getRole(string UserId);
 
         Task<int> isUserExists (string userId);
-        public Task<User> getInfoById(string? Id);
+        Task<User> getInfoById(string? Id);
+
+        
 
     }
 }

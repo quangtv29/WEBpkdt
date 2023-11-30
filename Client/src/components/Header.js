@@ -18,10 +18,11 @@ import FormControl from "react-bootstrap/FormControl";
 import { useEffect } from "react";
 import axios from "axios";
 import { MyContext } from "../encryptionKey";
+import { SearchContext } from "../SearchContext";
 import CryptoJS from "crypto-js";
 const Header = (props) => {
   const { cartCount, totalPrice, setSearchTerm } = useContext(CartContext);
-  const [search, setSearch] = useState("");
+  const { search, setSearch, status, setStatus } = useContext(SearchContext);
   const [customer, setCustomer] = useState();
   const chucvu = localStorage.getItem("chucvu");
   const isAorN = chucvu === "Nhân viên" || chucvu === "Admin";
@@ -55,6 +56,7 @@ const Header = (props) => {
     welcomeMessage = u;
   }
   const logout = () => {
+    axios.post("https://localhost:7295/api/Authentication/logout", {});
     localStorage.clear();
     setIsLogin(false);
     navigate("/login", { replace: true });
@@ -133,6 +135,9 @@ const Header = (props) => {
                   className="input-group-text p-3"
                   type="submit"
                   id="basic-addon2"
+                  onClick={() => {
+                    setStatus(true);
+                  }}
                 >
                   <BsSearch className="fs-6" />
                 </Button>

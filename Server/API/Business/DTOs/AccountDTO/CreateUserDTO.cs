@@ -12,6 +12,8 @@ namespace API.Business.DTOs.AccountDTO
         public string? Password { get; init; }
         public string? Email { get; init; }
         public string? PhoneNumber { get; init; }
+
+        public DateTime CreateAccount = DateTime.Now;
         public ICollection<string>? Roles = new List<string> { "Customer" };
     }
 }

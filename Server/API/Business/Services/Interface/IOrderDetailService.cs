@@ -22,7 +22,7 @@ namespace API.Business.Services.Interface
         Task<OrderDetail> updateOrderDetailBillId(Guid? orderDetailId, Guid? BillId);
         
         Task<GetAllOrderDetail> updateTotal (Guid? Id,  int? quantity);
-        Task<IEnumerable<OrderDetail>> getOrderDetailByBillId(Guid? Id);
+        Task<IEnumerable<GetAllOrderDetail>> getOrderDetailByBillId(Guid? Id);
          Task<CountCartDTO> countCart(string? customerId);
 
     }

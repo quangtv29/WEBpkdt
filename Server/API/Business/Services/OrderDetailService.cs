@@ -4,7 +4,6 @@ using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace API.Business.Services
 {
@@ -33,7 +32,7 @@ namespace API.Business.Services
 
         public async Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(string? customerId)
         {
-            var bill = await _repo.Bill.GetAllBillFromCustomer(customerId, false);
+            var bill = await _repo.Bill.GetAllBillFromCustomerr(customerId, false);
             var orderDetail = await _repo.OrderDetail.GetOrderDetailFromCustomerID(bill);
             return orderDetail;
         }
@@ -178,10 +177,26 @@ namespace API.Business.Services
             return results;
         }
 
-        public async Task<IEnumerable<OrderDetail>> getOrderDetailByBillId (Guid? Id)
+        public async Task<IEnumerable<GetAllOrderDetail>> getOrderDetailByBillId (Guid? Id)
         {
-            var result = await _repo.OrderDetail.GetOrderDetailByBillID(Id);
-            return result;
+            var results = await (from od in _repo.OrderDetail.GetAll(false)
+                                 join pd in _repo.Product.GetAll(false) on od.ProductId equals pd.Id
+                                 into productGroup
+                                 from pg in productGroup.DefaultIfEmpty()
+                                 where od.BillId == Id && od.isDelete == false 
+                                 select new GetAllOrderDetail
+                                 {
+                                     Id= od.Id,
+                                     BillId = od.BillId,
+                                     ProductId = od.ProductId,
+                                     Price = od.Price,
+                                     Quantity = od.Quantity,
+                                     Name= pg.Name,
+                                     TotalMoney = od.TotalMoney,
+                                     Image = pg.Image,
+                                 }
+                         ).ToListAsync();
+            return results;
         }
 
         public async Task<OrderDetail> updateOrderDetailBillId(Guid? orderDetailId, Guid? BillId)

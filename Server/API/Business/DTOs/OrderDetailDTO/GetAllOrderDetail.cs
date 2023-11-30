@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace API.Business.DTOs.OrderDetailDTO
 {
@@ -15,5 +16,9 @@ namespace API.Business.DTOs.OrderDetailDTO
         public int? Quantity { get; set; }
       
         public int? TotalMoney { get; set; }  
+
+        public string? Name { get; set; }
+        public string? Image { get; set; }
+
     }
 }
