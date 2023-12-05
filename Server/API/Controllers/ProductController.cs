@@ -56,7 +56,12 @@ namespace API.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-    
+        [HttpPost("meo")]
+
+        public IActionResult meo (IFormFile image )
+        {
+            return Ok("meo");
+        }
 
         [HttpPost("GetProductByIds")]
 
@@ -159,6 +164,29 @@ namespace API.Controllers
         {
             var result = await _service.productService.searchByName(name, productParameters);
             return Ok( new { result.Item1, result.Item2 });
+        }
+
+        [HttpPost("updateProduct")]
+
+        public async Task<IActionResult> updateProduct (Guid? Id,[FromForm] UpdateProductDTO product)
+        {
+            try
+            {
+                if (Id == null)
+                {
+                    return BadRequest("Update Fail - Id null");
+                }    
+                var result = await _service.productService.updateProduct(Id, product);
+                if (result == null)
+                {
+                    return BadRequest("Update Fail - Id does n't exists");
+                }    
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest("Update fail");
+            }
         }
     }
 }

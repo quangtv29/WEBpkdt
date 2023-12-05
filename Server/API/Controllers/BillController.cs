@@ -7,6 +7,7 @@ using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
 using Microsoft.AspNetCore.Authorization;
 using API.Entities.Enum;
+using API.Business.Shared;
 
 namespace API.Controllers
 {   
@@ -25,29 +26,22 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("getAll")]
-        public async Task<IActionResult> getAll()
+        [HttpPost("getAll")]
+        public async Task<IActionResult> getAll( Status status,[FromBody] BillParameters billParameters)
         {
             try
             {
-                var bills = await _service.billService.GetAll(trackChanges: false);
+                var bills = await _service.billService.GetAll(trackChanges: false,status,billParameters);
                 if (bills == null || !bills.Any())
                 {
                     _logger.LogInfo("List Bill is empty");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                var convert = bills.Select(
-                   p =>
-                   {
-                       p.ConvertDiscount = Helper.ConvertToMoney<double?>(p.Discount);
-                       p.ConvertTotalMoney = Helper.ConvertToMoney<int?>(p.TotalMoney);
-                       return p;
-                   })
-                   .ToList();
+               
                 return Ok(new
                 {
                     message = "Success",
-                    data = _mapper.Map<List<GetAllBillDTO>>(convert)
+                    data = _mapper.Map<List<GetAllBillDTO>>(bills)
                 });
             }
             catch (Exception ex)
@@ -56,7 +50,7 @@ namespace API.Controllers
             }
 
         }
-        [Authorize(Roles = "Manager")]
+        
         [HttpPost("{customerId}/bills")]
         public async Task<IActionResult> getAllBillFromCustomer(string? customerId, Status status)
         {
@@ -165,6 +159,10 @@ namespace API.Controllers
         {
             try
             {
+                if(bill ==null)
+                {
+                    return BadRequest();
+                }    
                 var bills = await _service.billService.updateBillById(bill);
                 return Ok("done");
             }
@@ -182,6 +180,28 @@ namespace API.Controllers
         public async Task<IActionResult> getInfoOrder (string? Id)
         {
             var result = await _service.billService.getInfoOrder(Id);
+            return Ok(result);
+        }
+
+        [HttpPost("updateStatusBill")]
+        public async Task<IActionResult> updateStatusBill(Guid? Id, Status status)
+        {
+            try
+            {
+                var result = await _service.billService.updateStatusBill(Id, status);
+                return Ok("done");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("totalRevenue")]
+
+        public async Task<IActionResult> totalRevenue()
+        {
+            var result = await _service.billService.TotalRevenueLast12Months();
             return Ok(result);
         }
     }

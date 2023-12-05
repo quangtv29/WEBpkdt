@@ -43,10 +43,13 @@ namespace API.Business.Services
         {
              _user = await _userManager.FindByNameAsync(login.UserName);
             var result = (_user != null && await _userManager.CheckPasswordAsync(_user, login.Password));
-            if (!result)
+            if (!result )
             {
-               _user.AccessFailedCount += 1;
-               await _userManager.UpdateAsync(_user);
+                if(_user != null )
+                {
+                    _user.AccessFailedCount += 1;
+                    await _userManager.UpdateAsync(_user);
+                }    
                 return false;
             }
             _user.AccessFailedCount = 0;

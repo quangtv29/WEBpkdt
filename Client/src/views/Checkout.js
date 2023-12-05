@@ -11,8 +11,8 @@ const Checkout = () => {
   const [data, setData] = useState();
   const [checkdiscount, setCheckDiscount] = useState(0);
   const [discountCode, setDiscountCode] = useState();
-  const [name, setName] = useState();
-  const [phone, setPhone] = useState();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const { encryptionKey } = useContext(MyContext);
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
@@ -59,6 +59,9 @@ const Checkout = () => {
               alert("Số lượng sản phẩm trong kho không đủ!");
               window.location.href = "/cart";
             });
+        })
+        .catch(() => {
+          alert("Thêm hoá đơn bị lỗi!");
         });
     }
   };
@@ -184,7 +187,7 @@ const Checkout = () => {
               </nav>
               <h4 className="title total">Thông tin liên lạc</h4>
               <p className="user-details total">
-                {customer?.firstName + " " + customer?.lastName} <nbsp /> (
+                {customer?.firstName + " " + customer?.lastName} (
                 {customer?.phoneNumber})
               </p>
               <h4 className="mb-3">Địa chỉ nhận hàng</h4>

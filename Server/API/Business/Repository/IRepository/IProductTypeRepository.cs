@@ -2,7 +2,7 @@
 
 namespace API.Business.Repository.IRepository
 {
-    public interface IProductTypeRepository
+    public interface IProductTypeRepository : IRepositoryBase<ProductType>
     {
            Task<IEnumerable<ProductType>> GetAll();
            

@@ -23,7 +23,8 @@ namespace API.Business.Services.Interface
         
         Task<GetAllOrderDetail> updateTotal (Guid? Id,  int? quantity);
         Task<IEnumerable<GetAllOrderDetail>> getOrderDetailByBillId(Guid? Id);
-         Task<CountCartDTO> countCart(string? customerId);
+        Task<CountCartDTO> countCart(string? customerId);
+        Task<IEnumerable<double?>> totalProfit();
 
     }
 }

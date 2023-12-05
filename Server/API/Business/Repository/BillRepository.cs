@@ -1,4 +1,5 @@
 ﻿using API.Business.Repository.IRepository;
+using API.Business.Shared;
 using API.Database;
 using API.Entities;
 using API.Entities.Enum;
@@ -18,9 +19,13 @@ namespace API.Business.Repository
             Create(bill);
         }
 
-        public async Task<IEnumerable<Bill>> GetAllBill(bool trackChanges)
+        public async Task<IEnumerable<Bill>> GetAllBill(bool trackChanges, Status status, BillParameters billParameters)
         {
-            var bill = await GetAll(trackChanges).Where(b => b.isDelete == false).ToListAsync();
+            var bill = await GetAll(trackChanges).Where(b => b.isDelete == false && b.Status == status)
+                .OrderByDescending(p=>p.Time)
+                .Skip((billParameters.PageNumber - 1)*billParameters.PageSize)
+                .Take(billParameters.PageSize)
+                .ToListAsync();
             return bill;
         }
 
@@ -39,15 +44,31 @@ namespace API.Business.Repository
             return bill;
         }
 
-        public async Task<Bill> getBillById(Guid? ID)
+        public async Task<Bill> getBillById(Guid? ID, bool trackChanges)
         {
-            var bill = await GetAllByCondition(p => p.Id == ID, true)
+            var bill = await GetAllByCondition(p => p.Id == ID, trackChanges)
                 .Where(p => p.isDelete == false)
                 .FirstOrDefaultAsync();
              return bill;
         }
 
-        
+        public async Task<List<double?>> TotalRevenueLast12Months()
+        {
+            DateTime currentDate = DateTime.Now;
+            List<double?> revenueList = new List<double?>();
+
+            for (int i = 1; i <= 12; i++)
+            {
+                DateTime month = currentDate.AddMonths(-i);
+                double? bill = await GetAll(false)
+                    .Where(p => p.Status == 0 && p.isDelete == false && p.Time.Month == month.Month && p.Time.Year == month.Year)
+                    .SumAsync(p => p.IntoMoney);
+
+                revenueList.Add(bill);
+            }
+
+            return revenueList;
+        }
 
         public async Task<Bill> updateBillById(Guid? Id)
         {

@@ -24,6 +24,8 @@ namespace API.Business.DTOs.ProductDTO.cs
 
         public Double? StarRating { get; set; }
 
+        public string? ProductTypeName { get; set; }
+
        
       
     }

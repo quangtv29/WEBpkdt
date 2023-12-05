@@ -1,5 +1,6 @@
 using API.Business.Extensions;
 using API.Database;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,10 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
-builder.Services.AddControllers();
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+}); ;
 builder.Services.AddCors();
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -29,7 +33,9 @@ builder.Services.AddDbContext<DataContext>(options =>
     //options.EnableSensitiveDataLogging();
     options.EnableSensitiveDataLogging(true);
 });
-
+builder.Services.AddMemoryCache();
+builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 
@@ -48,10 +54,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
 }
-
+app.UseIpRateLimiting();
 app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000"));
 //app.UseCors("AllowOrigin");
+app.UseCors("CorsPolicy");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

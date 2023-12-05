@@ -170,5 +170,12 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("getTotalProfitByLast12Months")]
+        public async Task<IActionResult> getTotalProfit ()
+        {
+            var result = await _service.orderDetailService.totalProfit();
+            return Ok(result);
+        }
     }
 }

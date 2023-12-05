@@ -1,6 +1,6 @@
 import Form from "react-bootstrap/Form";
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import "./Product.scss";
@@ -15,20 +15,30 @@ const CreatProduct = (props) => {
   const [nsx, setNSX] = useState("");
   const [mota, setMoTa] = useState("");
   const [file, setFile] = useState("");
-  const [imageURL, setImageURL] = useState("");
+  const [image, setImage] = useState("");
   // const imageRef = useRef(null);
+  const [productType, setProductType] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://localhost:7295/api/ProductType/getAll")
+      .then((res) => {
+        setProductType(res.data.data);
+      })
+      .catch(() => {});
+  }, []);
   useEffect(() => {
     if (props.product) {
-      setMaSP(props.product.MaSP);
-      setTenSP(props.product.TenSP);
-      setSoLuong(props.product.SoLuong);
-      setGiaNhap(props.product.GiaNhap);
-      setGiaBan(props.product.GiaBan);
-      setMaLoaiSP(props.product.MaLoaiSP);
-      setNSX(props.product.NSX);
-      setMoTa(props.product.MoTa);
-      setFile(props.product.imageUrl);
-      setImageURL(props.product.imageUrl);
+      setMaSP(props.product.id);
+      setTenSP(props.product.name);
+      setSoLuong(props.product.quantity);
+      setGiaNhap(props.product.importPrice);
+      setGiaBan(props.product.price);
+      setMaLoaiSP(props.product.productTypeName);
+      setNSX(props.product.producer);
+      setMoTa(props.product.describe);
+      setFile(props.product.image);
+      setImage(props.product.image);
     }
   }, [props.product]);
 
@@ -53,7 +63,13 @@ const CreatProduct = (props) => {
   };
 
   const setmaloaisp = (e) => {
-    setMaLoaiSP(e.target.value);
+    let id = "";
+    productType.map((item) => {
+      if (item.name === e.target.value) {
+        id = item.id;
+      }
+    });
+    setMaLoaiSP(id);
   };
 
   const setnsx = (e) => {
@@ -84,7 +100,7 @@ const CreatProduct = (props) => {
     }
 
     const objectUrl = URL.createObjectURL(fileImage);
-    setImageURL(objectUrl);
+    setImage(objectUrl);
     setFile(base64);
   };
 
@@ -109,11 +125,11 @@ const CreatProduct = (props) => {
     };
 
     let res = null;
-    if (props.isEditing === true) {
-      res = await axios.post(`/api/sanpham/${masp}`, formData, config);
-    } else {
-      res = await axios.post("/api/sanpham", formData, config);
-    }
+    // if (props.isEditing === true) {
+    //   res = await axios.post(`/api/sanpham/${masp}`, formData, config);
+    // } else {
+    //   res = await axios.post("/api/sanpham", formData, config);
+    // }
 
     if (res.data.status === 201) {
       console.log("success");
@@ -179,13 +195,18 @@ const CreatProduct = (props) => {
             </Form.Group>
 
             <Form.Group className="mb-1">
-              <Form.Label>Mã loại sản phẩm</Form.Label>
-              <Form.Control
-                type="text"
+              <Form.Label>Loại sản phẩm</Form.Label>
+              <Form.Select
                 name="maloaisp"
-                onChange={setmaloaisp}
                 defaultValue={maloaisp}
-              />
+                onChange={(e) => setmaloaisp(e)}
+              >
+                {productType?.map((item) => (
+                  <option key={item.id} selected={item?.name === maloaisp}>
+                    {item?.name}
+                  </option>
+                ))}
+              </Form.Select>
             </Form.Group>
 
             <Form.Group className="mb-1">
@@ -216,7 +237,7 @@ const CreatProduct = (props) => {
                 <span>Select Your Image</span>
                 <div
                   className="preview-image"
-                  style={{ backgroundImage: `url(${imageURL})` }}
+                  style={{ backgroundImage: `url(${image})` }}
                 ></div>
               </Form.Label>
               <Form.Control

@@ -9,11 +9,33 @@ using API.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AspNetCoreRateLimit;
 
 namespace API.Business.Extensions
 {
     public static class ServiceExtensions
     {
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>
+            {
+                new RateLimitRule
+                    {
+                        Endpoint = "*",
+                        Limit = 300,
+                        Period = "5m"
+                    }
+            };
+            services.Configure<IpRateLimitOptions>(opt => {
+                opt.GeneralRules =
+            rateLimitRules;
+            });
+            services.AddSingleton<IRateLimitCounterStore,
+            MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        }
         public static void ConfigureLoggerService(this IServiceCollection services) =>
  services.AddSingleton<ILoggerManager, LoggerManager>();
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>

@@ -1,6 +1,7 @@
 ﻿using API.Business.DTOs.BillDTO;
 using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
+using API.Business.Shared;
 using API.Entities;
 using API.Entities.Enum;
 using API.Exceptions.NotFoundExceptions;
@@ -62,11 +63,13 @@ namespace API.Business.Services
             }
         }
 
-        public async Task<IEnumerable<Bill>> GetAll(bool trackChanges)
+        public async Task<IEnumerable<Bill>> GetAll(bool trackChanges, Status status, BillParameters billParameters)
         {
-            var bill = await  _repo.Bill.GetAllBill(trackChanges);
+            var bill = await  _repo.Bill.GetAllBill(trackChanges,status,billParameters);
                 return bill;
         }
+
+        
 
         public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(string? customerId, bool trackChanges, Status status)
         {
@@ -81,8 +84,16 @@ namespace API.Business.Services
 
         public async Task<GetAllBillDTO> getBillById(Guid? Id)
         {
-            var result = await _repo.Bill.getBillById(Id);
+            var result = await _repo.Bill.getBillById(Id,false);
             return _mapper.Map<GetAllBillDTO>(result);
+        }
+
+        public async Task<Bill> updateStatusBill (Guid? Id, Status status)
+        {
+            var result = await _repo.Bill.getBillById(Id,true);
+            result.Status = status;
+            await _repo.SaveAsync();
+            return result;
         }
 
         public async Task<GetInfoOrderDTO> getInfoOrder(string? Id)
@@ -117,14 +128,29 @@ namespace API.Business.Services
 
         public async Task<Bill> updateBillById(UpdateBillDTO bill)
         {
-            var bills = await _repo.Bill.updateBillById(bill.Id);
-            bills.Discount = bill.Discount;
-            bills.IntoMoney = bill.IntoMoney;
-            bills.Address = bill.Address; 
-            bills.PhoneNumber = bill.PhoneNumber;
-            bills.Status = bill.status;
-            await _repo.SaveAsync();
-            return bills;
+            try
+            {
+                var bills = await _repo.Bill.updateBillById(bill.Id);
+                bills.Discount = bill.Discount;
+                bills.IntoMoney = bill.IntoMoney;
+                bills.Address = bill.Address;
+                bills.PhoneNumber = bill.PhoneNumber;
+                bills.Status = bill.status;
+                await _repo.SaveAsync();
+                return bills;
+            }
+            catch (Exception ex)
+            {
+                return new Bill { };
+            }
         }
+
+        public async Task<List<double?>> TotalRevenueLast12Months()
+        {
+            var result = await _repo.Bill.TotalRevenueLast12Months();
+            return result;
+        }
+
+        
     }
 }

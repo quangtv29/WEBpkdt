@@ -19,7 +19,7 @@ namespace API.Business.DTOs.ProductDTO.cs
 
         public string? Describe { get; set; }
 
-        public string? Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         public DateTime? LastModificationTime = DateTime.Now;
     }

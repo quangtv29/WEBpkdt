@@ -63,8 +63,9 @@ namespace API.Business.Services
             var result = await (from pd in _repo.Product.GetAll(false)
                           join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
                           into feedbackGroup
-                          from fb in feedbackGroup.DefaultIfEmpty()
-                          group fb by new
+                          from meo in feedbackGroup.DefaultIfEmpty()
+                          join pt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pt.Id
+                          group meo by new
                           {
                               pd.Id,
                               pd.Name,
@@ -75,7 +76,9 @@ namespace API.Business.Services
                               pd.Producer,
                               pd.Describe,
                               pd.Image,
-                              pd.Sold
+                              pd.Sold,
+                              ProductTypeName = pt.Name
+                              
                           } into g
                           select new GetAllProductDTO
                           {
@@ -89,7 +92,8 @@ namespace API.Business.Services
                               Describe = g.Key.Describe,
                               Image = g.Key.Image,
                               Sold = g.Key.Sold,
-                              StarRating = g.Sum(f => f.Star) / (double)g.Count()
+                              StarRating = g.Sum(f => f.Star ) / (double)g.Count(),
+                              ProductTypeName = g.Key.ProductTypeName
                           }).Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
                 .Take(productParameters.PageSize)
                 .ToListAsync();
@@ -147,8 +151,6 @@ namespace API.Business.Services
         public async Task<string> SaveImage(IFormFile imageFile)
         {
             var publicId = Guid.NewGuid().ToString();
-
-          
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(imageFile.FileName, imageFile.OpenReadStream()),
@@ -266,6 +268,26 @@ namespace API.Business.Services
 
                 return (result, totalRecords);
             
+        }
+
+        public async Task<Product> updateProduct (Guid? Id, UpdateProductDTO product)
+        {
+            var result = await _repo.Product.GetProductById(Id);
+            if (result == null)
+            {
+                return null;
+            }    
+            string imagePath = await SaveImage(product.Image);
+            result.Image = imagePath;
+            result.Producer = product.Producer;
+            result.Price = product.Price;
+            result.ImportPrice = product.ImportPrice;
+            result.Name = product.Name;
+            result.ProductTypeID = product.ProductTypeID;
+            result.LastModificationTime = DateTime.Now;
+            result.Quantity = product.Quantity;
+            await _repo.SaveAsync();
+            return result;
         }
     }
 }

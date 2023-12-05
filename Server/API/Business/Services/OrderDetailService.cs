@@ -238,5 +238,28 @@ namespace API.Business.Services
                 TotalMoney = sum
             };
         }
+
+        public async Task<IEnumerable<double?>> totalProfit ()
+        {
+            DateTime currentDate = DateTime.Now;
+            var result = new List<double?>();
+            for (int i = 1; i <= 12; i++)
+            {
+                DateTime month = currentDate.AddMonths(-i);
+                var results = await (from or in _repo.OrderDetail.GetAll(false)
+                                     join pd in _repo.Product.GetAll(false) on or.ProductId equals pd.Id
+                                     join bill in _repo.Bill.GetAll(false) on or.BillId equals bill.Id
+                                     where bill.Status == 0 && bill.Time.Month == month.Month && bill.Time.Year == month.Year
+                                     select or.TotalMoney - pd.ImportPrice * or.Quantity 
+                                    ).ToListAsync();
+                int? sum =  results.Sum();
+                var sale = await (from bill in _repo.Bill.GetAll(false) where bill.Time.Month == month.Month 
+                                  && bill.Time.Year == month.Year && bill.Status == 0 
+                                  select bill.Discount
+                                  ).SumAsync();
+                result.Add(sum-sale);
+            }
+            return result;
+        }
     }
 }
