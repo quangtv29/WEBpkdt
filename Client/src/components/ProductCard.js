@@ -93,6 +93,7 @@ const ProductCard = (props) => {
         <div
           key={item.id}
           className={` ${location.pathname === "/" ? "col-3" : `gr-${grid}`} `}
+          style={{ minHeight: 460 }}
         >
           <Link
             to={`${
@@ -123,12 +124,12 @@ const ProductCard = (props) => {
                 alt="product image"
               />
             </div>
-            <div className="product-details">
+            <div className="product-details" style={{ marginTop: 20 }}>
               <h5
                 style={{ fontFamily: "Roboto, sans-serif" }}
                 className="product-title"
               >
-                <p>{item.name}</p>
+                <p style={{ minHeight: 40 }}>{item.name}</p>
               </h5>
               <h6>Kho {item?.quantity}</h6>
               <div className="d-flex">

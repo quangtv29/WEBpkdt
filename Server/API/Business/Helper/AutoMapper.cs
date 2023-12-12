@@ -2,6 +2,7 @@
 using API.Business.DTOs.BillDTO;
 using API.Business.DTOs.CustomerDTO;
 using API.Business.DTOs.FeedbackDTO;
+using API.Business.DTOs.NotificationDTO;
 using API.Business.DTOs.OrderDetailDTO;
 using API.Business.DTOs.ProductDTO.cs;
 using API.Business.DTOs.ProductTypeDTO;
@@ -35,6 +36,7 @@ namespace API.Business.Helper
             CreateMap<CreateDiscountCode,Sale>().ReverseMap();
             CreateMap<CreateFeedbackDTO, Feedback>().ReverseMap();
             CreateMap<GetFeedbackByProductDTO, Feedback>().ReverseMap();
+            CreateMap<GetNotificationDTO, Notification>().ReverseMap();
         }
     }
 }

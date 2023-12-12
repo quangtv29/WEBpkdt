@@ -145,7 +145,7 @@ namespace API.Business.Services
             }
         }
 
-        public async Task<List<double?>> TotalRevenueLast12Months()
+        public async Task<List<Revenue>> TotalRevenueLast12Months()
         {
             var result = await _repo.Bill.TotalRevenueLast12Months();
             return result;

@@ -13,6 +13,8 @@ namespace API.Entities
         public DateTime CreateAccount { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
 
+        public DateTime LimitReset { get; set; }
+
        
     }
 }

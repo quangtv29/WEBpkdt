@@ -3,8 +3,6 @@ using API.Business.DTOs.AccountDTO;
 using API.Business.Helper;
 using API.Business.Services.Interface;
 using API.Entities;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Identity;

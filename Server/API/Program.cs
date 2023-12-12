@@ -58,7 +58,7 @@ app.UseIpRateLimiting();
 app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000"));
 //app.UseCors("AllowOrigin");
-app.UseCors("CorsPolicy");
+//app.UseCors("CorsPolicy");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

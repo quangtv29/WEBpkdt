@@ -1,4 +1,5 @@
-﻿using API.Business.Repository.IRepository;
+﻿using API.Business.DTOs.BillDTO;
+using API.Business.Repository.IRepository;
 using API.Business.Shared;
 using API.Database;
 using API.Entities;
@@ -52,23 +53,29 @@ namespace API.Business.Repository
              return bill;
         }
 
-        public async Task<List<double?>> TotalRevenueLast12Months()
+        public async Task<List<Revenue>> TotalRevenueLast12Months()
         {
             DateTime currentDate = DateTime.Now;
-            List<double?> revenueList = new List<double?>();
 
+            List<Revenue> revenues = new List<Revenue>();
             for (int i = 1; i <= 12; i++)
             {
                 DateTime month = currentDate.AddMonths(-i);
+
                 double? bill = await GetAll(false)
                     .Where(p => p.Status == 0 && p.isDelete == false && p.Time.Month == month.Month && p.Time.Year == month.Year)
                     .SumAsync(p => p.IntoMoney);
 
-                revenueList.Add(bill);
+                revenues.Add(new Revenue
+                {
+                    Revenues = bill,
+                    Datetime = $"{month.Month}/{month.Year}"
+                });
             }
 
-            return revenueList;
+            return revenues;
         }
+
 
         public async Task<Bill> updateBillById(Guid? Id)
         {

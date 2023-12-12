@@ -16,7 +16,6 @@ export const Cart = () => {
   const handleRemoveFromCart = (item) => {
     removeFromCart(item);
   };
-
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [totalMoney, setTotalMoney] = useState(0);
   const handleSelectInvoice = (event, invoiceId, money, index) => {
@@ -115,13 +114,15 @@ export const Cart = () => {
           .then((res) => {
             localStorage.setItem("billid1", result.data.data.id);
             window.location.href = "/checkout";
+          })
+          .catch(() => {
+            alert("Vui lòng nhập số lượng sản phẩm!");
           });
       });
     } catch (error) {
       console.error(error);
     }
   };
-
   return (
     <>
       <Meta title={"Giỏ Hàng"} />
@@ -153,6 +154,7 @@ export const Cart = () => {
                     onChange={(event) =>
                       handleSelectInvoice(event, item.id, total[index], index)
                     }
+                    disabled={item?.warehouse === 0 ? true : false}
                   />
                 </div>
                 <div className="col-4 gap-15 d-flex align-items-center">
@@ -196,7 +198,10 @@ export const Cart = () => {
                         newQuantities[index] = parseInt(event.target.value)
                           ? parseInt(event.target.value)
                           : 0;
-
+                        newQuantities[index] =
+                          newQuantities[index] > item?.warehouse
+                            ? item?.warehouse
+                            : newQuantities[index];
                         setQuantities(newQuantities);
                         const newTotal = [...total];
                         const change =

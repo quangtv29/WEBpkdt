@@ -20,7 +20,7 @@ namespace API.Business.Services.Interface
 
         Task<Bill> updateStatusBill(Guid? Id, Status status);
 
-        Task<List<double?>> TotalRevenueLast12Months();
+        Task<List<Revenue>> TotalRevenueLast12Months();
 
     }
 }

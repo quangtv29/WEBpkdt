@@ -20,4 +20,9 @@
         Female,
         Other
     }
+    public enum Watched
+    {
+        Yes,
+        No
+    }
 }

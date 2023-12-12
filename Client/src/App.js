@@ -36,6 +36,7 @@ import Deliveringg from "./components/Purchase History/Deliveringg";
 import Done from "./components/Purchase History/Done";
 import Profile from "./views/Profile";
 import OrderDetail from "./components/Purchase History/OrderDetail";
+import Statistics from "./components/Admin/Statistics/Statistics";
 function App() {
   // const u = JSON.parse(localStorage.getItem('user'));
 
@@ -84,6 +85,7 @@ function App() {
             <Route path="list-bill" element={<ListBill />} />
             <Route path="list-type-product" element={<ListTypeProduct />} />
             <Route path="list-bills" element={<ListBills />} />
+            <Route path="statistics" element={<Statistics />} />
           </Route>
         </Routes>
       </BrowserRouter>

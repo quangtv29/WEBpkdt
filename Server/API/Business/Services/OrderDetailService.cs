@@ -202,6 +202,8 @@ namespace API.Business.Services
         public async Task<OrderDetail> updateOrderDetailBillId(Guid? orderDetailId, Guid? BillId)
         {
             var order = await _repo.OrderDetail.GetOrderDetailById(orderDetailId);
+            if (order.Quantity == 0)
+                return null;
             order.BillId = BillId;
             await _repo.SaveAsync();
             return order;
@@ -243,7 +245,7 @@ namespace API.Business.Services
         {
             DateTime currentDate = DateTime.Now;
             var result = new List<double?>();
-            for (int i = 1; i <= 12; i++)
+            for (int i = 12; i >= 1; i--)
             {
                 DateTime month = currentDate.AddMonths(-i);
                 var results = await (from or in _repo.OrderDetail.GetAll(false)
@@ -259,6 +261,7 @@ namespace API.Business.Services
                                   ).SumAsync();
                 result.Add(sum-sale);
             }
+
             return result;
         }
     }

@@ -19,6 +19,7 @@ namespace API.Entities
         public string? FormatDate { get; set; }
 
         public ICollection<Bill>? Bill { get; set; }
+        public ICollection<Notification> Notification { get; set; }
 
         [ForeignKey("User")]
         public string? Id { get; set; }

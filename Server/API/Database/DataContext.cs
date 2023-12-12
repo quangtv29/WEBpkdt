@@ -20,6 +20,8 @@ namespace API.Database
        
         public DbSet<Feedback> Feedback { get; set; }
 
+        public DbSet<Notification> Notification { get; set; }
+
        
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -72,6 +74,12 @@ namespace API.Database
             .WithOne(e => e.User)
             .HasForeignKey<Customer>(e => e.Id);
             builder.Entity<OrderDetail>(e =>
+            {
+                e.Property(e => e.LastModificationTime).HasDefaultValueSql("GETDATE()");
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
+                e.Property(e => e.isDelete).HasDefaultValue(false);
+            });
+            builder.Entity<Notification>(e =>
             {
                 e.Property(e => e.LastModificationTime).HasDefaultValueSql("GETDATE()");
                 e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());

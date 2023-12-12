@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.5.1",
     "bootstrap": "^5.2.3",
+    "chart.js": "^4.4.1",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "font-awesome": "^4.7.0",

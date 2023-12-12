@@ -12,6 +12,7 @@ namespace API.Business.Repository.IRepository
         IProductTypeRepository ProductType { get; }
         IFeedbackRepository Feedback { get; }
         ISaleRepository Sale { get; }
+        INotificationRepository Notification { get; }
 
         IDbContextTransaction Transaction();
         Task SaveAsync();

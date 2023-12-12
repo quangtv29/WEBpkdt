@@ -129,6 +129,10 @@ namespace API.Controllers
         public async Task<IActionResult> updateOrderDetailBillId (UpdateByBillIdDTO update)
         {
             var result = await _service.orderDetailService.updateOrderDetailBillId(update.orderDetailId, update.BillId);
+             if (result == null)
+            {
+                return BadRequest("Quantity is 0");
+            }    
             return Ok(new
             {
                 Message = "Update success"

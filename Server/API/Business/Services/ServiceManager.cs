@@ -3,8 +3,6 @@ using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
-using CloudinaryDotNet;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -21,6 +19,7 @@ namespace API.Business.Services
         private readonly Lazy<IAuthenticationService> _authenticationService;
         private readonly Lazy<ISaleService> _saleService;
         private readonly Lazy<IFeedbackService> _feedbackService;
+        private readonly Lazy<INotificationService> _notificationService;
        
 
         public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IOptions<CloudinarySettings> config)
@@ -34,6 +33,7 @@ namespace API.Business.Services
             _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(_mapper, userManager,configuration));
             _saleService = new Lazy<ISaleService>(() => new SaleService(repositoryManager,_mapper));
             _feedbackService = new Lazy<IFeedbackService>(() => new FeedbackService(repositoryManager, _mapper));
+            _notificationService = new Lazy<INotificationService>(() => new NotificationService(repositoryManager, _mapper));
         }
 
         public ICustomerService customerService => _customerService.Value;
@@ -52,5 +52,7 @@ namespace API.Business.Services
         public ISaleService saleService => _saleService.Value;
 
         public IFeedbackService feedbackService => _feedbackService.Value;
+
+        public INotificationService notificationService => _notificationService.Value;
     }
 }

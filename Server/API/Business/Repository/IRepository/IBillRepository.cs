@@ -1,4 +1,5 @@
-﻿using API.Business.Shared;
+﻿using API.Business.DTOs.BillDTO;
+using API.Business.Shared;
 using API.Entities;
 using API.Entities.Enum;
 
@@ -14,6 +15,6 @@ namespace API.Business.Repository.IRepository
         void createBill (Bill bill);
 
         Task<Bill> updateBillById(Guid? Id);
-       Task<List<double?>> TotalRevenueLast12Months();
+       Task<List<Revenue>> TotalRevenueLast12Months();
     }
 }
