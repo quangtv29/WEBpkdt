@@ -10,5 +10,6 @@ namespace API.Business.DTOs.NotificationDTO
         public string? Header { get; set; }
 
         public string? CustomerID { get; set; }
+        public string? FormatDate { get; set; }
     }
 }

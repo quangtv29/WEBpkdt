@@ -6,6 +6,22 @@ import Container from "../Container";
 const OrderDetail = () => {
   const id = localStorage.getItem("billid11");
   const [data, setData] = useState();
+  const [status, setStatus] = useState(1);
+  useEffect(() => {
+    axios
+      .post(
+        "https://localhost:7295/api/Bill/getBillById",
+        {},
+        {
+          params: {
+            Id: id,
+          },
+        }
+      )
+      .then((res) => {
+        setStatus(res.data.status);
+      });
+  }, []);
   useEffect(() => {
     axios
       .post(
@@ -24,15 +40,16 @@ const OrderDetail = () => {
   }, [id]);
   return (
     <>
-      <Container class1="cart-wrapper home-wrapper-2 py-5">
-        <div className="row">
+      <Container class1="cart-wrapper home-wrapper-2 py-5 w-100">
+        <div className="row ">
           <div className="col-12">
             <h3 className="text-center">Chi tiết hoá đơn {id}</h3>
             <div className="cart-header py-3 d-flex justify-content-between align-items-center">
-              <h4 className="col-6 text-center">Sản phẩm</h4>
+              <h4 className="col-5 text-center">Sản phẩm</h4>
               <h4 className="col-2 ">Giá bán</h4>
               <h4 className="col-2">Số lượng</h4>
               <h4 className="col-2">Tổng tiền</h4>
+              <h4 className="col-1"></h4>
             </div>
           </div>
         </div>
@@ -43,7 +60,7 @@ const OrderDetail = () => {
                 key={item.id}
                 className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center"
               >
-                <div className="col-6 gap-15 d-flex align-items-center">
+                <div className="col-5 gap-15 d-flex align-items-center">
                   <div className="w-25">
                     <img
                       src={item?.image}
@@ -75,6 +92,13 @@ const OrderDetail = () => {
                     })}
                   </h5>
                 </div>
+                {status === 0 ? (
+                  <div className="col-1">
+                    <button className="btn btn-danger">Đánh giá</button>
+                  </div>
+                ) : (
+                  <div className="col-1"> </div>
+                )}
               </div>
             ))}
           </div>

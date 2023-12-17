@@ -264,5 +264,12 @@ namespace API.Business.Services
 
             return result;
         }
+
+        public async Task deleteOrder(Guid? Id)
+        {
+            var order = await _repo.OrderDetail.GetOrderDetailById(Id);
+            _repo.OrderDetail.DeleteOrder(order);
+            await _repo.SaveAsync();
+        }
     }
 }

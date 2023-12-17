@@ -67,6 +67,7 @@ const Confirm = () => {
           backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#e7ecf0",
           height: "100%",
           boxSizing: "border-box",
+          minHeight: 500,
         }}
       >
         <ul
@@ -144,12 +145,15 @@ const Confirm = () => {
                     <div className="col-1 d-flex justify-content-center">
                       <button
                         type="button"
-                        className="btn btn-danger"
+                        className="btn btn-danger "
                         onClick={() => {
                           localStorage.setItem("billid11", item.id);
                         }}
                       >
-                        <Link to="orderDetail"> Chi tiết</Link>
+                        <Link to="orderDetail" className="text-light">
+                          {" "}
+                          Chi tiết
+                        </Link>
                       </button>
                     </div>
                   </li>

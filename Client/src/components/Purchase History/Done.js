@@ -2,22 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { MyContext } from "../../encryptionKey";
 import CryptoJS from "crypto-js";
-import Confirmm from "../Confirm";
+import { Link } from "react-router-dom";
 import Meta from "../Meta";
 
 const Done = () => {
   const [data, setData] = useState([]);
   const { encryptionKey } = useContext(MyContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleConfirm = () => {
-    console.log("meomeo");
-  };
-  const handleCancel = () => {
-    setIsOpen(false);
-  };
-  const handleOnclick = () => {
-    setIsOpen(true);
-  };
+
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
@@ -63,9 +54,10 @@ const Done = () => {
       <div
         className=" "
         style={{
-          backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#e7ecf0",
+          backgroundColor: "#e7ecf0",
           height: "100%",
           boxSizing: "border-box",
+          minHeight: 500,
         }}
       >
         <ul
@@ -88,68 +80,68 @@ const Done = () => {
             <div className="col-2 d-flex justify-content-center"></div>
           </li>
           <li>
-            {data.map((item, index) => (
-              <div key={item.id} className="border">
-                <li
-                  className="row d-flex align-items-center mt-2  "
-                  style={{ padding: 0 }}
-                >
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.id}
-                  </div>
-                  <div className="col-3 d-flex justify-content-center ">
-                    {item.address}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.phoneNumber}
-                  </div>
-                  <div className="col-2 font-weight-bold  d-flex justify-content-center ">
-                    {item.formatDate}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "#ee4d2d" }}
+            <ul style={{ padding: 0 }}>
+              {data.map((item, index) => (
+                <div key={item.id} className="border">
+                  <li
+                    className="row d-flex align-items-center mt-2  "
+                    style={{ padding: 0 }}
                   >
-                    {item.totalMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "rgba(0,0,0,.87)" }}
-                  >
-                    {item.discount?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.intoMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div className="col-2 d-flex justify-content-center">
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => handleOnclick()}
+                    <div className="col-1 d-flex justify-content-center">
+                      {item.id}
+                    </div>
+                    <div className="col-3 d-flex justify-content-center ">
+                      {item.address}
+                    </div>
+                    <div className="col-1 d-flex justify-content-center">
+                      {item.phoneNumber}
+                    </div>
+                    <div className="col-2 font-weight-bold  d-flex justify-content-center ">
+                      {item.formatDate}
+                    </div>
+                    <div
+                      className="col-1 d-flex justify-content-center"
+                      style={{ color: "#ee4d2d" }}
                     >
-                      Huỷ
-                    </button>
-                  </div>
-                </li>
-              </div>
-            ))}
+                      {item.totalMoney?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div
+                      className="col-1 d-flex justify-content-center"
+                      style={{ color: "rgba(0,0,0,.87)" }}
+                    >
+                      {item.discount?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div className="col-1 d-flex justify-content-center">
+                      {item.intoMoney?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div className="col-2 d-flex justify-content-center">
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => {
+                          localStorage.setItem("billid11", item.id);
+                        }}
+                      >
+                        <Link to="../orderDetail" style={{ color: "#fff" }}>
+                          {" "}
+                          Chi tiết
+                        </Link>
+                      </button>
+                    </div>
+                  </li>
+                </div>
+              ))}
+            </ul>
           </li>
-          {isOpen && (
-            <Confirmm
-              message="Bạn có chắc chắn muốn huỷ hoá đơn?"
-              onConfirm={handleConfirm}
-              onCancel={handleCancel}
-            />
-          )}
         </ul>
       </div>
     </>

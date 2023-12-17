@@ -37,11 +37,17 @@ namespace API.Controllers
                     _logger.LogInfo("List Bill is empty");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
+                var convert = bills.Select(p =>
+                {
+                    p.FormatDate = p.Time.ToString("dd/MM/yyyy HH:mm:ss");
+                    return p;
+                }).ToList();
+
                
                 return Ok(new
                 {
                     message = "Success",
-                    data = _mapper.Map<List<GetAllBillDTO>>(bills)
+                    data = _mapper.Map<List<GetAllBillDTO>>(convert)
                 });
             }
             catch (Exception ex)

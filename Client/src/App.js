@@ -37,9 +37,19 @@ import Done from "./components/Purchase History/Done";
 import Profile from "./views/Profile";
 import OrderDetail from "./components/Purchase History/OrderDetail";
 import Statistics from "./components/Admin/Statistics/Statistics";
+import { MyContextProvider } from "./encryptionKey";
+import { Navigate } from "react-router-dom";
+import Delivering from "./components/Admin/Bill/Delivering";
 function App() {
   // const u = JSON.parse(localStorage.getItem('user'));
+  const AdminRoute = ({ element }) => {
+    if (localStorage.getItem("chucvu") !== "Manager") {
+      // Nếu không phải là admin, chuyển hướng hoặc thực hiện xử lý khác
+      return <Navigate to="/error-page" />;
+    }
 
+    return element;
+  };
   return (
     <>
       <BrowserRouter>
@@ -76,19 +86,26 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/admin" element={<LayoutAdmin />}>
-            <Route index element={<ListProduct />} />
-            <Route path="list-product" element={<ListProduct />} />
-            {/* <Route path="create-product" element={<CreateProduct />} /> */}
-            <Route path="list-bill" element={<ListBill />} />
-            <Route path="list-type-product" element={<ListTypeProduct />} />
-            <Route path="list-bills" element={<ListBills />} />
-            <Route path="statistics" element={<Statistics />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <MyContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/admin"
+              element={<AdminRoute element={<LayoutAdmin />} />}
+            >
+              <Route index element={<ListProduct />} />
+              <Route path="list-product" element={<ListProduct />} />
+              {/* <Route path="create-product" element={<CreateProduct />} /> */}
+              <Route path="list-bill" element={<ListBill />} />
+              <Route path="list-type-product" element={<ListTypeProduct />} />
+              <Route path="list-bills" element={<ListBills />} />
+              <Route path="delivering" element={<Delivering />} />
+              <Route path="statistics" element={<Statistics />} />
+              <Route path="orderDetaila" element={<OrderDetail />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </MyContextProvider>
       <ToastContainer
         position="top-right"
         autoClose={5000}

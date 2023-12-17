@@ -11,22 +11,14 @@ const CreatProduct = (props) => {
   const [soluong, setSoLuong] = useState("");
   const [gianhap, setGiaNhap] = useState("");
   const [giaban, setGiaBan] = useState("");
+  const productType = props.productType;
   const [maloaisp, setMaLoaiSP] = useState("");
   const [nsx, setNSX] = useState("");
   const [mota, setMoTa] = useState("");
   const [file, setFile] = useState("");
   const [image, setImage] = useState("");
   // const imageRef = useRef(null);
-  const [productType, setProductType] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("https://localhost:7295/api/ProductType/getAll")
-      .then((res) => {
-        setProductType(res.data.data);
-      })
-      .catch(() => {});
-  }, []);
   useEffect(() => {
     if (props.product) {
       setMaSP(props.product.id);

@@ -31,7 +31,8 @@ const Checkout = () => {
           id: localStorage.getItem("billid1"),
           discount: checkdiscount,
           intoMoney: totalMoney - checkdiscount,
-          address: "",
+          name: name,
+          address: address,
           phoneNumber: phone,
           status: 3,
         })
@@ -53,6 +54,7 @@ const Checkout = () => {
                 window.location.href = "/cart";
               } else {
                 alert("Đặt hàng thành công");
+                window.location.href = "/to-pay";
               }
             })
             .catch(() => {
@@ -240,6 +242,10 @@ const Checkout = () => {
                     type="text"
                     placeholder="Tên đường, Tòa nhà, Số nhà."
                     className="form-control"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setAddress(e.target.value);
+                    }}
                   />
                 </div>
                 <div className="w-70">

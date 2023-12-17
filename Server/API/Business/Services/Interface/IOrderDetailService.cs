@@ -7,6 +7,7 @@ namespace API.Business.Services.Interface
     public interface IOrderDetailService
     {
         Task<IEnumerable<GetAllOrderDetail>> GetAll(bool trackChanges);
+        Task deleteOrder(Guid? Id);
 
         Task<IEnumerable<OrderDetail>> GetOrderDetailFromCustomerId(string? customerId);
 

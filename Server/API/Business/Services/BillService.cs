@@ -92,6 +92,15 @@ namespace API.Business.Services
         {
             var result = await _repo.Bill.getBillById(Id,true);
             result.Status = status;
+            if (status == 0)
+            {
+                var order = await _repo.OrderDetail.GetOrderDetailByBillID(Id);
+                foreach (var od in order)
+                {
+                    var pro = await _repo.Product.GetProductById(od.ProductId);
+                    pro.Sold += 1;
+                }
+            }
             await _repo.SaveAsync();
             return result;
         }
@@ -136,10 +145,12 @@ namespace API.Business.Services
                 bills.Address = bill.Address;
                 bills.PhoneNumber = bill.PhoneNumber;
                 bills.Status = bill.status;
+                bills.Name = bill.Name;
+               
                 await _repo.SaveAsync();
                 return bills;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new Bill { };
             }

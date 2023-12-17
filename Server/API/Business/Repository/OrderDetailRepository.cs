@@ -50,5 +50,10 @@ namespace API.Business.Repository
         {
             Update(orderDetail);
         }
+
+        public void DeleteOrder (OrderDetail order)
+        {
+            Delete(order);
+        }
     }
 }

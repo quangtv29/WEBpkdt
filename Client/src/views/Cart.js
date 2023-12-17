@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { CartContext } from "../CartContext";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { AiFillDelete } from "react-icons/ai";
@@ -10,12 +9,6 @@ import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
 
 export const Cart = () => {
-  const { cartItems, totalPrice, removeFromCart, updateCart } =
-    useContext(CartContext);
-
-  const handleRemoveFromCart = (item) => {
-    removeFromCart(item);
-  };
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [totalMoney, setTotalMoney] = useState(0);
   const handleSelectInvoice = (event, invoiceId, money, index) => {
@@ -34,6 +27,10 @@ export const Cart = () => {
     }
   };
   const { encryptionKey } = useContext(MyContext);
+  const decryptedId = CryptoJS.AES.decrypt(
+    localStorage.getItem("id"),
+    encryptionKey
+  ).toString(CryptoJS.enc.Utf8);
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
@@ -46,7 +43,8 @@ export const Cart = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [decryptedId]);
+
   // const handleUpdateCart = (event, item) => {
   //   const quantity = parseInt(event.target.value);
   //   const updatedQuantity = Math.min(Math.max(quantity, 1), 10);
@@ -61,11 +59,6 @@ export const Cart = () => {
     const listTotal = data.map((item) => item.totalMoney);
     setTotal(listTotal);
   }, [data]);
-
-  const decryptedId = CryptoJS.AES.decrypt(
-    localStorage.getItem("id"),
-    encryptionKey
-  ).toString(CryptoJS.enc.Utf8);
 
   const UpdateCart = (event, id, quantity) => {
     event.preventDefault();
@@ -123,6 +116,23 @@ export const Cart = () => {
       console.error(error);
     }
   };
+  const handleDelete = (e, id) => {
+    e.preventDefault();
+    setData(
+      data.filter((item) => {
+        return item?.id !== id;
+      })
+    );
+    axios.post(
+      "https://localhost:7295/api/OrderDetail/deleteOrder",
+      {},
+      {
+        params: {
+          Id: id,
+        },
+      }
+    );
+  };
   return (
     <>
       <Meta title={"Giỏ Hàng"} />
@@ -134,9 +144,10 @@ export const Cart = () => {
               <h4 className="col-1"></h4>
               <h4 className="col-4 text-center">Sản phẩm</h4>
               <h4 className="col-2 ">Giá bán</h4>
-              <h4 className="col-2">Số lượng</h4>
+              <h4 className="col-1">Số lượng</h4>
               <h4 className="col-1">Kho</h4>
               <h4 className="col-2">Tổng tiền</h4>
+              <h4 className="col-1">Xoá</h4>
             </div>
           </div>
         </div>
@@ -179,7 +190,7 @@ export const Cart = () => {
                     })}
                   </h5>
                 </div>
-                <div className="col-2 d-flex align-items-center gap-15">
+                <div className="col-1 d-flex align-items-center gap-15">
                   <div>
                     <input
                       className="form-control"
@@ -216,12 +227,6 @@ export const Cart = () => {
                       }}
                     />
                   </div>
-                  <div>
-                    <AiFillDelete
-                      className="text-danger"
-                      onClick={() => handleRemoveFromCart(item)}
-                    />
-                  </div>
                 </div>
                 <div className="col-1">{item?.warehouse} </div>
                 <div className="col-2">
@@ -231,6 +236,12 @@ export const Cart = () => {
                       currency: "VND",
                     })}
                   </h5>
+                </div>
+                <div className="col-1">
+                  <AiFillDelete
+                    onClick={(e) => handleDelete(e, item?.id)}
+                    className="text-danger"
+                  />
                 </div>
               </div>
             ))}

@@ -32,7 +32,7 @@ namespace API.Controllers
                 {
                     return BadRequest(HttpStatusCode.NoContent);
                 }
-        
+
                 var productDTO = _mapper.Map<List<GetAllProductDTO>>(products);
 
                 return Ok(productDTO);
@@ -42,9 +42,10 @@ namespace API.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        [HttpPost("CreateProduct")]
 
-        public async Task<IActionResult> createProduct ([FromForm] CreateProductDTO product)
+        [HttpPost("CreateProduct")]
+       
+        public async Task<IActionResult> createProduct([FromForm] CreateProductDTO product)
         {
             try
             {
@@ -58,7 +59,7 @@ namespace API.Controllers
         }
         [HttpPost("meo")]
 
-        public IActionResult meo (IFormFile image )
+        public IActionResult meo(IFormFile image)
         {
             return Ok("meo");
         }
@@ -89,15 +90,15 @@ namespace API.Controllers
 
         [HttpPut("updateProduct/{Id}")]
         [Authorize(Roles = "Manager,Employee")]
-        public async Task<IActionResult> updateProduct ([FromBody] UpdateProductDTO product, Guid? Id)
+        public async Task<IActionResult> updateProduct([FromBody] UpdateProductDTO product, Guid? Id)
         {
             try
             {
                 await _service.productService.Update(product, Id);
                 return Ok(new ApiResponse
                 {
-                    StatusCode= (HttpStatusCode.OK)
-                });            
+                    StatusCode = (HttpStatusCode.OK)
+                });
             }
 
             catch (Exception ex)
@@ -108,7 +109,7 @@ namespace API.Controllers
 
         [HttpGet("{Id}")]
 
-        public async Task<IActionResult> getProductById (Guid? Id)
+        public async Task<IActionResult> getProductById(Guid? Id)
         {
             try
             {
@@ -132,16 +133,17 @@ namespace API.Controllers
                     Message = "Done"
                 });
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return StatusCode(500, new { message = ex.Message });
             }
 
         }
 
-        [HttpDelete ("{Id}")]
+        [HttpDelete("{Id}")]
         [Authorize(Roles = "Manager")]
 
-        public async Task<IActionResult> deleteProduct (Guid? Id)
+        public async Task<IActionResult> deleteProduct(Guid? Id)
         {
             if (Id == null)
             {
@@ -160,27 +162,27 @@ namespace API.Controllers
 
         [HttpPost("searchByName")]
 
-        public async Task<IActionResult> searchByName (string name, ProductParameters productParameters)
+        public async Task<IActionResult> searchByName(string name, ProductParameters productParameters)
         {
             var result = await _service.productService.searchByName(name, productParameters);
-            return Ok( new { result.Item1, result.Item2 });
+            return Ok(new { result.Item1, result.Item2 });
         }
 
         [HttpPost("updateProduct")]
-
-        public async Task<IActionResult> updateProduct (Guid? Id,[FromForm] UpdateProductDTO product)
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> updateProduct(Guid? Id, [FromForm] UpdateProductDTO product)
         {
             try
             {
                 if (Id == null)
                 {
                     return BadRequest("Update Fail - Id null");
-                }    
+                }
                 var result = await _service.productService.updateProduct(Id, product);
                 if (result == null)
                 {
                     return BadRequest("Update Fail - Id does n't exists");
-                }    
+                }
                 return Ok(result);
             }
             catch
@@ -188,6 +190,13 @@ namespace API.Controllers
                 return BadRequest("Update fail");
             }
         }
+        [HttpPost("getByPrice")]
+        public async Task<IActionResult> getProductByPrice(int? vip, int? to, ProductParameters productParameters, bool inStock, bool outOfStock)
+        {
+            
+            return Ok( await _service.productService.getProductByPrice(vip, to, productParameters,inStock,outOfStock));
+        }
+
     }
 }
 

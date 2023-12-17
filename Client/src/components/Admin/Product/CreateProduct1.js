@@ -11,6 +11,7 @@ const CreatProduct1 = (props) => {
   const [gianhap, setGiaNhap] = useState("");
   const [giaban, setGiaBan] = useState("");
   const productType = props.productType;
+  console.log(props);
   const [maloaisp, setMaLoaiSP] = useState(props.maloaisp);
   const [nsx, setNSX] = useState("");
   const [mota, setMoTa] = useState("");

@@ -24,6 +24,7 @@ const Login = () => {
       })
       .then((response) => {
         if (response.data.role[0] === "Manager") {
+          localStorage.setItem("chucvu", "Manager");
           const accessToken = response.data.data.accessToken;
           const encryptedId = CryptoJS.AES.encrypt(
             response.data.user.id,

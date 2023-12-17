@@ -11,7 +11,7 @@ namespace API.Entities
         public string? Header { get; set; }
         //relationship
 
-
+       
         [ForeignKey("Customer")]
         public string? CustomerID { get; set; }
         public Customer Customer { get; set; }

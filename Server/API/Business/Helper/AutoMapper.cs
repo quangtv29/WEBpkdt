@@ -37,6 +37,7 @@ namespace API.Business.Helper
             CreateMap<CreateFeedbackDTO, Feedback>().ReverseMap();
             CreateMap<GetFeedbackByProductDTO, Feedback>().ReverseMap();
             CreateMap<GetNotificationDTO, Notification>().ReverseMap();
+            CreateMap<CreateNotificationDTO, Notification>().ReverseMap();  
         }
     }
 }

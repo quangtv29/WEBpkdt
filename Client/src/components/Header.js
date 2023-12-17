@@ -22,10 +22,9 @@ import { SearchContext } from "../SearchContext";
 import CryptoJS from "crypto-js";
 const Header = (props) => {
   const { cartCount, totalPrice, setSearchTerm } = useContext(CartContext);
-  const { search, setSearch, status, setStatus } = useContext(SearchContext);
+  const { search, setSearch, setStatus } = useContext(SearchContext);
   const [customer, setCustomer] = useState();
-  const chucvu = localStorage.getItem("chucvu");
-  const isAorN = chucvu === "Nhân viên" || chucvu === "Admin";
+  const [noti, setNoti] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const { encryptionKey } = useContext(MyContext);
 
@@ -34,7 +33,7 @@ const Header = (props) => {
         CryptoJS.enc.Utf8
       )
     : null;
-
+  const [role, setRole] = useState("");
   useEffect(() => {
     if (isLogin) {
       axios
@@ -44,22 +43,47 @@ const Header = (props) => {
           },
         })
         .then((res) => {
-          setCustomer(res.data);
+          setCustomer(res.data.firstName + " " + res.data.lastName);
         });
     }
-  }, []);
-  let welcomeMessage = "";
-  const u = customer?.firstName + " " + customer?.lastName;
-  if (u === "undefined undefined") {
-    welcomeMessage = undefined;
-  } else {
-    welcomeMessage = u;
-  }
+  }, [decryptedId]);
+  const handleNoti = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      axios
+        .post(
+          "https://localhost:7295/api/Notification/getNotiByCustomerId",
+          {
+            pageNumber: 1,
+            pageSize: 5,
+          },
+          {
+            params: {
+              customerId: decryptedId,
+            },
+          }
+        )
+        .then((res) => {
+          setNoti(res.data);
+        });
+    }
+  };
+
+  const chucvu = localStorage.getItem("chucvu");
+  const isAorN = chucvu === "Nhân viên" || chucvu === "Manager";
+  // let welcomeMessage = "";
+  // const u = customer?.firstName + " " + customer?.lastName;
+  // if (u === "undefined undefined") {
+  //   welcomeMessage = undefined;
+  // } else {
+  //   welcomeMessage = u;
+  // }
   const logout = () => {
     axios.post("https://localhost:7295/api/Authentication/logout", {});
     localStorage.clear();
     setIsLogin(false);
     navigate("/login", { replace: true });
+    setCustomer(null);
   };
   const handleSearch = (e) => {
     e.preventDefault();
@@ -167,14 +191,60 @@ const Header = (props) => {
                                         </p>
                                     </Link> */}
                 </div>
-                <div className="d-flex align-items-center gap-10 text-white text-light">
-                  {welcomeMessage ? (
+                {customer && (
+                  <div>
                     <NavDropdown
-                      title={welcomeMessage}
+                      title=" Thông báo 🔔"
+                      onClick={(e) => handleNoti(e)}
+                      drop="down "
+                    >
+                      <div
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        <h6
+                          style={{
+                            color: "red",
+                            marginRight: 6,
+                            cursor: "pointer",
+                          }}
+                        >
+                          Đọc tất cả
+                        </h6>
+                      </div>
+                      {noti?.map((item) => (
+                        <NavDropdown.Item
+                          key={item?.id}
+                          style={{
+                            maxWidth: 500,
+                            minWidth: 500,
+                            borderTop: "1px solid black",
+                            backgroundColor:
+                              item?.watched === 1 ? "#DDDDDD" : "#fff",
+                          }}
+                        >
+                          <h6>{item?.header}</h6>
+                          <p
+                            style={{
+                              whiteSpace: "normal",
+                            }}
+                          >
+                            {item?.content}
+                          </p>
+                          <p style={{ fontSize: 13 }}>{item?.formatDate}</p>
+                        </NavDropdown.Item>
+                      ))}
+                    </NavDropdown>
+                  </div>
+                )}
+
+                <div className="d-flex align-items-center gap-10 text-white text-light">
+                  {customer ? (
+                    <NavDropdown
+                      title={customer}
                       id="basic-nav-dropdown"
                       className="nav-dropdown-title"
                     >
-                      {welcomeMessage && isAorN && (
+                      {customer && isAorN && (
                         <LinkContainer to="/admin" onClick={handleLinkClick}>
                           <NavDropdown.Item>Admin</NavDropdown.Item>
                         </LinkContainer>
@@ -182,7 +252,8 @@ const Header = (props) => {
                       <LinkContainer to="/profile">
                         <NavDropdown.Item>Tài Khoản Của Tôi</NavDropdown.Item>
                       </LinkContainer>
-                      {(welcomeMessage && isAorN) || (
+
+                      {(customer && isAorN) || (
                         <LinkContainer to="/to-pay">
                           <NavDropdown.Item>Lịch Sử Mua Hàng</NavDropdown.Item>
                         </LinkContainer>

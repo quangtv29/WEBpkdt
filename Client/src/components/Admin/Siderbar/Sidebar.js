@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../../styles/adminlte.min.css";
 import "./Siderbar.scss";
-import axios from "axios";
+import { faChartBar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Sidebar = (props) => {
   const user = localStorage.getItem("lastname");
   const navigate = useNavigate();
   const welcomeMessage = `Welcome, ${user}!`;
+  const [showProductList, setShowProductList] = useState(false);
+
+  const toggleProductList = () => {
+    setShowProductList(!showProductList);
+  };
   const logout = () => {
     localStorage.clear();
     navigate("/login", { replace: true });
   };
+
   return (
     <>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -75,13 +83,22 @@ const Sidebar = (props) => {
                 </ul>
               </li>
               <li className="nav-item">
-                <a href="#" className="nav-link">
+                <a href="#" className="nav-link" onClick={toggleProductList}>
                   <i className="nav-icon fas fa-table"></i>
                   <p>
-                    Quản lý sản phẩm<i className="fas fa-angle-left right"></i>
+                    Quản lý sản phẩm
+                    <i
+                      className={`fas fa-angle-left right ${
+                        showProductList ? "rotate" : ""
+                      }`}
+                    ></i>
                   </p>
                 </a>
-                <ul className="nav nav-treeview">
+                <ul
+                  className={`nav nav-treeview ${
+                    showProductList ? "show" : ""
+                  }`}
+                >
                   <li className="nav-item">
                     <a href="/admin/list-product" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
@@ -111,7 +128,7 @@ const Sidebar = (props) => {
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a href="pages/tables/data.html" className="nav-link">
+                    <a href="./delivering" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Đang giao cho khách</p>
                     </a>
@@ -130,9 +147,10 @@ const Sidebar = (props) => {
                   </li>
                 </ul>
               </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link">
+              <li className="nav-item ml-2">
+                <a href="/admin/statistics" className="nav-link">
                   {/* <i className="nav-icon fas fa-table"></i> */}
+                  <FontAwesomeIcon icon={faChartBar} size="1x" />
                   <p>
                     Thống kê<i className=""></i>
                   </p>

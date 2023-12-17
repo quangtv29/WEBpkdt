@@ -7,5 +7,6 @@ namespace API.Business.Repository.IRepository
     public interface INotificationRepository : IRepositoryBase<Notification>
     {
         Task<IEnumerable<Notification>> getNotificationByCustomerId(string customerId, NotificationParameter notificationParameter);
+       void addNoti(Notification notification);
     }
 }

@@ -27,7 +27,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("686b2860-11cb-4e2c-b44e-152cddffd64f"));
+                        .HasDefaultValue(new Guid("958b73f0-f489-4e28-89c2-1772c934cf4f"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -51,6 +51,9 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -125,7 +128,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("5b408ffd-7afb-4140-8f60-69d702643981"));
+                        .HasDefaultValue(new Guid("8f817d8b-544c-4567-80e3-4f650c8f4e50"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -161,13 +164,15 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("84c53959-dba3-427b-bea2-295453c19570"));
+                        .HasDefaultValue(new Guid("92594653-2a4b-46e8-84cb-3ac6ff94ce43"));
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Create")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("CustomerID")
                         .IsRequired()
@@ -182,7 +187,9 @@ namespace API.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("Watched")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<bool?>("isDelete")
                         .ValueGeneratedOnAdd()
@@ -201,7 +208,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("d2e89e12-c069-4858-bc9c-6311199abafe"));
+                        .HasDefaultValue(new Guid("0efbd180-4bda-40c2-b12b-66e0ce6a01ea"));
 
                     b.Property<Guid?>("BillId")
                         .HasColumnType("uniqueidentifier");
@@ -250,7 +257,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("377c1eff-bfee-4525-a46f-103f2782d9fa"));
+                        .HasDefaultValue(new Guid("a580a285-2fad-405f-af54-eae2f32db634"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -307,7 +314,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("f58174fe-dad8-49d4-bc79-08c083279d3e"));
+                        .HasDefaultValue(new Guid("8b7d6002-6a6d-4395-b827-e5fb8860bbc4"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -334,7 +341,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("2e723263-fbb2-462e-aeed-5f7b49dc8438"));
+                        .HasDefaultValue(new Guid("5f86519b-a833-492a-8836-7fe9a52c3e36"));
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");
@@ -405,22 +412,22 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8f958d98-f1da-4881-acb0-b2bb7587288b",
-                            ConcurrencyStamp = "dfc88b10-51c0-41cf-b8cc-c0fedea24d49",
+                            Id = "4d7c4e97-78ec-40be-8e2b-b29ac4fe974a",
+                            ConcurrencyStamp = "811cc269-c4d5-4a12-aee7-9ee982a3c020",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "47fe6f0e-f96b-4d4d-88db-9787f2b0e6a2",
-                            ConcurrencyStamp = "31a76f7c-4435-4a26-beb8-db53bb3adde1",
+                            Id = "babb8358-60ad-4202-9d69-266df5f205f5",
+                            ConcurrencyStamp = "2ffd9551-67b3-4e7d-8e2e-ab2758ea4514",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "880074c7-a8cd-40a0-9187-bb7b0af1d4bc",
-                            ConcurrencyStamp = "84d28d31-d281-460e-960f-035a52836fa8",
+                            Id = "86a7afc1-2215-4a40-bcbc-3047fbb031f6",
+                            ConcurrencyStamp = "8dbe67f3-8117-47ee-9425-f0f12c112a89",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });

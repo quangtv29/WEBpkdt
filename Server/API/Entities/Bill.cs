@@ -23,6 +23,8 @@ namespace API.Entities
         public string? DiscountCode { get; set; }
         public double? IntoMoney { get; set; } 
 
+        public string? Name { get; set; }
+
         [NotMapped]
         public string? ConvertDiscount { get; set; }
         [NotMapped]

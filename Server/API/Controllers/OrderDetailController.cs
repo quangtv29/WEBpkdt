@@ -181,5 +181,22 @@ namespace API.Controllers
             var result = await _service.orderDetailService.totalProfit();
             return Ok(result);
         }
+        [HttpPost("deleteOrder")]
+
+        public async Task<IActionResult> deleteOrder (Guid? Id)
+        {
+            try
+            {
+                await _service.orderDetailService.deleteOrder(Id);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
+
+
     }
 }

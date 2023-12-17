@@ -1,5 +1,6 @@
 ﻿using API.Business.Repository.Configuration;
 using API.Entities;
+using API.Entities.Enum;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -84,6 +85,8 @@ namespace API.Database
                 e.Property(e => e.LastModificationTime).HasDefaultValueSql("GETDATE()");
                 e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
                 e.Property(e => e.isDelete).HasDefaultValue(false);
+                e.Property(e => e.Watched).HasDefaultValue(Watched.No);
+                e.Property(e => e.Create).HasDefaultValueSql("GETDATE()");
             });
         }
 

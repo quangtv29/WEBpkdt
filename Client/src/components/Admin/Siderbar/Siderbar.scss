@@ -1,0 +1,15 @@
+// ProductManagement.scss
+.nav-treeview {
+    display: none;
+  
+    &.show {
+      display: block;
+    }
+  }
+  
+  .right {
+    &.rotate {
+      transform: rotate(90deg);
+    }
+  }
+  

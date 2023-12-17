@@ -8,16 +8,7 @@ import Meta from "../Meta";
 const Canceled = () => {
   const [data, setData] = useState([]);
   const { encryptionKey } = useContext(MyContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleConfirm = () => {
-    console.log("meomeo");
-  };
-  const handleCancel = () => {
-    setIsOpen(false);
-  };
-  const handleOnclick = () => {
-    setIsOpen(true);
-  };
+
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
@@ -63,9 +54,10 @@ const Canceled = () => {
       <div
         className=" "
         style={{
-          backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#e7ecf0",
+          backgroundColor: "#e7ecf0",
           height: "100%",
           boxSizing: "border-box",
+          minHeight: 500,
         }}
       >
         <ul
@@ -130,26 +122,10 @@ const Canceled = () => {
                       currency: "VND",
                     })}
                   </div>
-                  <div className="col-2 d-flex justify-content-center">
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => handleOnclick()}
-                    >
-                      Huỷ
-                    </button>
-                  </div>
                 </li>
               </div>
             ))}
           </li>
-          {isOpen && (
-            <Confirmm
-              message="Bạn có chắc chắn muốn huỷ hoá đơn?"
-              onConfirm={handleConfirm}
-              onCancel={handleCancel}
-            />
-          )}
         </ul>
       </div>
     </>

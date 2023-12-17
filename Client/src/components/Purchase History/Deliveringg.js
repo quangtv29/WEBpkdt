@@ -65,6 +65,7 @@ const Deliveringg = () => {
           backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#e7ecf0",
           height: "100%",
           boxSizing: "border-box",
+          minHeight: 500,
         }}
       >
         <ul

@@ -16,144 +16,144 @@ const Blog = () => {
               <h3 className="filter-title">Danh mục sản phẩm</h3>
               <div>
                 <ul className="list-unstyled ps-0">
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#oplung-collapse"
                       aria-expanded="true"
                     >
                       Ốp lưng <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="oplung-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="oplung-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>
                       </ul>
                     </div>
                   </li>
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#kinh-collapse"
                       aria-expanded="true"
                     >
                       Kính cường lực <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="kinh-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="kinh-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>
                       </ul>
                     </div>
                   </li>
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#cusac-collapse"
                       aria-expanded="true"
                     >
                       Củ sạc, bộ sạc <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="cusac-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="cusac-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>
                       </ul>
                     </div>
                   </li>
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#capsac-collapse"
                       aria-expanded="true"
                     >
                       Cáp sạc <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="capsac-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="capsac-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>
                       </ul>
                     </div>
                   </li>
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#tainghe-collapse"
                       aria-expanded="true"
                     >
                       Tai nghe <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="tainghe-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="tainghe-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>
                       </ul>
                     </div>
                   </li>
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#sac-collapse"
                       aria-expanded="true"
                     >
                       Sạc dự phòng <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="sac-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="sac-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>
                       </ul>
                     </div>
                   </li>
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#loa-collapse"
                       aria-expanded="true"
                     >
                       Loa Bluetooth <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="loa-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="loa-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>
                       </ul>
                     </div>
                   </li>
-                  <li class="mb-1">
+                  <li className="mb-1">
                     <button
-                      class="btn btn-toggle align-items-center rounded"
+                      className="btn btn-toggle align-items-center rounded"
                       data-bs-toggle="collapse"
                       data-bs-target="#giado-collapse"
                       aria-expanded="true"
                     >
                       Giá đỡ điện thoại <nbsp />
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
+                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div class="collapse" id="giado-collapse">
-                      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <div className="collapse" id="giado-collapse">
+                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li>Hi</li>
                         <li>Ba</li>
                         <li>Bon</li>

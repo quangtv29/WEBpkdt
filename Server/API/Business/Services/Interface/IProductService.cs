@@ -23,5 +23,7 @@ namespace API.Business.Services.Interface
          Task<IEnumerable<Product>> getProductByProductTypeId(Guid? ProductTypeId, ProductParameters productParameters);
         Task<(IEnumerable<GetAllProductDTO>, int)> searchByName(string name, ProductParameters productParameters);
         Task<Product> updateProduct(Guid? Id, UpdateProductDTO product);
-    }
+        Task<IEnumerable<GetAllProductDTO>> getProductByPrice(int? vip, int? to, ProductParameters productParameters, bool inStock, bool outOfStock);
+        
+        }
 }

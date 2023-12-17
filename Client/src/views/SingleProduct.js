@@ -6,7 +6,6 @@ import ReactStars from "react-rating-stars-component";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import ProductCard from "../components/ProductCard";
-import ReactImageZoom from "react-image-zoom";
 import Color from "../components/Color";
 import { TbGitCompare } from "react-icons/tb";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -19,7 +18,7 @@ import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
 
 const SingleProduct = () => {
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState([]);
 
   const [orderedProduct, setorderedProduct] = useState(true);
 
@@ -47,32 +46,36 @@ const SingleProduct = () => {
     price
   ) => {
     event.preventDefault();
-    try {
-      const result = await axios.post(
-        `https://localhost:7295/api/Bill/createBill`,
-        {
-          customerId: decryptedId,
-          address: "",
-          phoneNumber: "",
-          totalMoney: 0,
-          note: "",
-        },
-        {
-          params: {
-            code: null,
+    if (product?.quantity === 0) {
+      alert("Sản phẩm trong kho không đủ!");
+    } else {
+      try {
+        const result = await axios.post(
+          `https://localhost:7295/api/Bill/createBill`,
+          {
+            customerId: decryptedId,
+            address: "",
+            phoneNumber: "",
+            totalMoney: 0,
+            note: "",
           },
-        }
-      );
+          {
+            params: {
+              code: null,
+            },
+          }
+        );
 
-      await axios.post("https://localhost:7295/api/OrderDetail/createCart", {
-        billId: result.data.data.id,
-        price: price,
-        productId: productid,
-        quantity: quantity,
-        totalMoney: totalmoney,
-      });
-    } catch (error) {
-      console.error(error);
+        await axios.post("https://localhost:7295/api/OrderDetail/createCart", {
+          billId: result.data.data.id,
+          price: price,
+          productId: productid,
+          quantity: quantity,
+          totalMoney: totalmoney,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -95,12 +98,12 @@ const SingleProduct = () => {
     return <div>Loading...</div>;
   }
 
-  const props = {
-    width: 594,
-    height: 600,
-    zoomWidth: 600,
-    img: product.image,
-  };
+  // const props = {
+  //   width: 594,
+  //   height: 600,
+  //   zoomWidth: 600,
+  //   img: product?.image,
+  // };
 
   // const copyToClipboard = (text) => {
   //   console.log("text", text);
@@ -117,7 +120,7 @@ const SingleProduct = () => {
     addToCart({
       ...product,
       quantity: quantity,
-      prices: quantity * product.price,
+      prices: quantity * product?.price,
     });
   };
 
@@ -130,7 +133,7 @@ const SingleProduct = () => {
           <div className="col-6">
             <div className="main-product-image">
               <div>
-                <ReactImageZoom {...props} />
+                <img src={product?.image} alt="image" />
               </div>
             </div>
             <div className="other-product-images d-flex flex-wrap gap-15">
@@ -148,11 +151,11 @@ const SingleProduct = () => {
           <div className="col-6">
             <div className="main-product-details">
               <div className="border-bottom">
-                <h3 className="title">{product.name}</h3>
+                <h3 className="title">{product?.name}</h3>
               </div>
               <div className="border-bottom py-3">
                 <p className="price">
-                  {product.price?.toLocaleString("vi-VN", {
+                  {product?.price?.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
@@ -226,6 +229,7 @@ const SingleProduct = () => {
                           product.price
                         )
                       }
+                      disabled={product?.quantity === 0 ? true : false}
                     >
                       Thêm Vào Giỏ Hàng
                     </button>
@@ -407,23 +411,20 @@ const SingleProduct = () => {
               </div>
             </div>
             <div className="modal-footer border-0 py-0 justify-content-center gap-30">
-              <button type="button" className="button" data-bs-dismiss="modal">
-                View My Cart
-              </button>
-              <button type="button" className="button signup">
-                Checkout
-              </button>
+              <h4>Thêm sản phẩm vào giỏ hàng thành công</h4>
             </div>
             <div className="d-flex justify-content-center py-3">
-              <Link
-                className="text-dark"
-                to="/product"
-                onClick={() => {
-                  closeModal();
-                }}
-              >
-                Continue To Shopping
-              </Link>
+              <button type="button" className="button text-light ">
+                <a
+                  className="text-light"
+                  href="/product"
+                  onClick={() => {
+                    closeModal();
+                  }}
+                >
+                  Tiếp tục mua sắm
+                </a>
+              </button>
             </div>
           </div>
         </div>

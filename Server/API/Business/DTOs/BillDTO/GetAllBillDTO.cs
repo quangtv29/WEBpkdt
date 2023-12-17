@@ -13,6 +13,8 @@ namespace API.Business.DTOs.BillDTO
         public int? TotalMoney { get; set; }
         public Status? Status { get; set; }
         public string? Note { get; set; }
+        public string? Name { get; set; }
+
         public double? Discount { get; set; }
         public double? IntoMoney { get; set; }
  

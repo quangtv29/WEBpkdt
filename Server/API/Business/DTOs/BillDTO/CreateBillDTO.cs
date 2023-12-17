@@ -11,6 +11,8 @@ namespace API.Business.DTOs.BillDTO
         public string? PhoneNumber { get; set; }
         public int? TotalMoney { get; set; }
         public string? Note { get; set; }
+        public string? Name { get; set; }
+
         public Status status = Status.Cart;
     }
 }

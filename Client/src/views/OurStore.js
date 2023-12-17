@@ -1,24 +1,122 @@
 import React, { useState, useContext, useEffect } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import ReactStars from "react-rating-stars-component";
 import ProductCard from "../components/ProductCard";
 import Color from "../components/Color";
 import Container from "../components/Container";
+import _ from "lodash";
 import { SearchContext } from "../SearchContext";
+import axios from "axios";
+
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
+  const [isInStockChecked, setIsInStockChecked] = useState(false);
+  const [isOutOfStockChecked, setIsOutOfStockChecked] = useState(false);
+
+  const handleInStockChange = () => {
+    if (isInStockChecked) {
+      setIsInStockChecked(false);
+    } else {
+      setIsInStockChecked(true);
+      setIsOutOfStockChecked(false);
+    }
+  };
+
+  const handleOutOfStockChange = () => {
+    if (isOutOfStockChecked) {
+      setIsOutOfStockChecked(false);
+    } else {
+      setIsOutOfStockChecked(true);
+      setIsInStockChecked(false);
+    }
+  };
   const [condition, setCondition] = useState("Liên Quan");
   const handleConditionChange = (event) => {
     setCondition(event.target.value);
   };
-  const { record } = useContext(SearchContext);
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(0);
+  const { record, search, setRecord, status, setStatus } =
+    useContext(SearchContext);
   const fix = record / 6;
+  const [products, setProducts] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const fetchProducts = async () => {
+    let url = "https://localhost:7295/api/Product/searchByName";
+    const pageNumber = currentPage;
+    const pageSize = 6;
+    const response = await axios.post(
+      url,
+      { pageNumber, pageSize },
+      {
+        params: {
+          name: search,
+        },
+      }
+    );
+
+    let data = response.data.item1;
+    setRecord(response.data.item2);
+
+    switch (condition) {
+      case "Bán Chạy":
+        // data = topSeller;
+        break;
+      case "Giá, Thấp đến Cao":
+        data = _.sortBy(data, "price");
+        break;
+      case "Giá, Cao đến Thấp":
+        data = _.sortBy(data, "price").reverse();
+        break;
+      case "Theo Thứ Tự, A-Z":
+        data = _.sortBy(data, "name");
+        break;
+      case "Theo Thứ Tự, Z-A":
+        data = _.sortBy(data, "name").reverse();
+        break;
+      // Thêm các case cho các trường hợp khác
+      default:
+        // Xử lý cho trường hợp mặc định nếu không có case nào khớp với giá trị của biến condition
+        break;
+    }
+    setProducts(data);
+  };
+  const handleFilter = async (event) => {
+    event.preventDefault();
+
+    const response = await axios.post(
+      "https://localhost:7295/api/Product/getByPrice",
+      {
+        pageNumber: currentPage,
+        pageSize: 6,
+      },
+      {
+        params: {
+          vip: from,
+          to: to,
+          inStock: isInStockChecked,
+          outOfStock: isOutOfStockChecked,
+        },
+      }
+    );
+    setProducts(response.data);
+    let count = 0;
+    response.data.map(() => {
+      count++;
+    });
+
+    setRecord(count);
+  };
+  useEffect(() => {
+    fetchProducts();
+    setStatus(false);
+    // fetchTopSeller();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, condition, currentPage]);
   return (
     <>
       <Meta title={"Our Store"} />
@@ -183,67 +281,68 @@ const OurStore = () => {
                 <h5 className="sub-title">Sẵn có</h5>
                 <div>
                   <div className="form-check">
-                    <input className="form-check-input" type="checkbox" />
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={isInStockChecked}
+                      onChange={handleInStockChange}
+                    />
                     <label className="form-check-label" htmlFor="">
                       Còn hàng
                     </label>
                   </div>
                   <div className="form-check">
-                    <input className="form-check-input" type="checkbox" />
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={isOutOfStockChecked}
+                      onChange={handleOutOfStockChange}
+                    />
                     <label className="form-check-label" htmlFor="">
                       Hết hàng
                     </label>
                   </div>
                 </div>
-                <h5 className="sub-title">Price</h5>
+                <h5 className="sub-title">Giá</h5>
                 <div className="d-flex align-items-center gap-10">
                   <div className="form-floating">
                     <input
-                      type="email"
+                      type="number"
                       className="form-control"
                       id="floatingInput"
                       placeholder="From"
+                      onChange={(event) => {
+                        event.preventDefault();
+                        setFrom(event.target.value);
+                      }}
                     />
                     <label htmlFor="floatingInput">From</label>
                   </div>
                   <div className="form-floating">
                     <input
-                      type="email"
+                      type="number"
                       className="form-control"
                       id="floatingInput1"
                       placeholder="To"
+                      onChange={(event) => {
+                        event.preventDefault();
+                        setTo(event.target.value);
+                      }}
                     />
                     <label htmlFor="floatingInput1">To</label>
                   </div>
                 </div>
+                <div className="d-flex w-100 justify-content-center">
+                  <button
+                    className="button mt-2"
+                    onClick={(e) => handleFilter(e)}
+                  >
+                    Lọc
+                  </button>
+                </div>
                 <h5 className="sub-title">Colors</h5>
                 <div>
                   <Color />
-                </div>
-                <h5 className="sub-title">Size</h5>
-                <div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="color-1"
-                    />
-                    <label className="form-check-label" htmlFor="color-1">
-                      S (2)
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="color-2"
-                    />
-                    <label className="form-check-label" htmlFor="color-2">
-                      M (2)
-                    </label>
-                  </div>
                 </div>
               </div>
             </div>
@@ -268,52 +367,6 @@ const OurStore = () => {
             </div>
             <div className="filter-card mb-3">
               <h3 className="filter-title">Random Product</h3>
-              <div>
-                <div className="random-products mb-3 d-flex">
-                  <div className="w-50">
-                    <img
-                      src="../assets/images/watch.jpg"
-                      className="img-fluid"
-                      alt="watch"
-                    />
-                  </div>
-                  <div className="w-50">
-                    <h5>
-                      Kids headphones bulk 10 pack multi colored for students
-                    </h5>
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={false}
-                      activeColor="#ffd700"
-                    />
-                    <b>$ 300</b>
-                  </div>
-                </div>
-                <div className="random-products d-flex">
-                  <div className="w-50">
-                    <img
-                      src="../assets/images/watch.jpg"
-                      className="img-fluid"
-                      alt="watch"
-                    />
-                  </div>
-                  <div className="w-50">
-                    <h5>
-                      Kids headphones bulk 10 pack multi colored for students
-                    </h5>
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={false}
-                      activeColor="#ffd700"
-                    />
-                    <b>$ 300</b>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <div className="col-9">
@@ -354,6 +407,7 @@ const OurStore = () => {
                   grid={grid}
                   condition={condition}
                   currentPage={currentPage}
+                  product={products}
                 />
               </div>
             </div>

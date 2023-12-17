@@ -19,8 +19,14 @@ namespace API.Business.Repository
                 .Where(p => p.isDelete == false)
                 .Skip((notificationParameter.PageNumber - 1) * notificationParameter.PageSize)
                 .Take(notificationParameter.PageSize)
+                .OrderByDescending(p => p.Create)
                 .ToListAsync();
             return result;
+        }
+
+        public void addNoti(Notification notification)
+        {
+            Create(notification);
         }
     }
 }
