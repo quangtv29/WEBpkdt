@@ -9,7 +9,7 @@ namespace API.Entities
         [StringLength (255)]
         public string ?Address1 { get; set; }
         public string? Address2 { get; set; }
-       
+        public string? Image { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
         public  DateTime? LastModificationTime { get; set; }

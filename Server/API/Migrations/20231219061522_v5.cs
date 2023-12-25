@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class v107 : Migration
+    public partial class v5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,114 +16,103 @@ namespace API.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "2f28a04a-a1d8-4eb2-8918-5fa52b922a2a");
+                keyValue: "88c69f79-57d7-42d2-b9b2-b9e600e704fe");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "93c0d892-6e9e-4212-8ce9-4faecb3af592");
+                keyValue: "8a47def8-0145-4345-a96d-37d44acd1f8e");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "bf46f723-fe39-4c7d-b44a-52b528311420");
+                keyValue: "d6864e27-6874-446d-a46d-6ebddf5dac2e");
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Sale",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("5f86519b-a833-492a-8836-7fe9a52c3e36"),
+                defaultValue: new Guid("47635693-8440-49f3-a047-eb60afb50ca3"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("526f0fd9-6f1c-4fa3-a8f9-0c1c471e5318"));
+                oldDefaultValue: new Guid("9ac0c1a1-3b1f-4471-962d-7c961524cf66"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "ProductType",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("8b7d6002-6a6d-4395-b827-e5fb8860bbc4"),
+                defaultValue: new Guid("fb264382-263a-45c9-9ba5-038449a6ce1b"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("79cbfa15-108c-4dd5-a228-42a5ac908197"));
+                oldDefaultValue: new Guid("c997549e-5b61-4977-b403-a97eb5dce4ab"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Product",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("a580a285-2fad-405f-af54-eae2f32db634"),
+                defaultValue: new Guid("e9cdd72a-10c4-4ef7-a507-fe1db4cd3996"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("060a1b49-e200-4302-8ba1-6dc379214d73"));
+                oldDefaultValue: new Guid("4146a5c0-9a8b-45bf-93e7-c918329bf15d"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "OrderDetail",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("0efbd180-4bda-40c2-b12b-66e0ce6a01ea"),
+                defaultValue: new Guid("7523fc47-b8cb-4dcf-b79b-72b01947d3aa"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("be1fab0a-85ae-45c4-ac5b-506c270a5ac5"));
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Watched",
-                table: "Notification",
-                type: "int",
-                nullable: false,
-                defaultValue: 1,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Create",
-                table: "Notification",
-                type: "datetime2",
-                nullable: false,
-                defaultValueSql: "GETDATE()",
-                oldClrType: typeof(DateTime),
-                oldType: "datetime2");
+                oldDefaultValue: new Guid("86c23bc2-0681-40a2-88fd-1208a3249dd8"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Notification",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("92594653-2a4b-46e8-84cb-3ac6ff94ce43"),
+                defaultValue: new Guid("91527c24-a6f5-4111-99ba-1721466d8075"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("a562e374-191c-4540-887b-be1fc86500fe"));
+                oldDefaultValue: new Guid("7597fd3d-a9ec-4bf4-a3db-04595c87c59b"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Feedback",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("8f817d8b-544c-4567-80e3-4f650c8f4e50"),
+                defaultValue: new Guid("e3a5f7a3-19e1-4c9b-a1b0-ed0682b34f11"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("9cc0e26a-aebb-4961-be8c-24c59f8b7c75"));
+                oldDefaultValue: new Guid("7adf037a-d6bc-4c13-a120-f3327e888005"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Bill",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("958b73f0-f489-4e28-89c2-1772c934cf4f"),
+                defaultValue: new Guid("73cd69ae-e0e9-48df-bf17-05f12afde66e"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("f357f7f0-0b64-4f63-bc05-2792f71554c0"));
+                oldDefaultValue: new Guid("811c2392-09cb-43c5-b6aa-3efa1499c7e4"));
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "ShippingDate",
+                table: "Bill",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4d7c4e97-78ec-40be-8e2b-b29ac4fe974a", "811cc269-c4d5-4a12-aee7-9ee982a3c020", "Manager", "MANAGER" },
-                    { "86a7afc1-2215-4a40-bcbc-3047fbb031f6", "8dbe67f3-8117-47ee-9425-f0f12c112a89", "Employee", "EMPLOYEE" },
-                    { "babb8358-60ad-4202-9d69-266df5f205f5", "2ffd9551-67b3-4e7d-8e2e-ab2758ea4514", "Customer", "CUSTOMER" }
+                    { "3c5bc3e0-d531-40e4-b2af-a71e4e61eee9", "6cf476ac-08da-424c-9c72-e6cc090bf18a", "Customer", "CUSTOMER" },
+                    { "f76af0dc-abf6-47bb-b071-3db83d3426a2", "b8237295-42df-4a47-965b-a67e13096782", "Manager", "MANAGER" },
+                    { "fe7d129f-e08a-48dd-aa48-906e87a93b41", "99873e4c-9956-48d4-89c8-4489eb7ca058", "Employee", "EMPLOYEE" }
                 });
         }
 
@@ -133,114 +122,100 @@ namespace API.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "4d7c4e97-78ec-40be-8e2b-b29ac4fe974a");
+                keyValue: "3c5bc3e0-d531-40e4-b2af-a71e4e61eee9");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "86a7afc1-2215-4a40-bcbc-3047fbb031f6");
+                keyValue: "f76af0dc-abf6-47bb-b071-3db83d3426a2");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "babb8358-60ad-4202-9d69-266df5f205f5");
+                keyValue: "fe7d129f-e08a-48dd-aa48-906e87a93b41");
+
+            migrationBuilder.DropColumn(
+                name: "ShippingDate",
+                table: "Bill");
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Sale",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("526f0fd9-6f1c-4fa3-a8f9-0c1c471e5318"),
+                defaultValue: new Guid("9ac0c1a1-3b1f-4471-962d-7c961524cf66"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("5f86519b-a833-492a-8836-7fe9a52c3e36"));
+                oldDefaultValue: new Guid("47635693-8440-49f3-a047-eb60afb50ca3"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "ProductType",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("79cbfa15-108c-4dd5-a228-42a5ac908197"),
+                defaultValue: new Guid("c997549e-5b61-4977-b403-a97eb5dce4ab"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("8b7d6002-6a6d-4395-b827-e5fb8860bbc4"));
+                oldDefaultValue: new Guid("fb264382-263a-45c9-9ba5-038449a6ce1b"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Product",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("060a1b49-e200-4302-8ba1-6dc379214d73"),
+                defaultValue: new Guid("4146a5c0-9a8b-45bf-93e7-c918329bf15d"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("a580a285-2fad-405f-af54-eae2f32db634"));
+                oldDefaultValue: new Guid("e9cdd72a-10c4-4ef7-a507-fe1db4cd3996"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "OrderDetail",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("be1fab0a-85ae-45c4-ac5b-506c270a5ac5"),
+                defaultValue: new Guid("86c23bc2-0681-40a2-88fd-1208a3249dd8"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("0efbd180-4bda-40c2-b12b-66e0ce6a01ea"));
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Watched",
-                table: "Notification",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldDefaultValue: 1);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Create",
-                table: "Notification",
-                type: "datetime2",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime2",
-                oldDefaultValueSql: "GETDATE()");
+                oldDefaultValue: new Guid("7523fc47-b8cb-4dcf-b79b-72b01947d3aa"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Notification",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("a562e374-191c-4540-887b-be1fc86500fe"),
+                defaultValue: new Guid("7597fd3d-a9ec-4bf4-a3db-04595c87c59b"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("92594653-2a4b-46e8-84cb-3ac6ff94ce43"));
+                oldDefaultValue: new Guid("91527c24-a6f5-4111-99ba-1721466d8075"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Feedback",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("9cc0e26a-aebb-4961-be8c-24c59f8b7c75"),
+                defaultValue: new Guid("7adf037a-d6bc-4c13-a120-f3327e888005"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("8f817d8b-544c-4567-80e3-4f650c8f4e50"));
+                oldDefaultValue: new Guid("e3a5f7a3-19e1-4c9b-a1b0-ed0682b34f11"));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Bill",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("f357f7f0-0b64-4f63-bc05-2792f71554c0"),
+                defaultValue: new Guid("811c2392-09cb-43c5-b6aa-3efa1499c7e4"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("958b73f0-f489-4e28-89c2-1772c934cf4f"));
+                oldDefaultValue: new Guid("73cd69ae-e0e9-48df-bf17-05f12afde66e"));
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2f28a04a-a1d8-4eb2-8918-5fa52b922a2a", "06f5b5cd-c5e8-451e-b8a7-98ce3328478f", "Manager", "MANAGER" },
-                    { "93c0d892-6e9e-4212-8ce9-4faecb3af592", "3847330b-6216-4f85-ae10-1e3c379955d5", "Customer", "CUSTOMER" },
-                    { "bf46f723-fe39-4c7d-b44a-52b528311420", "b622a18f-bd15-448a-ad27-4a7a5655beb4", "Employee", "EMPLOYEE" }
+                    { "88c69f79-57d7-42d2-b9b2-b9e600e704fe", "4b91c993-4979-4aa5-876b-63e334cf51b4", "Employee", "EMPLOYEE" },
+                    { "8a47def8-0145-4345-a96d-37d44acd1f8e", "97eb6641-de0e-4e79-8cd9-0407765ad3be", "Manager", "MANAGER" },
+                    { "d6864e27-6874-446d-a46d-6ebddf5dac2e", "49e3d518-2ec8-44de-8c9b-a041adaeb278", "Customer", "CUSTOMER" }
                 });
         }
     }

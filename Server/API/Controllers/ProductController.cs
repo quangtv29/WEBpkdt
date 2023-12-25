@@ -57,11 +57,21 @@ namespace API.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
         [HttpPost("meo")]
+        [DisableRequestSizeLimit]
 
         public IActionResult meo(IFormFile image)
         {
-            return Ok("meo");
+            try
+            {
+                // Xử lý tệp tin của bạn ở đây
+                return Ok("meo");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Đã xảy ra lỗi: {ex.Message}");
+            }
         }
 
         [HttpPost("GetProductByIds")]
@@ -170,15 +180,15 @@ namespace API.Controllers
 
         [HttpPost("updateProduct")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> updateProduct(Guid? Id, [FromForm] UpdateProductDTO product)
+        public async Task<IActionResult> updateProduct( [FromForm] UpdateProductDTO product)
         {
             try
             {
-                if (Id == null)
+                if (product.Id == null)
                 {
                     return BadRequest("Update Fail - Id null");
                 }
-                var result = await _service.productService.updateProduct(Id, product);
+                var result = await _service.productService.updateProduct( product);
                 if (result == null)
                 {
                     return BadRequest("Update Fail - Id does n't exists");
@@ -197,6 +207,19 @@ namespace API.Controllers
             return Ok( await _service.productService.getProductByPrice(vip, to, productParameters,inStock,outOfStock));
         }
 
+        [HttpPost("getProductByProductType")]
+        public async Task<IActionResult> getProductByProductType(string? productType, ProductParameters productParameters)
+        {
+            try
+            {
+                var result = await _service.productService.getProductByProductType(productType, productParameters);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
 

@@ -1,12 +1,12 @@
 ﻿using API.Business.DTOs;
 using API.Business.DTOs.AccountDTO;
+using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NLog.Fluent;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -16,16 +16,17 @@ namespace API.Business.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
-
+        public readonly IRepositoryManager _repo;
         public readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private User? _user;
-        public AuthenticationService(IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationService(IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IRepositoryManager repo)
         {
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
+            _repo = repo;
         }
 
        
@@ -39,7 +40,16 @@ namespace API.Business.Services
             return result;
         }
 
-        public async Task<bool> Login(LoginValidateDTO login)
+        public async Task<User> UpdateUser (string? id, string? firstName, string? lastName)
+        {
+            User user = await _userManager.FindByIdAsync(id);
+            user.FirstName = firstName;
+            user.LastName = lastName;
+            await _userManager.UpdateAsync(user);
+            return user;
+        }
+
+        public async Task<(bool,int)> Login(LoginValidateDTO login)
         {
              _user = await _userManager.FindByNameAsync(login.UserName);
             var result = (_user != null && await _userManager.CheckPasswordAsync(_user, login.Password));
@@ -50,11 +60,23 @@ namespace API.Business.Services
                     _user.AccessFailedCount += 1;
                     await _userManager.UpdateAsync(_user);
                 }    
-                return false;
+                return (false,0);
             }
-            _user.AccessFailedCount = 0;
-            await _userManager.UpdateAsync(_user);
-            return true;
+            var customer = await _repo.Customer.GetAllByCondition(p=>p.isDelete == false,false)
+                .Where(p=>p.Id == _user.Id)
+                .FirstOrDefaultAsync();
+            if (customer.isActive == true)
+            {
+                _user.AccessFailedCount = 0;
+                await _userManager.UpdateAsync(_user);
+                return (true, 1);
+            }
+            else
+            {
+                _user.AccessFailedCount = 0;
+                await _userManager.UpdateAsync(_user);
+                return (true, 0);
+            }
         }
            
 
@@ -195,6 +217,18 @@ List<Claim> claims)
             return result;
         }
 
+        public async Task<bool> resetPassword (ResetPasswordDTO reset)
+        {
+            User user = await _userManager.FindByIdAsync(reset.Id);
+            var result = (user != null && await _userManager.CheckPasswordAsync(user, reset.Password));
+           if (!result)
+            {
+                return false;
+            }
+            await _userManager.ChangePasswordAsync(user, reset.Password, reset.NewPassword);
+            await _userManager.UpdateAsync(user);
+            return true;
+        }
        
     }
 }

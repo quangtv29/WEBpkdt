@@ -8,5 +8,6 @@ namespace API.Business.Services.Interface
         Task<double?> getMoney(string discountCode, int? totalMoney);
 
         Task<Sale> createSale(CreateDiscountCode discount);
+        Task<IEnumerable<Sale>> getAll(string customerid);
     }
 }

@@ -1,0 +1,52 @@
+// Done.scss
+
+.done-container {
+    background-color: #e7ecf0;
+    height: 100%;
+    box-sizing: border-box;
+    min-height: 500px;
+  
+    .done-list {
+      padding: 0;
+      background-color: #fff;
+      list-style: none;
+  
+      .done-list-header {
+        display: flex;
+        border: 1px solid #ddd;
+        margin: 0;
+        box-sizing: border-box;
+  
+        .done-list-item {
+          flex: 1;
+          text-align: center;
+          padding: 10px;
+          border-right: 1px solid #ddd;
+          color: #333;
+        }
+      }
+  
+      .done-list-item {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        border-right: 1px solid #ddd;
+        color: #333;
+  
+        &.done-list-money {
+          color: #ee4d2d;
+        }
+  
+        .done-list-row {
+          display: flex;
+          align-items: center;
+          margin-top: 2px;
+        }
+  
+        .done-list-button {
+          color: #fff;
+        }
+      }
+    }
+  }
+  

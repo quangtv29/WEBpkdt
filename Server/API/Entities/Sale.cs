@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
@@ -11,7 +12,12 @@ namespace API.Entities
         public double? Percent { get; set; }
         
         public int? MinBill { get; set; }
-        public DateTime? EndDate { get; set; }
-      
+        public DateTime EndDate { get; set; }
+        [NotMapped]
+       public string? FormatDate { get; set; }
+
+        [NotMapped]
+        public bool? isActive { get; set; }
+
     }
 }

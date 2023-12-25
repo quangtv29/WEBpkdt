@@ -1,24 +1,22 @@
 import Form from "react-bootstrap/Form";
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import "./Product.scss";
-import CommonUtils from "../../../ultils/CommonUtils";
-const CreatProduct = (props) => {
+import { toast } from "react-toastify";
+const CreateProduct = (props) => {
   const [masp, setMaSP] = useState("");
   const [tensp, setTenSP] = useState("");
   const [soluong, setSoLuong] = useState("");
   const [gianhap, setGiaNhap] = useState("");
   const [giaban, setGiaBan] = useState("");
   const productType = props.productType;
-  const [maloaisp, setMaLoaiSP] = useState("");
+  const [maloaisp, setMaLoaiSP] = useState(props.maloaisp);
   const [nsx, setNSX] = useState("");
   const [mota, setMoTa] = useState("");
-  const [file, setFile] = useState("");
   const [image, setImage] = useState("");
   // const imageRef = useRef(null);
-
+  const accessToken = localStorage.getItem("accessToken");
   useEffect(() => {
     if (props.product) {
       setMaSP(props.product.id);
@@ -26,14 +24,17 @@ const CreatProduct = (props) => {
       setSoLuong(props.product.quantity);
       setGiaNhap(props.product.importPrice);
       setGiaBan(props.product.price);
-      setMaLoaiSP(props.product.productTypeName);
+      setMaLoaiSP(props.maloaisp);
       setNSX(props.product.producer);
       setMoTa(props.product.describe);
-      setFile(props.product.image);
       setImage(props.product.image);
     }
   }, [props.product]);
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setImage(selectedFile);
+  };
   const setmasp = (e) => {
     setMaSP(e.target.value);
   };
@@ -72,63 +73,38 @@ const CreatProduct = (props) => {
     setMoTa(e.target.value);
   };
 
-  const setimgfile = async (e) => {
-    var fileImage = e.target.files[0];
-    var base64 = await CommonUtils.getBase64(fileImage);
-    // var imageElement = document.createElement('img');
-
-    console.log(base64);
-    if (!fileImage.name) {
-      return;
-    }
-
-    if (
-      ![".jpg", ".png", ".jpeg"].some((ext) =>
-        fileImage.name.toLowerCase().includes(ext)
-      )
-    ) {
-      toast.error("Hình ảnh phải thuộc dạng jpeg");
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(fileImage);
-    setImage(objectUrl);
-    setFile(base64);
-  };
-
   const addData = async (e) => {
-    // e.preventDefault();
-
-    var formData = new FormData();
-    formData.append("masp", masp);
-    formData.append("tensp", tensp);
-    formData.append("soluong", soluong);
-    formData.append("gianhap", gianhap);
-    formData.append("giaban", giaban);
-    formData.append("maloaisp", maloaisp);
-    formData.append("nsx", nsx);
-    formData.append("mota", mota);
-    formData.append("file", file);
-
+    e.preventDefault();
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     };
+    var formData = new FormData();
+    formData.append("Id", masp);
+    formData.append("Name", tensp);
+    formData.append("Quantity", soluong);
+    formData.append("ImportPrice", gianhap);
+    formData.append("Price", giaban);
+    formData.append("ProductTypeID", maloaisp);
+    formData.append("Producer", nsx);
+    formData.append("Describe", mota);
+    formData.append("Image", image);
 
-    let res = null;
-    // if (props.isEditing === true) {
-    //   res = await axios.post(`/api/sanpham/${masp}`, formData, config);
-    // } else {
-    //   res = await axios.post("/api/sanpham", formData, config);
-    // }
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
-    if (res.data.status === 201) {
-      console.log("success");
-      // history("/")
-    } else {
-      console.log("error");
-    }
+    axios
+      .post(
+        "https://localhost:7295/api/Product/updateProduct",
+        formData,
+        config
+      )
+      .then(() => {
+        toast("Cập nhật sản phẩm thành công");
+      })
+      .catch(() => {
+        toast.error("Cập nhật sản phẩm thất bại");
+      });
   };
 
   return (
@@ -190,13 +166,11 @@ const CreatProduct = (props) => {
               <Form.Label>Loại sản phẩm</Form.Label>
               <Form.Select
                 name="maloaisp"
-                defaultValue={maloaisp}
+                value={props?.product?.productTypeName}
                 onChange={(e) => setmaloaisp(e)}
               >
                 {productType?.map((item) => (
-                  <option key={item.id} selected={item?.name === maloaisp}>
-                    {item?.name}
-                  </option>
+                  <option key={item.id}>{item?.name}</option>
                 ))}
               </Form.Select>
             </Form.Group>
@@ -235,8 +209,7 @@ const CreatProduct = (props) => {
               <Form.Control
                 type="file"
                 name="file"
-                onChange={(e) => setimgfile(e)}
-                hidden
+                onChange={(e) => handleFileChange(e)}
                 id="mypicture"
               />
             </Form.Group>
@@ -255,4 +228,4 @@ const CreatProduct = (props) => {
   );
 };
 
-export default CreatProduct;
+export default CreateProduct;

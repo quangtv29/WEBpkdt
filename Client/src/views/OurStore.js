@@ -7,6 +7,7 @@ import Container from "../components/Container";
 import _ from "lodash";
 import { SearchContext } from "../SearchContext";
 import axios from "axios";
+import "./OurStore.css";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
@@ -45,6 +46,24 @@ const OurStore = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const fetchProductByType = async (name) => {
+    let url = "https://localhost:7295/api/Product/getProductByProductType";
+    const pageNumber = currentPage;
+    const pageSize = 6;
+    const response = await axios.post(
+      url,
+      { pageNumber, pageSize },
+      {
+        params: {
+          productType: name,
+        },
+      }
+    );
+    setRecord(response.data.length);
+    setProducts(response.data);
+  };
+
   const fetchProducts = async () => {
     let url = "https://localhost:7295/api/Product/searchByName";
     const pageNumber = currentPage;
@@ -64,7 +83,7 @@ const OurStore = () => {
 
     switch (condition) {
       case "Bán Chạy":
-        // data = topSeller;
+        data = _.sortBy(data, "sold").reverse();
         break;
       case "Giá, Thấp đến Cao":
         data = _.sortBy(data, "price");
@@ -116,7 +135,32 @@ const OurStore = () => {
     setStatus(false);
     // fetchTopSeller();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, condition, currentPage]);
+  }, [status, currentPage]);
+  useEffect(() => {
+    let data = [...products];
+    switch (condition) {
+      case "Bán Chạy":
+        data = _.sortBy(data, "sold").reverse();
+        break;
+      case "Giá, Thấp đến Cao":
+        data = _.sortBy(data, "price");
+        break;
+      case "Giá, Cao đến Thấp":
+        data = _.sortBy(data, "price").reverse();
+        break;
+      case "Theo Thứ Tự, A-Z":
+        data = _.sortBy(data, "name").reverse();
+        break;
+      case "Theo Thứ Tự, Z-A":
+        data = _.sortBy(data, "name");
+        break;
+      // Thêm các case cho các trường hợp khác
+      default:
+        // Xử lý cho trường hợp mặc định nếu không có case nào khớp với giá trị của biến condition
+        break;
+    }
+    setProducts(data);
+  }, [condition]);
   return (
     <>
       <Meta title={"Our Store"} />
@@ -130,21 +174,11 @@ const OurStore = () => {
                 <ul className="list-unstyled ps-0">
                   <li className="mb-1">
                     <button
-                      className="btn btn-toggle align-items-center rounded"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#oplung-collapse"
-                      aria-expanded="true"
+                      onClick={() => fetchProductByType("Ốp lưng")}
+                      className="btn  align-items-center  "
                     >
                       Ốp lưng {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="oplung-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                   <li className="mb-1">
                     <button
@@ -154,15 +188,7 @@ const OurStore = () => {
                       aria-expanded="true"
                     >
                       Kính cường lực {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="kinh-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                   <li className="mb-1">
                     <button
@@ -172,51 +198,23 @@ const OurStore = () => {
                       aria-expanded="true"
                     >
                       Củ sạc, bộ sạc {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="cusac-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                   <li className="mb-1">
                     <button
-                      className="btn btn-toggle align-items-center rounded"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#capsac-collapse"
-                      aria-expanded="true"
+                      onClick={() => fetchProductByType("Cáp sạc")}
+                      className="btn  align-items-center  "
                     >
                       Cáp sạc {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="capsac-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                   <li className="mb-1">
                     <button
-                      className="btn btn-toggle align-items-center rounded"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#tainghe-collapse"
-                      aria-expanded="true"
+                      onClick={() => fetchProductByType("Tai nghe")}
+                      className="btn  align-items-center  "
                     >
                       Tai nghe {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="tainghe-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                   <li className="mb-1">
                     <button
@@ -226,15 +224,7 @@ const OurStore = () => {
                       aria-expanded="true"
                     >
                       Sạc dự phòng {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="sac-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                   <li className="mb-1">
                     <button
@@ -244,15 +234,7 @@ const OurStore = () => {
                       aria-expanded="true"
                     >
                       Loa Bluetooth {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="loa-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                   <li className="mb-1">
                     <button
@@ -262,15 +244,7 @@ const OurStore = () => {
                       aria-expanded="true"
                     >
                       Giá đỡ điện thoại {"\u00A0"}
-                      <i className="fa fa-angle-down" aria-hidden="true"></i>
                     </button>
-                    <div className="collapse" id="giado-collapse">
-                      <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li>Hi</li>
-                        <li>Ba</li>
-                        <li>Bon</li>
-                      </ul>
-                    </div>
                   </li>
                 </ul>
               </div>

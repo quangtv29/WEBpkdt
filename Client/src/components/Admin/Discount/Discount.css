@@ -1,0 +1,47 @@
+/* DiscountCodeForm.css */
+
+.discount-container {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .discount-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-label {
+    margin-bottom: 8px;
+    display: block;
+    font-weight: bold;
+  }
+  
+  .form-input {
+    width: 90%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .form-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 90%;
+  }
+  
+  .form-button:hover {
+    background-color: #45a049;
+  }
+  

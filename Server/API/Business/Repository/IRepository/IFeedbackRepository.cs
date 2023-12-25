@@ -1,5 +1,4 @@
-﻿using API.Business.DTOs.FeedbackDTO;
-using API.Business.Shared;
+﻿using API.Business.Shared;
 using API.Entities;
 
 namespace API.Business.Repository.IRepository
@@ -8,6 +7,6 @@ namespace API.Business.Repository.IRepository
     {
        void CreateFeedback(Feedback feedback);
 
-        Task<IEnumerable<Feedback>> getFeedbackByProduct(Guid? productID, FeedbackParameters feedbackParameters);
+        Task<IEnumerable<Feedback>> getFeedbackByProduct(Guid? productID, FeedbackParameters feedbackParameters, int star);
     }
 }

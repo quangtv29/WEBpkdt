@@ -2,38 +2,72 @@ import { useState, useEffect, useContext } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import ReactStars from "react-rating-stars-component";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import ProductCard from "../components/ProductCard";
 import Color from "../components/Color";
 import { TbGitCompare } from "react-icons/tb";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
-// import watch from "../assets/images/watch.jpg";
 import Container from "../components/Container";
 import { CartContext } from "../CartContext";
 import StarRatings from "react-star-ratings";
 import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
+import Avatar from "../components/Avatar";
+const MaskedString = ({ originalString }) => {
+  const visibleCharacters = 1;
 
+  const hiddenCharacters = originalString.length - 2 * visibleCharacters;
+
+  const maskedString =
+    originalString.substring(0, visibleCharacters) +
+    "*".repeat(hiddenCharacters) +
+    originalString.substring(originalString.length - visibleCharacters);
+
+  return <span className="mt-2">{maskedString}</span>;
+};
 const SingleProduct = () => {
   const [product, setProduct] = useState([]);
 
-  const [orderedProduct, setorderedProduct] = useState(true);
-
   const { addToCart } = useContext(CartContext);
-
+  const [review, setReview] = useState([]);
   const [quantity, setQuantity] = useState(1);
-
   const [available, setAvailable] = useState("");
   const { encryptionKey } = useContext(MyContext);
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
   ).toString(CryptoJS.enc.Utf8);
+  const [state, setState] = useState([true, false, false, false, false, false]);
 
-  // const [modalData, setModalData] = useState(null);
+  const handleFeedback = (e, a) => {
+    e.preventDefault();
+    var hi = [...state];
+    for (let i = 0; i < hi.length; i++) {
+      hi[i] = i === a;
+    }
+
+    setState(hi);
+    if (product?.id) {
+      axios
+        .post(
+          "https://localhost:7295/api/Feedback/getFeedbackByProduct",
+          {
+            pageNumber: 1,
+            pageSize: 5,
+          },
+          {
+            params: {
+              ProductId: product?.id,
+              star: a,
+            },
+          }
+        )
+        .then((res) => {
+          setReview(res.data);
+        });
+    }
+  };
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
@@ -43,7 +77,8 @@ const SingleProduct = () => {
     productid,
     quantity,
     totalmoney,
-    price
+    price,
+    a
   ) => {
     event.preventDefault();
     if (product?.quantity === 0) {
@@ -56,7 +91,7 @@ const SingleProduct = () => {
             customerId: decryptedId,
             address: "",
             phoneNumber: "",
-            totalMoney: 0,
+            totalMoney: totalmoney,
             note: "",
           },
           {
@@ -73,6 +108,10 @@ const SingleProduct = () => {
           quantity: quantity,
           totalMoney: totalmoney,
         });
+        if (a === 1) {
+          localStorage.setItem("billid1", result.data.data.id);
+          window.location.href = "/checkout";
+        }
       } catch (error) {
         console.error(error);
       }
@@ -93,11 +132,30 @@ const SingleProduct = () => {
       })
       .catch((error) => console.error(error));
   }, [id]);
-
+  useEffect(() => {
+    if (product?.id) {
+      axios
+        .post(
+          "https://localhost:7295/api/Feedback/getFeedbackByProduct",
+          {
+            pageNumber: 1,
+            pageSize: 5,
+          },
+          {
+            params: {
+              ProductId: product?.id,
+              star: 0,
+            },
+          }
+        )
+        .then((res) => {
+          setReview(res.data);
+        });
+    }
+  }, [product?.id]);
   if (!product) {
     return <div>Loading...</div>;
   }
-
   // const props = {
   //   width: 594,
   //   height: 600,
@@ -133,7 +191,7 @@ const SingleProduct = () => {
           <div className="col-6">
             <div className="main-product-image">
               <div>
-                <img src={product?.image} alt="image" />
+                <img src={product?.image} alt="imageCase" />
               </div>
             </div>
             <div className="other-product-images d-flex flex-wrap gap-15">
@@ -170,7 +228,6 @@ const SingleProduct = () => {
                     starSpacing="2px"
                     isSelectable={false}
                   />
-                  <p className="mb-0 t-review">( 2 Reviews )</p>
                 </div>
               </div>
               <div className=" py-3">
@@ -226,14 +283,29 @@ const SingleProduct = () => {
                           product.id,
                           quantity,
                           quantity * product.price,
-                          product.price
+                          product.price,
+                          0
                         )
                       }
                       disabled={product?.quantity === 0 ? true : false}
                     >
                       Thêm Vào Giỏ Hàng
                     </button>
-                    <button className="button signup">Mua Ngay</button>
+                    <button
+                      onClick={(event) =>
+                        handleAddCart(
+                          event,
+                          product.id,
+                          quantity,
+                          quantity * product.price,
+                          product.price,
+                          1
+                        )
+                      }
+                      className="button signup"
+                    >
+                      Mua Ngay
+                    </button>
                   </div>
                 </div>
                 <div className="d-flex align-items-center gap-15">
@@ -274,34 +346,159 @@ const SingleProduct = () => {
       <Container class1="reviews-wrapper home-wrapper-2">
         <div className="row">
           <div className="col-12">
-            <h3 id="review">Reviews</h3>
             <div className="review-inner-wrapper">
-              <div className="review-head d-flex justify-content-between align-items-end">
-                <div>
-                  <h4 className="mb-2">Customer Reviews</h4>
+              <div
+                style={{
+                  backgroundColor: "#fffbf8",
+                  border: "1px solid #f9ede5",
+                  minHeight: 120,
+                  height: 120,
+                }}
+                className="review-head d-flex  align-items-end row"
+              >
+                <div className="col-4">
+                  <h4 className="mb-2">Đánh giá sản phẩm</h4>
                   <div className="d-flex align-items-center gap-10">
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={false}
-                      activeColor="#ffd700"
+                    <StarRatings
+                      rating={product?.starRating}
+                      starRatedColor="#ffd700"
+                      starEmptyColor="#e4e5e9"
+                      numberOfStars={5}
+                      starDimension="22px"
+                      starSpacing="2px"
+                      isSelectable={false}
                     />
-                    <p className="mb-0">Based on 2 Reviews</p>
+                    <p className="mb-0">
+                      {" "}
+                      {product?.starRating?.toFixed(1)}/5 ( {review?.length}{" "}
+                      đánh giá )
+                    </p>
                   </div>
                 </div>
-                {orderedProduct && (
-                  <div>
-                    <Link
-                      className="text-dark text-decoration-underline"
-                      to="#"
-                    >
-                      Write a Review
-                    </Link>
-                  </div>
-                )}
+                <div className="d-flex col-8 ">
+                  <button
+                    className="ml-5"
+                    style={{
+                      backgroundColor: "#fff",
+                      width: 80,
+                      border: !state[0]
+                        ? "1px solid rgba(0,0,0,.09)"
+                        : "1px solid #ee4d2d",
+                    }}
+                    onClick={(e) => handleFeedback(e, 0)}
+                  >
+                    Tất cả
+                  </button>
+                  <button
+                    className="ml-5"
+                    style={{
+                      backgroundColor: "#fff",
+                      width: 80,
+                      border: !state[5]
+                        ? "1px solid rgba(0,0,0,.09)"
+                        : "1px solid #ee4d2d",
+                    }}
+                    onClick={(e) => handleFeedback(e, 5)}
+                  >
+                    5 Sao
+                  </button>
+                  <button
+                    className="ml-5"
+                    style={{
+                      backgroundColor: "#fff",
+                      width: 80,
+                      border: !state[4]
+                        ? "1px solid rgba(0,0,0,.09)"
+                        : "1px solid #ee4d2d",
+                    }}
+                    onClick={(e) => handleFeedback(e, 4)}
+                  >
+                    4 Sao
+                  </button>
+                  <button
+                    className="ml-5"
+                    style={{
+                      backgroundColor: "#fff",
+                      width: 80,
+                      border: !state[3]
+                        ? "1px solid rgba(0,0,0,.09)"
+                        : "1px solid #ee4d2d",
+                    }}
+                    onClick={(e) => handleFeedback(e, 3)}
+                  >
+                    3 Sao
+                  </button>
+                  <button
+                    className="ml-5"
+                    style={{
+                      backgroundColor: "#fff",
+                      width: 80,
+                      border: !state[2]
+                        ? "1px solid rgba(0,0,0,.09)"
+                        : "1px solid #ee4d2d",
+                    }}
+                    onClick={(e) => handleFeedback(e, 2)}
+                  >
+                    2 Sao
+                  </button>
+                  <button
+                    className="ml-5"
+                    style={{
+                      backgroundColor: "#fff",
+                      width: 80,
+                      border: !state[1]
+                        ? "1px solid rgba(0,0,0,.09)"
+                        : "1px solid #ee4d2d",
+                    }}
+                    onClick={(e) => handleFeedback(e, 1)}
+                  >
+                    1 Sao
+                  </button>
+                </div>
               </div>
-              <div className="review-form py-4">
+              <div className=" w-100">
+                {review?.map((item) => (
+                  <div
+                    key={item?.id}
+                    style={{ borderBottom: "1px solid rgba(0,0,0,.09)" }}
+                    className="d-flex mt-1"
+                  >
+                    <div className="w-100">
+                      <div className="m-0 d-flex">
+                        <Avatar Image={item?.avatar} />
+                        <div className="mt-2 ml-2">
+                          {item?.isShow ? (
+                            <MaskedString originalString={item?.fixName} />
+                          ) : (
+                            item?.fixName
+                          )}
+                        </div>
+                      </div>
+                      <StarRatings
+                        rating={item?.star}
+                        starRatedColor="#ffd700"
+                        starEmptyColor="#e4e5e9"
+                        numberOfStars={5}
+                        starDimension="22px"
+                        starSpacing="2px"
+                        isSelectable={false}
+                      />
+                      <div className="mt-2" style={{ fontSize: 14 }}>
+                        {item?.convert}
+                      </div>
+                      <p className="mt-3">{item?.comment}</p>
+                      {item?.image && (
+                        <img
+                          src={item?.image}
+                          style={{ maxHeight: 150, maxWidth: 200 }}
+                          alt="imageMobile"
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* <div className="review-form py-4">
                 <h4>Write a Review</h4>
                 <form action="" className="d-flex flex-column gap-15">
                   <div>
@@ -329,33 +526,12 @@ const SingleProduct = () => {
                     <button className="button border-0">Submit Review</button>
                   </div>
                 </form>
-              </div>
-              <div className="reviews mt-4">
-                <div className="review">
-                  <div className="d-flex gap-10 align-items-center">
-                    <h6 className="mb-0">Navdeep</h6>
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={false}
-                      activeColor="#ffd700"
-                    />
-                  </div>
-                  <p className="mt-3">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Consectetur fugit ut excepturi quos. Id reprehenderit
-                    voluptatem placeat consequatur suscipit ex. Accusamus dolore
-                    quisquam deserunt voluptate, sit magni perspiciatis quas
-                    iste?
-                  </p>
-                </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </Container>
-      <Container class1="popular-wrapper py-5 home-wrapper-2">
+      {/* <Container class1="popular-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Our Popular Products</h3>
@@ -364,7 +540,7 @@ const SingleProduct = () => {
         <div className="row">
           <ProductCard />
         </div>
-      </Container>
+      </Container> */}
 
       <div
         className="modal fade"

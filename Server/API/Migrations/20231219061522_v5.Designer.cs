@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231205081503_v103")]
-    partial class v103
+    [Migration("20231219061522_v5")]
+    partial class v5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("1c5e3393-7e87-40bd-8e9c-099ab44a1762"));
+                        .HasDefaultValue(new Guid("73cd69ae-e0e9-48df-bf17-05f12afde66e"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -55,6 +55,9 @@ namespace API.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
@@ -62,6 +65,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
+
+                    b.Property<DateTime>("ShippingDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasMaxLength(30)
@@ -128,7 +134,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("4ceb4275-8dee-4bea-8274-04d48e51f031"));
+                        .HasDefaultValue(new Guid("e3a5f7a3-19e1-4c9b-a1b0-ed0682b34f11"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -152,6 +158,9 @@ namespace API.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<bool?>("isShow")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
@@ -159,12 +168,56 @@ namespace API.Migrations
                     b.ToTable("Feedback");
                 });
 
+            modelBuilder.Entity("API.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValue(new Guid("91527c24-a6f5-4111-99ba-1721466d8075"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Create")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CustomerID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Header")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<int>("Watched")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<bool?>("isDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerID");
+
+                    b.ToTable("Notification");
+                });
+
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("303664e9-a002-470b-be8a-8cf4345ab7e5"));
+                        .HasDefaultValue(new Guid("7523fc47-b8cb-4dcf-b79b-72b01947d3aa"));
 
                     b.Property<Guid?>("BillId")
                         .HasColumnType("uniqueidentifier");
@@ -213,7 +266,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("37e82429-2f92-430f-85a3-3eec016c9008"));
+                        .HasDefaultValue(new Guid("e9cdd72a-10c4-4ef7-a507-fe1db4cd3996"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -270,7 +323,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("3db4697b-bc23-43cd-9af2-47eac79794fb"));
+                        .HasDefaultValue(new Guid("fb264382-263a-45c9-9ba5-038449a6ce1b"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -297,7 +350,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("51c3d228-2ec3-4e78-a305-3285eb06fced"));
+                        .HasDefaultValue(new Guid("47635693-8440-49f3-a047-eb60afb50ca3"));
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");
@@ -368,22 +421,22 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b99ab5a1-cf39-46dc-85a8-4a826e787490",
-                            ConcurrencyStamp = "767edcf3-8237-4fbb-93a0-d296a0e1a151",
+                            Id = "f76af0dc-abf6-47bb-b071-3db83d3426a2",
+                            ConcurrencyStamp = "b8237295-42df-4a47-965b-a67e13096782",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "38379c14-4765-49e2-b448-d907f2c59694",
-                            ConcurrencyStamp = "dcc8fbca-4794-43c7-ab10-589a7657be3a",
+                            Id = "3c5bc3e0-d531-40e4-b2af-a71e4e61eee9",
+                            ConcurrencyStamp = "6cf476ac-08da-424c-9c72-e6cc090bf18a",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "fa10d331-f09f-4648-8f85-93ea91d2159d",
-                            ConcurrencyStamp = "6ee2b288-390c-406e-a32d-4d5ea289a931",
+                            Id = "fe7d129f-e08a-48dd-aa48-906e87a93b41",
+                            ConcurrencyStamp = "99873e4c-9956-48d4-89c8-4489eb7ca058",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -625,6 +678,17 @@ namespace API.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("API.Entities.Notification", b =>
+                {
+                    b.HasOne("API.Entities.Customer", "Customer")
+                        .WithMany("Notification")
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
                 {
                     b.HasOne("API.Entities.Bill", null)
@@ -704,6 +768,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Customer", b =>
                 {
                     b.Navigation("Bill");
+
+                    b.Navigation("Notification");
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>

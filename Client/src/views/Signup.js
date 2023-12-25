@@ -4,29 +4,23 @@ import Container from "../components/Container";
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhone] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const navigate = useNavigate();
   const [checkuser, setCheckUser] = useState("");
-  const   checkInput = (e) => {
-    e.preventDefault();
-    if (
-      firstName !== "" &&
-      lastName !== "" &&
-      email !== "" &&
-      phoneNumber !== "" &&
-      checkuser === "no" &&
-      checkPW === true
-    ) {
-      setValidate(true);
-    } else {
-      setValidate(false);
-    }
+  const validateEmail = (value) => {
+    // Biểu thức chính quy để kiểm tra định dạng email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(value);
+    setIsEmailValid(isValid);
   };
   const checkUserName = (event) => {
     event.preventDefault();
@@ -36,11 +30,11 @@ const Signup = () => {
       })
       .then((res) => {
         if (res.data.data === -1) {
-          setCheckUser("exists");
+          setErrorMessage("Tài khoản đã tồn tại");
         } else if (res.data.data === 0) {
           setCheckUser("null");
         } else {
-          setCheckUser("no");
+          setErrorMessage("");
         }
       })
       .catch((err) => {
@@ -50,15 +44,14 @@ const Signup = () => {
   const [checkPW, setcheckPW] = useState(true);
   const checkPassword = (event, value) => {
     event.preventDefault();
-
     if (value >= 8) {
-      setcheckPW(true);
+      setErrorMessage("");
     } else {
       setcheckPW(false);
+      setErrorMessage("Mật khẩu phải có tối thiểu 8 kí tự.");
     }
   };
-
-  const [validate, setValidate] = useState(true);
+  const [border, setBorder] = useState([true, true, true, true, true, true]);
   const handleSubmit = (event) => {
     event.preventDefault();
     if (
@@ -66,43 +59,66 @@ const Signup = () => {
       lastName === "" ||
       userName === "" ||
       password === "" ||
-      email === "" ||
       phoneNumber === "" ||
       checkuser === "exists" ||
       checkuser === "null" ||
       checkPW === false
     ) {
-      setValidate(false);
+      var a = [...border];
+      if (firstName === "") {
+        a[0] = false;
+      }
+      if (lastName === "") {
+        a[1] = false;
+      }
+      if (userName === "") {
+        a[2] = false;
+      }
+      if (phoneNumber === "") {
+        a[3] = false;
+      }
+      if (password === "" || checkPW === false) {
+        a[4] = false;
+      }
+      if (email === "") {
+        a[5] = false;
+      }
+      setBorder(a);
+      setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
       return false;
     }
-    axios
-      .post("https://localhost:7295/api/Authentication", {
-        firstName,
-        lastName,
-        userName,
-        password,
-        email,
-        phoneNumber,
-      })
-      .then((res) => {
-        let id = res.data.id;
-        axios
-          .post("https://localhost:7295/api/Customer/createCustomer", {
-            id,
-          })
-          .then(() => {
-            console.log("done");
-          });
-        alert("Đăng kí tài khoản thành công");
-        navigate("/login", { replace: true });
-        setValidate(true);
-      })
-      .catch((err) => {
-        console.error(err);
-        setValidate(false);
-        return false;
-      });
-    return true;
+    validateEmail(email);
+    if (isEmailValid) {
+      axios
+        .post("https://localhost:7295/api/Authentication", {
+          firstName,
+          lastName,
+          userName,
+          password,
+          email,
+          phoneNumber,
+        })
+        .then((res) => {
+          let id = res.data.id;
+          axios
+            .post("https://localhost:7295/api/Customer/createCustomer", {
+              id,
+            })
+            .then(() => {});
+          setErrorMessage("");
+          toast("Đăng kí tài khoản thành công");
+          setTimeout(function () {
+            navigate("/login", { replace: true });
+          }, 4000);
+        })
+        .catch((err) => {
+          alert("Lỗi");
+          return false;
+        });
+      return true;
+    } else {
+      setErrorMessage("Email không đúng định dạng.");
+    }
   };
 
   return (
@@ -114,21 +130,20 @@ const Signup = () => {
           <div className="col-12">
             <div className="auth-card" style={{ style: "relative" }}>
               <h3 className="text-center mb-3">Sign Up</h3>
-              {!validate && (
+              {errorMessage && (
                 <p
                   style={{
                     color: "red",
-                    fontSize: 15,
-                    margin: 0,
-                    padding: 0,
-                    position: "absolute",
-                    top: 496,
-                    left: 484,
+                    marginTop: 0,
+                    marginBottom: 10,
+                    fontSize: 16,
+                    textAlign: "center",
                   }}
                 >
-                  Vui lòng nhập đầy đủ thông tin
+                  {errorMessage}
                 </p>
               )}
+
               <form
                 action=""
                 className="d-flex flex-column gap-15"
@@ -144,10 +159,16 @@ const Signup = () => {
                     return setFirstName(e.target.value);
                   }}
                   style={{
-                    borderColor: firstName === "" && !validate ? "red" : "",
+                    borderColor: !border[0] ? "red" : "",
                   }}
-                  onBlur={checkInput}
-                  // style={{ border: "1px solid red" }}
+                  onBlur={(e) => {
+                    e.preventDefault();
+                    if (firstName !== "") {
+                      var a = [...border];
+                      a[0] = true;
+                      setBorder(a);
+                    }
+                  }}
                 />
 
                 <input
@@ -160,40 +181,17 @@ const Signup = () => {
                     return setLastName(e.target.value);
                   }}
                   style={{
-                    borderColor: lastName === "" && !validate ? "red" : "",
+                    borderColor: !border[1] ? "red" : "",
                   }}
-                  onBlur={checkInput}
+                  onBlur={(e) => {
+                    e.preventDefault();
+                    if (lastName !== "") {
+                      var a = [...border];
+                      a[1] = true;
+                      setBorder(a);
+                    }
+                  }}
                 />
-                {checkuser === "exists" && (
-                  <p
-                    style={{
-                      color: "red",
-                      fontSize: 15,
-                      margin: 0,
-                      padding: 0,
-                      position: "absolute",
-                      left: -170,
-                      bottom: 300,
-                    }}
-                  >
-                    Tài khoản đã tồn tại -{">"}
-                  </p>
-                )}
-                {!checkPW && (
-                  <p
-                    style={{
-                      color: "red",
-                      fontSize: 15,
-                      margin: 0,
-                      padding: 0,
-                      position: "absolute",
-                      left: -250,
-                      bottom: 165,
-                    }}
-                  >
-                    Mật khẩu phải từ 8 kí tự trở lên! -{">"}
-                  </p>
-                )}
                 <input
                   type="text"
                   value={userName}
@@ -203,10 +201,9 @@ const Signup = () => {
                   onChange={(e) => setUserName(e.target.value)}
                   onBlur={(e) => {
                     checkUserName(e);
-                    checkInput(e);
                   }}
                   style={{
-                    borderColor: userName === "" && !validate ? "red" : "",
+                    borderColor: !border[2] ? "red" : "",
                   }}
                 />
 
@@ -218,9 +215,16 @@ const Signup = () => {
                   value={phoneNumber}
                   onChange={(e) => setPhone(e.target.value)}
                   style={{
-                    borderColor: phoneNumber === "" && !validate ? "red" : "",
+                    borderColor: !border[3] ? "red" : "",
                   }}
-                  onBlur={checkInput}
+                  onBlur={(e) => {
+                    e.preventDefault();
+                    if (phoneNumber !== "") {
+                      var a = [...border];
+                      a[3] = true;
+                      setBorder(a);
+                    }
+                  }}
                 />
 
                 <input
@@ -234,21 +238,27 @@ const Signup = () => {
                     checkPassword(e, e.target.value.length);
                   }}
                   style={{
-                    borderColor: password === "" && !validate ? "red" : "",
+                    borderColor: !border[4] ? "red" : "",
                   }}
-                  onBlur={checkInput}
                 />
                 <input
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="Email"
                   className="form-control mt-1"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   style={{
-                    borderColor: email === "" && !validate ? "red" : "",
+                    borderColor: !border[5] ? "red" : "",
                   }}
-                  onBlur={checkInput}
+                  onBlur={(e) => {
+                    e.preventDefault();
+                    if (email !== "") {
+                      var a = [...border];
+                      a[5] = true;
+                      setBorder(a);
+                    }
+                  }}
                 />
                 <div>
                   <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">

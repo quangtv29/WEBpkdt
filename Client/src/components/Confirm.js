@@ -12,24 +12,55 @@ const Confirmm = ({ message, onConfirm, onCancel }) => {
   return (
     <div
       style={{
-        width: 200,
-        position: "absolute",
-        top: 50,
-        left: 312,
+        width: "200px",
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
         border: "3px solid black",
+        backgroundColor: "#fff", // Set your desired background color
+        padding: "10px",
+        borderRadius: "8px",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
       }}
     >
-      <div className="confirm-overlay bg-secondary">
-        <div className="confirm-dialog ">
-          <p className="text-center text-light">{message}</p>
-          <div className="d-flex justify-content-around pb-2">
-            <button onClick={handleConfirm} style={{ width: 70 }}>
-              Xác nhận
-            </button>
-            <button onClick={handleCancel} style={{ width: 70 }}>
-              Huỷ
-            </button>
-          </div>
+      <div className="confirm-dialog">
+        <p style={{ textAlign: "center", color: "#333" }}>{message}</p>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "10px",
+          }}
+        >
+          <button
+            onClick={handleConfirm}
+            style={{
+              width: "80px",
+              padding: "5px",
+              borderRadius: "5px",
+              background: "#28a745",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Xác nhận
+          </button>
+          <button
+            onClick={handleCancel}
+            style={{
+              width: "80px",
+              padding: "5px",
+              borderRadius: "5px",
+              background: "#dc3545",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Huỷ
+          </button>
         </div>
       </div>
     </div>

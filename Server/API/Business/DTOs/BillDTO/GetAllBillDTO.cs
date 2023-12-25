@@ -19,5 +19,9 @@ namespace API.Business.DTOs.BillDTO
         public double? IntoMoney { get; set; }
  
         public string? FormatDate { get; set; }
+        public string? FormatShippingDate { get; set; }
+
+        public DateTime ShippingDate { get; set; }
+
     }
 }

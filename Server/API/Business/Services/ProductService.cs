@@ -402,15 +402,18 @@ namespace API.Business.Services
             
         }
 
-        public async Task<Product> updateProduct (Guid? Id, UpdateProductDTO product)
+        public async Task<Product> updateProduct ( UpdateProductDTO product)
         {
-            var result = await _repo.Product.GetProductById(Id);
+            var result = await _repo.Product.GetProductById(product.Id);
             if (result == null)
             {
                 return null;
-            }    
-            string imagePath = await SaveImage(product.Image);
-            result.Image = imagePath;
+            }
+            if (product.Image != null)
+            {
+                string imagePath = await SaveImage(product.Image);
+                result.Image = imagePath;
+            }
             result.Producer = product.Producer;
             result.Price = product.Price;
             result.ImportPrice = product.ImportPrice;
@@ -420,6 +423,47 @@ namespace API.Business.Services
             result.Quantity = product.Quantity;
             await _repo.SaveAsync();
             return result;
+        }
+
+        public async Task<IEnumerable<GetAllProductDTO>> getProductByProductType (string? productType, ProductParameters productParameters)
+        {
+            var results = await (from pd in _repo.Product.GetAll(false)
+                                 join pdt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pdt.Id
+                                 join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                                 into feedbackGroup
+                                 from meo in feedbackGroup.DefaultIfEmpty()
+                                 where pdt.Name == productType
+                                 group meo by new
+                                 {
+                                     pd.Id,
+                                     pd.Name,
+                                     pd.Quantity,
+                                     pd.ImportPrice,
+                                     pd.Price,
+                                     pd.ProductTypeID,
+                                     pd.Producer,
+                                     pd.Describe,
+                                     pd.Image,
+                                     pd.Sold
+                                 } into g
+                                 select new GetAllProductDTO
+                                 {
+                                     Id = g.Key.Id,
+                                     Name = g.Key.Name,
+                                     Quantity = g.Key.Quantity,
+                                     ImportPrice = g.Key.ImportPrice,
+                                     Price = g.Key.Price,
+                                     ProductTypeID = g.Key.ProductTypeID,
+                                     Producer = g.Key.Producer,
+                                     Describe = g.Key.Describe,
+                                     Image = g.Key.Image,
+                                     Sold = g.Key.Sold,
+                                     StarRating = g.Sum(f => f.Star) / (double)g.Count()
+                                 }
+                                 ).Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+                   .Take(productParameters.PageSize)
+                   .ToListAsync();
+            return results;
         }
     }
 }

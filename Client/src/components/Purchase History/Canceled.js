@@ -2,13 +2,12 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { MyContext } from "../../encryptionKey";
 import CryptoJS from "crypto-js";
-import Confirmm from "../Confirm";
 import Meta from "../Meta";
+import { Link } from "react-router-dom";
 
 const Canceled = () => {
   const [data, setData] = useState([]);
   const { encryptionKey } = useContext(MyContext);
-
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
@@ -32,7 +31,7 @@ const Canceled = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [decryptedId, accessToken]);
 
   // const handleCancel = (id) => {
   //   axios
@@ -50,7 +49,7 @@ const Canceled = () => {
   // };
   return (
     <>
-      <Meta title="Đã huỷ" />
+      <Meta title="Chờ xác nhận" />
       <div
         className=" "
         style={{
@@ -80,51 +79,69 @@ const Canceled = () => {
             <div className="col-2 d-flex justify-content-center"></div>
           </li>
           <li>
-            {data.map((item, index) => (
-              <div key={item.id} className="border">
-                <li
-                  className="row d-flex align-items-center mt-2  "
-                  style={{ padding: 0 }}
-                >
-                  <div className="col-1 d-flex justify-content-center">
-                    {index + 1}
-                  </div>
-                  <div className="col-3 d-flex justify-content-center ">
-                    {item.address}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.phoneNumber}
-                  </div>
-                  <div className="col-2 font-weight-bold  d-flex justify-content-center ">
-                    {item.formatDate}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "#ee4d2d" }}
-                  >
-                    {item.totalMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "rgba(0,0,0,.87)" }}
-                  >
-                    {item.discount?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.intoMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                </li>
-              </div>
-            ))}
+            <ul style={{ padding: 0 }}>
+              {data.map((item) => (
+                <div key={item?.id} className="border">
+                  {item?.status === 2 && (
+                    <li
+                      className="row d-flex align-items-center mt-2  "
+                      style={{ padding: 0 }}
+                    >
+                      <div className="col-1 d-flex justify-content-center">
+                        {item?.id}
+                      </div>
+                      <div className="col-3 d-flex justify-content-center ">
+                        {item?.address}
+                      </div>
+                      <div className="col-1 d-flex justify-content-center">
+                        {item?.phoneNumber}
+                      </div>
+                      <div className="col-2 font-weight-bold  d-flex justify-content-center ">
+                        {item?.formatDate}
+                      </div>
+                      <div
+                        className="col-1 d-flex justify-content-center"
+                        style={{ color: "#ee4d2d" }}
+                      >
+                        {item?.totalMoney?.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </div>
+                      <div
+                        className="col-1 d-flex justify-content-center"
+                        style={{ color: "rgba(0,0,0,.87)" }}
+                      >
+                        {item?.discount?.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </div>
+                      <div className="col-1 d-flex justify-content-center">
+                        {item.intoMoney?.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </div>
+
+                      <div className="col-2 d-flex justify-content-center">
+                        <button
+                          type="button"
+                          className="btn btn-danger "
+                          onClick={() => {
+                            localStorage.setItem("billid11", item.id);
+                          }}
+                        >
+                          <Link to="../orderDetail" className="text-light">
+                            Chi tiết
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                  )}
+                </div>
+              ))}
+            </ul>
           </li>
         </ul>
       </div>

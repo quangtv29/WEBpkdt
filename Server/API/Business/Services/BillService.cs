@@ -74,12 +74,14 @@ namespace API.Business.Services
         public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(string? customerId, bool trackChanges, Status status)
         {
             var customer = await _repo.Customer.GetCustomerByCondition(p => p.Id == customerId, trackChanges);
+
             if (customer == null || !customer.Any())
             {
                 throw new CustomerNotFoundException(customerId);
             }
-                var bill = await _repo.Bill.GetAllBillFromCustomer(customerId, trackChanges, status);
-                    return bill;
+                var bill = await _repo.Bill.GetAllBillFromCustomer(customerId, trackChanges, status);  
+          
+            return bill;
         }
 
         public async Task<GetAllBillDTO> getBillById(Guid? Id)
@@ -94,6 +96,8 @@ namespace API.Business.Services
             result.Status = status;
             if (status == 0)
             {
+                result.ShippingDate = DateTime.Now;
+                result.FormatShippingDate = result.ShippingDate.ToString("dd/MM/yyyy HH:mm");
                 var order = await _repo.OrderDetail.GetOrderDetailByBillID(Id);
                 foreach (var od in order)
                 {
@@ -101,6 +105,18 @@ namespace API.Business.Services
                     pro.Sold += 1;
                 }
             }
+           if (status == Status.Canceled)
+            {
+
+                var order = await _repo.OrderDetail.GetOrderDetailByBillID(result.Id);
+                foreach(var od in order)
+                {
+                    var product = await _repo.Product.GetProductById(od.ProductId);
+                    product.Quantity += od.Quantity;
+                }    
+                 
+            }    
+            
             await _repo.SaveAsync();
             return result;
         }

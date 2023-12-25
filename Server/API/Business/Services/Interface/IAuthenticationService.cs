@@ -7,14 +7,16 @@ namespace API.Business.Services.Interface
 {
     public interface IAuthenticationService
     {
+        Task<bool> resetPassword(ResetPasswordDTO reset);
         Task<IdentityResult> CreateUser(CreateUserDTO user);
 
-        Task<bool> Login(LoginValidateDTO login);
+        Task<(bool,int)> Login(LoginValidateDTO login);
         Task<TokenDTO> CreateToken(bool populateExp);
         Task<TokenDTO> RefreshToken(TokenDTO tokenDto);
 
         Task<User> getInfo (string userId);
        Task<IEnumerable<string>> getRole(string UserId);
+        Task<User> UpdateUser(string? userName, string? firstName, string? lastName);
 
         Task<int> isUserExists (string userId);
         Task<User> getInfoById(string? Id);

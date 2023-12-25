@@ -24,7 +24,7 @@ namespace API.Business.Repository
 
         public async Task<IEnumerable<OrderDetail>> GetOrderDetailByBillID(Guid? Id)
         {
-            var orderDetail = await GetAllByCondition(p => p.BillId == Id, false).Where(p => p.isDelete == false).ToListAsync();
+            var orderDetail = await GetAllByCondition(p => p.BillId == Id, true).Where(p => p.isDelete == false).ToListAsync();
             return orderDetail;
         }
 

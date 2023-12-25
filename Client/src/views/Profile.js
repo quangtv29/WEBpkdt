@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
+import { toast } from "react-toastify";
+import "./Profile.css";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -17,18 +19,16 @@ const Profile = () => {
     localStorage.getItem("id"),
     encryptionKey
   ).toString(CryptoJS.enc.Utf8);
-  const [customer, setCustomer] = useState();
-  const [firstname, setFirstName] = useState();
-  const [lastname, setLastName] = useState();
-  const [address1, setAddress1] = useState();
-  const [address2, setAddress2] = useState();
-  const [phone, setPhone] = useState();
-  const [detailOrder, setDetailOrder] = useState();
-  const [selectedValue, setSelectedValue] = useState("");
+  const [customer, setCustomer] = useState([]);
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [detailOrder, setDetailOrder] = useState([]);
+  const [selectedValue, setSelectedValue] = useState(0);
   const [active, setActive] = useState(false);
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
-    console.log(event.target.value);
   };
   useEffect(() => {
     axios
@@ -47,6 +47,20 @@ const Profile = () => {
   }, [decryptedId]);
   useEffect(() => {
     axios
+      .get(`https://localhost:7295/api/Customer/${decryptedId}`, {
+        params: {
+          Id: decryptedId,
+        },
+      })
+      .then((res) => {
+        setAddress1(res.data.data[0].address1);
+        setAddress2(res.data.data[0].address2);
+        setSelectedValue(res.data.data[0].gender);
+        console.log(res.data.data[0].gender);
+      });
+  }, [decryptedId]);
+  useEffect(() => {
+    axios
       .get("https://localhost:7295/api/Authentication", {
         params: {
           id: decryptedId,
@@ -56,9 +70,87 @@ const Profile = () => {
         setCustomer(res.data);
         setFirstName(res.data.firstName);
         setLastName(res.data.lastName);
-        setPhone(res.data.phoneNumber);
       });
   }, [decryptedId]);
+  const handleSave = (e) => {
+    e.preventDefault();
+    setActive(false);
+    axios
+      .post(
+        "https://localhost:7295/api/Customer/updateCustomer",
+        {
+          address1: address1,
+          address2: address2,
+          gender: selectedValue,
+        },
+        {
+          params: {
+            Id: decryptedId,
+            lastname: lastname,
+            firstname: firstname,
+          },
+        }
+      )
+      .then(() => {
+        toast.success("Lưu thành công");
+      })
+      .catch(() => {
+        toast.error("Lỗi");
+      });
+  };
+
+  const [image, setImage] = useState("");
+  useEffect(() => {
+    axios
+      .get(`https://localhost:7295/api/Customer/${decryptedId}`)
+      .then((res) => {
+        setImage(res.data.data[0].image);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [decryptedId]);
+  const [avatar, setAvatar] = useState("");
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setAvatar(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const addData = async (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    var formData = new FormData();
+
+    formData.append("Image", avatar);
+
+    axios
+      .post(
+        `https://localhost:7295/api/Customer/addAvatar`,
+        formData,
+        {
+          params: {
+            CustomerId: decryptedId,
+          },
+        },
+        config
+      )
+      .then(() => {
+        toast("Đổi ảnh đại diện thành công");
+      })
+      .catch(() => {
+        toast.error("Đổi ảnh đại diện thất bại");
+      });
+  };
   return (
     <>
       <Container className="m-0 p-0" style={{ maxWidth: 1350 }}>
@@ -71,26 +163,26 @@ const Profile = () => {
               <h6 className="mb-0">Số điện thoại</h6>
               <p>{customer?.phoneNumber}</p>
               <h6 className=" mb-0">Ngày lập tài khoản</h6>
-              <p>{customer?.createAccount}</p>
+              <p>{customer?.formatDate}</p>
               <h6 className=" mb-0">Số đơn hàng</h6>
               <p>{detailOrder?.quantity}</p>
               <h6 className=" mb-0">Tổng số tiền đã mua tháng này</h6>
               <p>
-                {detailOrder?.totalOrderofMonth.toLocaleString("vi-VN", {
+                {detailOrder?.totalOrderofMonth?.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 })}
               </p>
               <h6 className=" mb-0">Tổng số tiền đã mua</h6>
               <p>
-                {detailOrder?.totalOrder.toLocaleString("vi-VN", {
+                {detailOrder?.totalOrder?.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 })}
               </p>
               <h6 className=" mb-0">Tổng số tiền được giảm giá</h6>
               <p>
-                {detailOrder?.totalDiscount.toLocaleString("vi-VN", {
+                {detailOrder?.totalDiscount?.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 })}
@@ -98,7 +190,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="col-7" style={{ backgroundColor: "#e9f5f3" }}>
-            <div className="auth-card">
+            <div className="auth-card ">
               <h2 className="text-center mb-2 ">Thông tin cá nhân</h2>
               <form className="d-flex flex-column gap-15 ">
                 <label className="mb-0">Họ </label>
@@ -151,16 +243,7 @@ const Profile = () => {
                   <option value="1">Nữ</option>
                   <option value="2">Khác</option>
                 </select>
-                <label className=" mb-0">Số điện thoại</label>
-                <input
-                  type="number"
-                  value={phone}
-                  onChange={(e) => {
-                    e.preventDefault();
-                    setPhone(e.target.value);
-                  }}
-                  disabled={!active}
-                />
+
                 <div className="w-100 d-flex ">
                   <button
                     className="button update w-75"
@@ -173,16 +256,39 @@ const Profile = () => {
                   </button>
                   <button
                     className="button save w-75"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActive(false);
-                    }}
+                    onClick={(e) => handleSave(e)}
                   >
                     Lưu
                   </button>
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+        <div className="avatar-containerr">
+          <p>
+            <label>Thay ảnh đại diện</label>
+          </p>
+          <div>
+            <img
+              src={
+                image ??
+                "https://res.cloudinary.com/dimu08wco/image/upload/v1703320369/5f344979-d3a4-4205-a834-ef9d7f1c001b.jpg"
+              }
+              alt="Avatar"
+              className="avatar-imagee "
+            />
+          </div>
+          <input
+            type="file"
+            name="file"
+            onChange={handleFileChange}
+            id="mypicture"
+          />
+          <div>
+            <button className="change-button" onClick={(e) => addData(e)}>
+              Đổi
+            </button>
           </div>
         </div>
       </Container>

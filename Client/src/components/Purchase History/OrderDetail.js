@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Container from "../Container";
+import { Link } from "react-router-dom";
 const OrderDetail = () => {
   const id = localStorage.getItem("billid11");
   const [data, setData] = useState();
@@ -21,7 +22,7 @@ const OrderDetail = () => {
       .then((res) => {
         setStatus(res.data.status);
       });
-  }, []);
+  }, [id]);
   useEffect(() => {
     axios
       .post(
@@ -38,6 +39,7 @@ const OrderDetail = () => {
       })
       .catch(() => {});
   }, [id]);
+
   return (
     <>
       <Container class1="cart-wrapper home-wrapper-2 py-5 w-100">
@@ -49,7 +51,7 @@ const OrderDetail = () => {
               <h4 className="col-2 ">Giá bán</h4>
               <h4 className="col-2">Số lượng</h4>
               <h4 className="col-2">Tổng tiền</h4>
-              <h4 className="col-1"></h4>
+              <h4 className="col-1">Hành động</h4>
             </div>
           </div>
         </div>
@@ -93,9 +95,23 @@ const OrderDetail = () => {
                   </h5>
                 </div>
                 {status === 0 ? (
-                  <div className="col-1">
-                    <button className="btn btn-danger">Đánh giá</button>
-                  </div>
+                  item?.isSave ? (
+                    <div className="col-1">
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => {
+                          localStorage.setItem("productId", item?.productId);
+                          localStorage.setItem("orderId", item?.id);
+                        }}
+                      >
+                        <Link to="/rating" style={{ color: "#fff" }}>
+                          Đánh giá
+                        </Link>
+                      </button>
+                    </div>
+                  ) : (
+                    <h6>Đã đánh giá</h6>
+                  )
                 ) : (
                   <div className="col-1"> </div>
                 )}

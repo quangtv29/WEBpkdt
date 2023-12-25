@@ -1,13 +1,12 @@
 using API.Business.Extensions;
 using API.Database;
 using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
-using System.Text;
+
 
 Environment.SetEnvironmentVariable("APP_BASE_DIRECTORY", Directory.GetCurrentDirectory());
 
@@ -32,6 +31,10 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     //options.EnableSensitiveDataLogging();
     options.EnableSensitiveDataLogging(true);
+});
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10*1024*1024;
 });
 builder.Services.AddMemoryCache();
 builder.Services.ConfigureRateLimitingOptions();

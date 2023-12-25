@@ -1,11 +1,8 @@
 import React, { useContext, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
-// import { useState } from 'react';
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { LinkContainer } from "react-router-bootstrap";
-// import compare from "../assets/images/compare.svg";
-// import wishlist from "../assets/images/wishlist.svg";
 import cart from "../assets/images/cart.svg";
 import menu from "../assets/images/menu.svg";
 import { CartContext } from "../CartContext";
@@ -20,20 +17,24 @@ import axios from "axios";
 import { MyContext } from "../encryptionKey";
 import { SearchContext } from "../SearchContext";
 import CryptoJS from "crypto-js";
-const Header = (props) => {
-  const { cartCount, totalPrice, setSearchTerm } = useContext(CartContext);
+import Avatar from "./Avatar";
+const Header = () => {
+  const { setSearchTerm } = useContext(CartContext);
   const { search, setSearch, setStatus } = useContext(SearchContext);
-  const [customer, setCustomer] = useState();
+  const [customer, setCustomer] = useState([]);
   const [noti, setNoti] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const { encryptionKey } = useContext(MyContext);
+  const [count, setCount] = useState(0);
+  const [totalCart, setTotalCart] = useState(0);
+  const [avatar, setAvatar] = useState("");
 
   const decryptedId = isLogin
     ? CryptoJS.AES.decrypt(localStorage.getItem("id"), encryptionKey).toString(
         CryptoJS.enc.Utf8
       )
     : null;
-  const [role, setRole] = useState("");
+
   useEffect(() => {
     if (isLogin) {
       axios
@@ -46,7 +47,39 @@ const Header = (props) => {
           setCustomer(res.data.firstName + " " + res.data.lastName);
         });
     }
-  }, [decryptedId]);
+  }, [decryptedId, isLogin]);
+  useEffect(() => {
+    if (isLogin) {
+      axios
+        .get(`https://localhost:7295/api/Customer/${decryptedId}`)
+        .then((res) => {
+          setAvatar(res.data.data[0].image);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [decryptedId, isLogin]);
+  useEffect(() => {
+    if (isLogin) {
+      axios
+        .get(
+          `https://localhost:7295/api/OrderDetail/listCart?CustomerId=${decryptedId}`
+        )
+        .then((res) => {
+          setCount(res.data.length);
+          var a = 0;
+          res.data.map((item) => {
+            a += item?.totalMoney;
+          });
+          setTotalCart(a);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [decryptedId, isLogin]);
+
   const handleNoti = (e) => {
     e.preventDefault();
     if (isLogin) {
@@ -191,7 +224,7 @@ const Header = (props) => {
                                         </p>
                                     </Link> */}
                 </div>
-                {customer && (
+                {isLogin && (
                   <div>
                     <NavDropdown
                       title=" Thông báo 🔔"
@@ -211,34 +244,37 @@ const Header = (props) => {
                           Đọc tất cả
                         </h6>
                       </div>
-                      {noti?.map((item) => (
-                        <NavDropdown.Item
-                          key={item?.id}
-                          style={{
-                            maxWidth: 500,
-                            minWidth: 500,
-                            borderTop: "1px solid black",
-                            backgroundColor:
-                              item?.watched === 1 ? "#DDDDDD" : "#fff",
-                          }}
-                        >
-                          <h6>{item?.header}</h6>
-                          <p
+                      {noti?.map((item, index) => (
+                        <div key={index}>
+                          <NavDropdown.Item
                             style={{
-                              whiteSpace: "normal",
+                              maxWidth: 500,
+                              minWidth: 500,
+                              borderTop: "1px solid black",
+                              backgroundColor:
+                                item?.watched === 1 ? "#DDDDDD" : "#fff",
+                              padding: "10px",
                             }}
                           >
-                            {item?.content}
-                          </p>
-                          <p style={{ fontSize: 13 }}>{item?.formatDate}</p>
-                        </NavDropdown.Item>
+                            <h6>{item?.header}</h6>
+                            <p
+                              style={{
+                                whiteSpace: "normal",
+                              }}
+                            >
+                              {item?.content}
+                            </p>
+                            <p style={{ fontSize: 13 }}>{item?.formatDate}</p>
+                          </NavDropdown.Item>
+                        </div>
                       ))}
                     </NavDropdown>
                   </div>
                 )}
+                {isLogin && <Avatar Image={avatar} />}
 
                 <div className="d-flex align-items-center gap-10 text-white text-light">
-                  {customer ? (
+                  {isLogin ? (
                     <NavDropdown
                       title={customer}
                       id="basic-nav-dropdown"
@@ -252,7 +288,9 @@ const Header = (props) => {
                       <LinkContainer to="/profile">
                         <NavDropdown.Item>Tài Khoản Của Tôi</NavDropdown.Item>
                       </LinkContainer>
-
+                      <LinkContainer to="/resetpassword">
+                        <NavDropdown.Item>Đổi Mật Khẩu</NavDropdown.Item>
+                      </LinkContainer>
                       {(customer && isAorN) || (
                         <LinkContainer to="/to-pay">
                           <NavDropdown.Item>Lịch Sử Mua Hàng</NavDropdown.Item>
@@ -282,10 +320,10 @@ const Header = (props) => {
                       <img src={cart} alt="cart" />
                       <div className="d-flex flex-column gap-10">
                         <span className="badge bg-white text-dark">
-                          {cartCount}
+                          {count}
                         </span>
                         <p className="mb-0">
-                          {totalPrice.toLocaleString("vi-VN", {
+                          {totalCart.toLocaleString("vi-VN", {
                             style: "currency",
                             currency: "VND",
                           })}
@@ -322,11 +360,17 @@ const Header = (props) => {
                       className="dropdown-menu"
                       aria-labelledby="dropdownMenuButton1"
                     >
-                      <li>
-                        <Link className="dropdown-item text-white" to="">
-                          Action
-                        </Link>
-                      </li>
+                      {isLogin && (
+                        <li>
+                          <Link
+                            className="dropdown-item text-white"
+                            to="/voucher"
+                          >
+                            Kho voucher
+                          </Link>
+                        </li>
+                      )}
+
                       <li>
                         <Link className="dropdown-item text-white" to="">
                           Another action

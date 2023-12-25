@@ -42,7 +42,7 @@ namespace API.Controllers
         public async Task<IActionResult> Login (LoginValidateDTO login)
         {
             var result = await _serviceManager.authenticationService.Login(login);
-            if (!result)
+            if (result.Item1  == false)
             {
                 return Unauthorized( new ApiResponse
                 {
@@ -50,6 +50,10 @@ namespace API.Controllers
                     Message = "Login Fail"
                 });
             }
+            else if (result.Item1 == true && result.Item2 == 0)
+            {
+                return Ok("Account has been looked");
+            }    
             return Ok(new
             {
                 StatusCode = HttpStatusCode.OK,
@@ -100,14 +104,33 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> getInfoById(string? id)
         {
-            var result = await _serviceManager.authenticationService.getInfoById(id);
-            return Ok(result);
+            try
+            {
+                var result = await _serviceManager.authenticationService.getInfoById(id);
+                result.FormatDate = result.CreateAccount.ToString("dd/MM/yyyy HH:mm:ss");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return Ok();
+        }
+
+        [HttpPost("resetPassword")]
+       public async Task<IActionResult> resetPassword(ResetPasswordDTO reset)
+        {
+            var result = await _serviceManager.authenticationService.resetPassword(reset);
+            if (result)
+            {
+                return Ok("Done");
+            }
+            return BadRequest("Fail");
         }
     }
 }

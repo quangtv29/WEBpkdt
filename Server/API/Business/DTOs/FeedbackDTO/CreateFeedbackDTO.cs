@@ -10,5 +10,10 @@ namespace API.Business.DTOs.FeedbackDTO
 
         public string? UserName { get; set; }
         public Guid? ProductId { get; set; }
+
+        public bool? isShow { get;set; }
+        public IFormFile? file { get; set; }    
+
+        public Guid? OrderDetailId { get; set; }
     }
 }

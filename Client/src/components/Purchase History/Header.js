@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import "./Header.scss";
 
 const Headers = () => {
-  const [selectedLi, setSelectedLi] = useState(null);
+  const [selectedLi, setSelectedLi] = useState(0);
 
   const handleLiClick = (index) => {
     setSelectedLi(index);

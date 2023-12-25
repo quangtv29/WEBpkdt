@@ -1,17 +1,15 @@
 import Form from "react-bootstrap/Form";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import "./Product.scss";
-import CommonUtils from "../../../ultils/CommonUtils";
 const CreatProduct1 = (props) => {
   const [tensp, setTenSP] = useState("");
   const [soluong, setSoLuong] = useState("");
   const [gianhap, setGiaNhap] = useState("");
   const [giaban, setGiaBan] = useState("");
   const productType = props.productType;
-  console.log(props);
   const [maloaisp, setMaLoaiSP] = useState(props.maloaisp);
   const [nsx, setNSX] = useState("");
   const [mota, setMoTa] = useState("");
@@ -120,10 +118,11 @@ const CreatProduct1 = (props) => {
         config
       )
       .then(() => {
-        console.log("Thêm sản phẩm thành công");
+        toast("Thêm sản phẩm thành công");
+        formData = new FormData();
       })
       .catch((err) => {
-        console.error(err);
+        toast.error("Thêm sản phẩm thất bại");
       });
 
     // if (props.isEditing === true) {

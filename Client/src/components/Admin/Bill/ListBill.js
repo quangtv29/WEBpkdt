@@ -8,9 +8,8 @@ const ListBill = () => {
   const [data, setData] = useState([]);
   const accessToken = localStorage.getItem("accessToken");
   const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 4;
   const pageCount = Math.ceil(data.length / itemsPerPage);
-
   useEffect(() => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     axios

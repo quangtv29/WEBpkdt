@@ -4,6 +4,7 @@ import { MyContext } from "../../encryptionKey";
 import CryptoJS from "crypto-js";
 import { Link } from "react-router-dom";
 import Meta from "../Meta";
+import "./Done.scss";
 
 const Done = () => {
   const [data, setData] = useState([]);
@@ -14,6 +15,7 @@ const Done = () => {
     encryptionKey
   ).toString(CryptoJS.enc.Utf8);
   const accessToken = localStorage.getItem("accessToken");
+
   useEffect(() => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     axios
@@ -32,107 +34,83 @@ const Done = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [decryptedId, accessToken]);
 
-  // const handleCancel = (id) => {
-  //   axios
-  //     .put(`/api/cancel/${id}`)
-  //     .then(() => {
-  //       setData(
-  //         data.filter((dt) => {
-  //           return dt.MaCTHD !== id;
-  //         })
-  //       );
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
   return (
     <>
       <Meta title="Đã hoàn thành" />
-      <div
-        className=" "
-        style={{
-          backgroundColor: "#e7ecf0",
-          height: "100%",
-          boxSizing: "border-box",
-          minHeight: 500,
-        }}
-      >
-        <ul
-          style={{ padding: "0px", backgroundColor: "#fff", listStyle: "none" }}
-        >
-          <li className="row d-flex border m-0">
-            <div className="col-1 d-flex text-center ">Mã hoá đơn</div>
-            <div className="col-3 d-flex justify-content-center text-center">
-              Địa chỉ
-            </div>
-            <div className="col-1 d-flex justify-content-center text-center">
-              Số điện thoại
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              Thời gian đặt hàng
-            </div>
-            <div className="col-1 d-flex justify-content-center">Tạm tính </div>
-            <div className="col-1 d-flex justify-content-center">Giảm giá</div>
-            <div className="col-1 d-flex justify-content-center">Tổng tiền</div>
-            <div className="col-2 d-flex justify-content-center"></div>
+      <div className="done-container">
+        <ul className="done-list">
+          <li className="done-list-header">
+            <div className="done-list-item">Mã hoá đơn</div>
+            <div className="done-list-item">Địa chỉ</div>
+            <div className="done-list-item">Số điện thoại</div>
+            <div className="done-list-item">Thời gian nhận hàng</div>
+            <div className="done-list-item">Tạm tính</div>
+            <div className="done-list-item">Giảm giá</div>
+            <div className="done-list-item">Tổng tiền</div>
+            <div className="done-list-item"></div>
           </li>
           <li>
             <ul style={{ padding: 0 }}>
-              {data.map((item, index) => (
-                <div key={item.id} className="border">
-                  <li
-                    className="row d-flex align-items-center mt-2  "
-                    style={{ padding: 0 }}
-                  >
-                    <div className="col-1 d-flex justify-content-center">
-                      {item.id}
+              {data.map((item) => (
+                <div
+                  key={item.id}
+                  className="done-list-item"
+                  style={{ border: 0 }}
+                >
+                  <li className="done-list-row">
+                    <div style={{ border: 0 }} className="done-list-item">
+                      {item?.id}
                     </div>
-                    <div className="col-3 d-flex justify-content-center ">
-                      {item.address}
+                    <div style={{ border: 0 }} className="done-list-item">
+                      {item?.address}
                     </div>
-                    <div className="col-1 d-flex justify-content-center">
-                      {item.phoneNumber}
-                    </div>
-                    <div className="col-2 font-weight-bold  d-flex justify-content-center ">
-                      {item.formatDate}
+                    <div style={{ border: 0 }} className="done-list-item">
+                      {item?.phoneNumber}
                     </div>
                     <div
-                      className="col-1 d-flex justify-content-center"
-                      style={{ color: "#ee4d2d" }}
+                      style={{ border: 0 }}
+                      className="done-list-item font-weight-bold"
                     >
-                      {item.totalMoney?.toLocaleString("vi-VN", {
+                      {item?.formatShippingDate}
+                    </div>
+                    <div
+                      className="done-list-item done-list-money"
+                      style={{ color: "#ee4d2d", border: 0 }}
+                    >
+                      {item?.totalMoney?.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
                     </div>
                     <div
-                      className="col-1 d-flex justify-content-center"
-                      style={{ color: "rgba(0,0,0,.87)" }}
+                      className="done-list-item done-list-money"
+                      style={{ color: "rgba(0,0,0,.87)", border: 0 }}
                     >
-                      {item.discount?.toLocaleString("vi-VN", {
+                      {item?.discount?.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
                     </div>
-                    <div className="col-1 d-flex justify-content-center">
-                      {item.intoMoney?.toLocaleString("vi-VN", {
+                    <div
+                      className="done-list-item done-list-money"
+                      style={{ border: 0 }}
+                    >
+                      {item?.intoMoney?.toLocaleString("vi-VN", {
                         style: "currency",
                         currency: "VND",
                       })}
                     </div>
-                    <div className="col-2 d-flex justify-content-center">
+                    <div className="done-list-item" style={{ border: 0 }}>
                       <button
                         type="button"
-                        className="btn btn-danger"
+                        className="btn btn-danger done-list-button"
                         onClick={() => {
                           localStorage.setItem("billid11", item.id);
                         }}
                       >
                         <Link to="../orderDetail" style={{ color: "#fff" }}>
-                          {" "}
                           Chi tiết
                         </Link>
                       </button>

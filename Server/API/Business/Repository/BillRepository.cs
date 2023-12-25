@@ -32,11 +32,22 @@ namespace API.Business.Repository
 
         public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(string? customerId, bool trackChanges, Status status)
         {
-            var bill = await GetAllByCondition(p => p.CustomerID == customerId, trackChanges)
-                .Where(p => p.isDelete == false && p.Status == status)
-                .OrderByDescending(p => p.Time)
-                .ToListAsync();
-            return bill;
+            if (status == 0)
+            {
+                var bill = await GetAllByCondition(p => p.CustomerID == customerId, trackChanges)
+               .Where(p => p.isDelete == false && p.Status == status)
+               .OrderByDescending(p => p.ShippingDate)
+               .ToListAsync();
+                return bill;
+            }
+            else
+            {
+                var bill = await GetAllByCondition(p => p.CustomerID == customerId, trackChanges)
+                    .Where(p => p.isDelete == false && p.Status == status)
+                    .OrderByDescending(p => p.Time)
+                    .ToListAsync();
+                return bill;
+            }
         }
 
         public async Task<IEnumerable<Bill>> GetAllBillFromCustomerr(string? customerId, bool trackChanges)

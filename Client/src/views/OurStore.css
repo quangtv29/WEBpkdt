@@ -1,0 +1,11 @@
+.btn:hover {
+    background-color: #f0f0f0; /* Change the background color on hover */
+    color: #333; /* Change the text color on hover */
+    /* Add any other styles you want for the hover effect */
+  }
+
+  .btn-toggle:hover {
+    background-color: #e6e6e6; /* Change the background color on hover for toggle buttons */
+    color: #333; /* Change the text color on hover for toggle buttons */
+    /* Add any other styles you want for the hover effect */
+  }

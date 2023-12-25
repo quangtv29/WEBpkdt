@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231217150227_v107")]
-    partial class v107
+    [Migration("20231218081350_v2")]
+    partial class v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("958b73f0-f489-4e28-89c2-1772c934cf4f"));
+                        .HasDefaultValue(new Guid("7a752fc4-f9ca-47a8-8ad0-792dd0691732"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -131,7 +131,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("8f817d8b-544c-4567-80e3-4f650c8f4e50"));
+                        .HasDefaultValue(new Guid("477913e7-59a5-4631-9486-414b88aec7f0"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -167,7 +167,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("92594653-2a4b-46e8-84cb-3ac6ff94ce43"));
+                        .HasDefaultValue(new Guid("d09545e4-1901-4491-9a23-096734008b4c"));
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -211,7 +211,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("0efbd180-4bda-40c2-b12b-66e0ce6a01ea"));
+                        .HasDefaultValue(new Guid("c2a9bbdb-f111-43e4-9095-a133b19258b5"));
 
                     b.Property<Guid?>("BillId")
                         .HasColumnType("uniqueidentifier");
@@ -260,7 +260,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("a580a285-2fad-405f-af54-eae2f32db634"));
+                        .HasDefaultValue(new Guid("7f5def69-1748-4657-ad99-b9b947c561ed"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -317,7 +317,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("8b7d6002-6a6d-4395-b827-e5fb8860bbc4"));
+                        .HasDefaultValue(new Guid("9c49c1c9-9564-4285-927b-edac4f691102"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -344,7 +344,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("5f86519b-a833-492a-8836-7fe9a52c3e36"));
+                        .HasDefaultValue(new Guid("1935e5b1-487c-446f-a65d-6b1d41bcc26a"));
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");
@@ -415,22 +415,22 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4d7c4e97-78ec-40be-8e2b-b29ac4fe974a",
-                            ConcurrencyStamp = "811cc269-c4d5-4a12-aee7-9ee982a3c020",
+                            Id = "a5bc451a-281d-4bcd-bde5-cac2d09df773",
+                            ConcurrencyStamp = "2dc17271-2509-4855-9fcb-6fe3c97d1ba8",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "babb8358-60ad-4202-9d69-266df5f205f5",
-                            ConcurrencyStamp = "2ffd9551-67b3-4e7d-8e2e-ab2758ea4514",
+                            Id = "49b5ae2a-06ab-4aea-8512-74ae528000d4",
+                            ConcurrencyStamp = "6305741c-6650-41cf-8e6a-3a1a442810a6",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "86a7afc1-2215-4a40-bcbc-3047fbb031f6",
-                            ConcurrencyStamp = "8dbe67f3-8117-47ee-9425-f0f12c112a89",
+                            Id = "84ace02b-4dd3-4e74-ac20-454962bd3fb8",
+                            ConcurrencyStamp = "e0bb0c1d-5f26-4f71-906f-aa7a80216882",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });

@@ -8,7 +8,8 @@ namespace API.Business.Services.Interface
     public interface IFeedbackService
     {
         Task<Feedback> createFeedback(CreateFeedbackDTO feedback);
+        Task<string> SaveImage(IFormFile imageFile);
 
-        Task<IEnumerable<GetFeedbackByProductDTO>> getFeedbackByProduct(Guid?  productId, FeedbackParameters feedbackParameters);
+        Task<IEnumerable<Feedback>> getFeedbackByProduct(Guid?  productId, FeedbackParameters feedbackParameters, int star);
     }
 }

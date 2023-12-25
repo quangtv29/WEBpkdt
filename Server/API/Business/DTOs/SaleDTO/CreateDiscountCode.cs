@@ -7,6 +7,6 @@
         public int? Quantity { get; set; }
         public double? Percent { get; set; }
         public int? MinBill { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace API.Entities
         public virtual T Id { get; set; } 
         public virtual bool? isDelete { get; set; } = false;
 
-        public virtual DateTime? LastModificationTime { get; set; }
+        public virtual DateTime LastModificationTime { get; set; }
     }
     public abstract class BaseEntity : BaseEntity<Guid>
     {

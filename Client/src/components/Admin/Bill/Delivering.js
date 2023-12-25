@@ -30,7 +30,7 @@ const Delivering = () => {
         setData(response.data.data);
       })
       .catch(() => {
-        alert("lỗi");
+        alert("lỗi jjj");
       });
   }, [pageNumber, data]);
   const handlePageClick = (selectedPage) => {
@@ -78,7 +78,7 @@ const Delivering = () => {
           </thead>
           <tbody>
             {data.map((item) => (
-              <tr key={item.id} className="text-center ">
+              <tr key={item?.id} className="text-center ">
                 <>
                   <td
                     style={{

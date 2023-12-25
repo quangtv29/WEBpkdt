@@ -4,7 +4,6 @@ import Meta from "../components/Meta";
 import { AiOutlineHome, AiOutlineMail } from "react-icons/ai";
 import { BiPhoneCall, BiInfoCircle } from "react-icons/bi";
 import Container from "../components/Container";
-import FeedbackPage from "./Feedback";
 
 const Contact = () => {
   return (
@@ -96,7 +95,6 @@ const Contact = () => {
             </div>
           </div>
         </div>
-        <FeedbackPage />
       </Container>
     </>
   );

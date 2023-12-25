@@ -8,6 +8,7 @@ using API.Business.Helper;
 using Microsoft.AspNetCore.Authorization;
 using API.Entities.Enum;
 using API.Business.Shared;
+using API.Entities;
 
 namespace API.Controllers
 {   
@@ -74,6 +75,7 @@ namespace API.Controllers
                 var convert = bills.Select(p =>
                 {
                     p.FormatDate = p.Time.ToString("dd/MM/yyyy HH:mm:ss");
+                    p.FormatShippingDate = p.ShippingDate.ToString("dd/MM/yyyy HH:mm:ss");
                     return p;
                 }).ToList();
 

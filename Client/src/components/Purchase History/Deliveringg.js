@@ -1,22 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import Meta from "../Meta";
-import CryptoJS from "crypto-js";
 import { MyContext } from "../../encryptionKey";
+import CryptoJS from "crypto-js";
+import Meta from "../Meta";
+import { Link } from "react-router-dom";
+import "./Done.scss";
 
-const Deliveringg = () => {
+const Delivering = () => {
   const [data, setData] = useState([]);
   const { encryptionKey } = useContext(MyContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleConfirm = () => {
-    console.log("meomeo");
-  };
-  const handleCancel = () => {
-    setIsOpen(false);
-  };
-  const handleOnclick = () => {
-    setIsOpen(true);
-  };
   const decryptedId = CryptoJS.AES.decrypt(
     localStorage.getItem("id"),
     encryptionKey
@@ -40,7 +32,20 @@ const Deliveringg = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [decryptedId, accessToken, data]);
+  const handleDone = (e, id) => {
+    e.preventDefault();
+    axios.post(
+      "https://localhost:7295/api/Bill/updateStatusBill",
+      {},
+      {
+        params: {
+          Id: id,
+          status: 0,
+        },
+      }
+    );
+  };
 
   // const handleCancel = (id) => {
   //   axios
@@ -59,89 +64,93 @@ const Deliveringg = () => {
   return (
     <>
       <Meta title="Đang vận chuyển" />
-      <div
-        className=" "
-        style={{
-          backgroundColor: isOpen ? "rgba(0, 0, 0, 0.5)" : "#e7ecf0",
-          height: "100%",
-          boxSizing: "border-box",
-          minHeight: 500,
-        }}
-      >
-        <ul
-          style={{ padding: "0px", backgroundColor: "#fff", listStyle: "none" }}
-        >
-          <li className="row d-flex border m-0">
-            <div className="col-1 d-flex text-center ">Mã hoá đơn</div>
-            <div className="col-3 d-flex justify-content-center text-center">
-              Địa chỉ
-            </div>
-            <div className="col-1 d-flex justify-content-center text-center">
-              Số điện thoại
-            </div>
-            <div className="col-2 d-flex justify-content-center">
-              Thời gian đặt hàng
-            </div>
-            <div className="col-1 d-flex justify-content-center">Tạm tính </div>
-            <div className="col-1 d-flex justify-content-center">Giảm giá</div>
-            <div className="col-1 d-flex justify-content-center">Tổng tiền</div>
-            <div className="col-2 d-flex justify-content-center"></div>
+      <div className="done-container">
+        <ul className="done-list">
+          <li className="done-list-header">
+            <div className="done-list-item">Mã hoá đơn</div>
+            <div className="done-list-item">Địa chỉ</div>
+            <div className="done-list-item">Số điện thoại</div>
+            <div className="done-list-item">Thời gian đặt hàng</div>
+            <div className="done-list-item">Tạm tính</div>
+            <div className="done-list-item">Giảm giá</div>
+            <div className="done-list-item">Tổng tiền</div>
+            <div className="done-list-item"></div>
           </li>
           <li>
-            {data.map((item, index) => (
-              <div key={item.id} className="border">
-                <li
-                  className="row d-flex align-items-center mt-2  "
-                  style={{ padding: 0 }}
+            <ul style={{ padding: 0 }}>
+              {data.map((item) => (
+                <div
+                  key={item.id}
+                  className="done-list-item"
+                  style={{ border: 0 }}
                 >
-                  <div className="col-1 d-flex justify-content-center">
-                    {index + 1}
-                  </div>
-                  <div className="col-3 d-flex justify-content-center ">
-                    {item.address}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.phoneNumber}
-                  </div>
-                  <div className="col-2 font-weight-bold  d-flex justify-content-center ">
-                    {item.formatDate}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "#ee4d2d" }}
-                  >
-                    {item.totalMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div
-                    className="col-1 d-flex justify-content-center"
-                    style={{ color: "rgba(0,0,0,.87)" }}
-                  >
-                    {item.discount?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div className="col-1 d-flex justify-content-center">
-                    {item.intoMoney?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </div>
-                  <div className="col-2 d-flex justify-content-center">
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={() => handleOnclick()}
+                  <li className="done-list-row">
+                    <div style={{ border: 0 }} className="done-list-item">
+                      {item?.id}
+                    </div>
+                    <div style={{ border: 0 }} className="done-list-item">
+                      {item?.address}
+                    </div>
+                    <div style={{ border: 0 }} className="done-list-item">
+                      {item?.phoneNumber}
+                    </div>
+                    <div
+                      style={{ border: 0 }}
+                      className="done-list-item font-weight-bold"
                     >
-                      Huỷ
-                    </button>
-                  </div>
-                </li>
-              </div>
-            ))}
+                      {item?.formatDate}
+                    </div>
+                    <div
+                      className="done-list-item done-list-money"
+                      style={{ color: "#ee4d2d", border: 0 }}
+                    >
+                      {item?.totalMoney?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div
+                      className="done-list-item done-list-money"
+                      style={{ color: "rgba(0,0,0,.87)", border: 0 }}
+                    >
+                      {item?.discount?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div
+                      className="done-list-item done-list-money"
+                      style={{ border: 0 }}
+                    >
+                      {item?.intoMoney?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </div>
+                    <div className="done-list-item" style={{ border: 0 }}>
+                      <button
+                        type="button"
+                        className="btn btn-danger mb-2"
+                        onClick={() => {
+                          localStorage.setItem("billid11", item?.id);
+                        }}
+                      >
+                        <Link to="../orderDetail" className="text-light">
+                          Chi tiết
+                        </Link>
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger ml-1 "
+                        onClick={(e) => handleDone(e, item?.id)}
+                      >
+                        Đã nhận hàng
+                      </button>
+                    </div>
+                  </li>
+                </div>
+              ))}
+            </ul>
           </li>
         </ul>
       </div>
@@ -149,4 +158,4 @@ const Deliveringg = () => {
   );
 };
 
-export default Deliveringg;
+export default Delivering;

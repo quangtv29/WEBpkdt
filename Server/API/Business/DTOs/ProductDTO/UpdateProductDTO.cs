@@ -5,6 +5,7 @@ namespace API.Business.DTOs.ProductDTO.cs
 {
     public class UpdateProductDTO
     {
+        public Guid? Id { get; set; }
         public string? Name { get; set; }
         
         public int? Quantity { get; set; }

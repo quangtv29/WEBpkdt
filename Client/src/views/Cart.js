@@ -11,6 +11,17 @@ import CryptoJS from "crypto-js";
 export const Cart = () => {
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [totalMoney, setTotalMoney] = useState(0);
+  const [selectAll, setSelectAll] = useState(false);
+
+  const checkedAll = (e) => {
+    e.preventDefault();
+    setSelectAll(!selectAll);
+    const allInvoiceIds = data.map((item) => item.id);
+    setSelectedInvoices(selectAll ? [] : allInvoiceIds);
+    setTotalMoney(
+      selectAll ? 0 : data.reduce((total, item) => total + item.totalMoney, 0)
+    );
+  };
   const handleSelectInvoice = (event, invoiceId, money, index) => {
     if (event.target.checked) {
       const newChecked = [...checked];
@@ -104,7 +115,7 @@ export const Cart = () => {
               BillId: result.data.data.id,
             }
           )
-          .then((res) => {
+          .then(() => {
             localStorage.setItem("billid1", result.data.data.id);
             window.location.href = "/checkout";
           })
@@ -141,7 +152,18 @@ export const Cart = () => {
         <div className="row">
           <div className="col-12">
             <div className="cart-header py-3 d-flex justify-content-between align-items-center">
-              <h4 className="col-1"></h4>
+              <h4 className="col-1">
+                <button
+                  style={{
+                    padding: 4,
+                    color: "#fff",
+                    backgroundColor: "red",
+                  }}
+                  onClick={checkedAll}
+                >
+                  {selectAll ? "Bỏ chọn tất cả" : "Chọn tất cả"}
+                </button>
+              </h4>
               <h4 className="col-4 text-center">Sản phẩm</h4>
               <h4 className="col-2 ">Giá bán</h4>
               <h4 className="col-1">Số lượng</h4>
@@ -153,9 +175,9 @@ export const Cart = () => {
         </div>
         <div className="row">
           <div className="col-12">
-            {data.map((item, index) => (
+            {data?.map((item, index) => (
               <div
-                key={item.id}
+                key={item?.id}
                 className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center"
               >
                 <div className="col-1">

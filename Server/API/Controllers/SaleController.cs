@@ -1,5 +1,6 @@
 ﻿using API.Business.DTOs.SaleDTO;
 using API.Business.Services.Interface;
+using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -45,9 +46,9 @@ namespace API.Controllers
                 Message = money
             });
         }
-        [HttpPost]
+        [HttpPost("createSale")]
 
-        public async Task<IActionResult> createSale([FromBody] CreateDiscountCode discount)
+        public async Task<IActionResult> createSale(CreateDiscountCode discount)
         {
             if (discount != null)
             {
@@ -57,7 +58,24 @@ namespace API.Controllers
             return BadRequest(HttpStatusCode.NotFound);
         }
 
-        
+        [HttpGet("GetAllSale")]
+
+        public async Task<IActionResult> getAll(string customerid)
+        {
+            try
+            {
+                var sale = await _service.saleService.getAll(customerid);
+                foreach(var sa in sale)
+                {
+                    sa.FormatDate = sa.EndDate.ToString("dd/MM/yyyy HH:mm");
+                }    
+                return Ok(sale);
+            }
+            catch (Exception ex)
+                {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }

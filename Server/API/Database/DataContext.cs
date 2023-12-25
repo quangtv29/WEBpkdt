@@ -22,13 +22,16 @@ namespace API.Database
         public DbSet<Feedback> Feedback { get; set; }
 
         public DbSet<Notification> Notification { get; set; }
+        public DbSet<Blog> Blog { get; set; }
 
+        public DbSet<SaleDetail> SaleDetail { get; set; }
        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfiguration());
+
             builder.Entity<Bill>(e =>
             {
                 e.Property(e => e.Time).HasDefaultValueSql("DATEADD(hour, 7, GETUTCDATE())");
@@ -87,6 +90,19 @@ namespace API.Database
                 e.Property(e => e.isDelete).HasDefaultValue(false);
                 e.Property(e => e.Watched).HasDefaultValue(Watched.No);
                 e.Property(e => e.Create).HasDefaultValueSql("GETDATE()");
+            });
+            builder.Entity<Blog>(e =>
+            {
+                e.Property(e => e.LastModificationTime).HasDefaultValueSql("GETDATE()");
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
+                e.Property(e => e.isDelete).HasDefaultValue(false);
+
+            });
+            builder.Entity<SaleDetail>(e =>
+            {
+                e.Property(e => e.LastModificationTime).HasDefaultValueSql("GETDATE()");
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
+                e.Property(e => e.isDelete).HasDefaultValue(false);
             });
         }
 

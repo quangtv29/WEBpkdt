@@ -1,0 +1,15 @@
+.avatar-container {
+    width: 40px; /* Độ rộng của avatar */
+    height: 40px; /* Chiều cao của avatar */
+    overflow: hidden;
+    border-radius: 50%; /* Làm tròn góc để tạo hình tròn */
+    border: 2px solid #fff; /* Viền trắng xung quanh avatar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+  }
+  
+  .avatar-image {
+    width: 100%; /* Đảm bảo hình ảnh lấp đầy khung avatar */
+    height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo hoặc giãn ra */
+  }
+  

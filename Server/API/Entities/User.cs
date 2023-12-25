@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
@@ -14,6 +15,10 @@ namespace API.Entities
         public DateTime RefreshTokenExpiryTime { get; set; }
 
         public DateTime LimitReset { get; set; }
+        [NotMapped]
+
+        public string? FormatDate { get; set; }
+
 
        
     }

@@ -1,7 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿
 using API.Entities.Enum;
-using API.Entities;
 
 namespace API.Business.DTOs.CustomerDTO
 {

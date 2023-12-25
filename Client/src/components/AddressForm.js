@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Select from 'react-select';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Select from "react-select";
+import { useForm } from "react-hook-form";
 const AddressForm = (props) => {
-  const { register, handleSubmit, watch, setValue } = useForm({});
+  const { register, watch, setValue } = useForm({});
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
@@ -14,7 +14,7 @@ const AddressForm = (props) => {
     const fetchProvinces = async () => {
       try {
         const response = await axios.get(
-          'https://vapi.vnappmob.com/api/province/'
+          "https://vapi.vnappmob.com/api/province/"
         );
         const data = response.data.results.map((province) => ({
           label: province.province_name,
@@ -72,44 +72,44 @@ const AddressForm = (props) => {
     props.onChange({
       province: selectedProvince,
       district: selectedDistrict,
-      ward: watch('ward'),
+      ward: watch("ward"),
     });
   }, [selectedProvince, selectedDistrict, watch, props]);
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: "flex" }}>
       <Select
-        {...register('province')}
+        {...register("province")}
         options={provinces}
         placeholder="Chọn Tỉnh/Thành phố"
         onChange={(selectedOption) => {
           setSelectedProvince(selectedOption);
           setSelectedDistrict(null);
           setWards([]);
-          setValue('district', null);
+          setValue("district", null);
         }}
         value={selectedProvince}
       />
       <Select
-        {...register('district')}
+        {...register("district")}
         options={districts}
         placeholder="Chọn Quận/Huyện"
         onChange={(selectedOption) => {
           setSelectedDistrict(selectedOption);
           setWards([]);
-          setValue('ward', null);
+          setValue("ward", null);
         }}
         value={selectedDistrict}
         isDisabled={!selectedProvince}
       />
       <Select
-        {...register('ward')}
+        {...register("ward")}
         options={wards}
         placeholder="Chọn Phường/Xã"
         onChange={(selectedOption) => {
-          setValue('ward', selectedOption);
+          setValue("ward", selectedOption);
         }}
-        value={watch('ward')}
+        value={watch("ward")}
         isDisabled={!selectedDistrict}
       />
     </div>

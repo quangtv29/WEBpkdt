@@ -1,8 +1,8 @@
 ﻿using API.Entities;
 
-namespace API.Business.Repository.IRepository
+namespace API.Business.Repository.IRepository 
 {
-    public interface ISaleRepository
+    public interface ISaleRepository : IRepositoryBase<Sale>
     {
         Task<int?> GetMoney(string discountCode);
         Task<Sale> GetSaleByCode (string discountCode);

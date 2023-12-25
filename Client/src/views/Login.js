@@ -13,7 +13,7 @@ import { MyContext } from "../encryptionKey";
 const Login = () => {
   const [Username, setUsername] = useState("");
   const [Password, setPassword] = useState("");
-  const [login, setLogin] = useState(true);
+  const [message, setMessage] = useState("");
   const { encryptionKey } = useContext(MyContext);
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,42 +23,51 @@ const Login = () => {
         Password,
       })
       .then((response) => {
-        if (response.data.role[0] === "Manager") {
-          localStorage.setItem("chucvu", "Manager");
-          const accessToken = response.data.data.accessToken;
-          const encryptedId = CryptoJS.AES.encrypt(
-            response.data.user.id,
-            encryptionKey
-          ).toString();
-          localStorage.setItem("accessToken", accessToken);
-          document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
-          localStorage.setItem("refreshToken", response.data.data.refreshToken);
-          localStorage.setItem(
-            "lastname",
-            response.data.user.firstName + " " + response.data.user.lastName
-          );
-          localStorage.setItem("id", encryptedId);
-          // navigate("/admin", { replace: true });
-          window.location.href = "/admin";
+        if (response.data === "Account has been looked") {
+          setMessage("Tài khoản của bạn đã bị khoá");
         } else {
-          const accessToken = response.data.data.accessToken;
-          const encryptedId = CryptoJS.AES.encrypt(
-            response.data.user.id,
-            encryptionKey
-          ).toString();
-          localStorage.setItem("accessToken", accessToken);
-          document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
-          localStorage.setItem("refreshToken", response.data.data.refreshToken);
-          localStorage.setItem("id", encryptedId);
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
-          navigate("/", { replace: true });
+          if (response.data.role[0] === "Manager") {
+            localStorage.setItem("chucvu", "Manager");
+            const accessToken = response.data.data.accessToken;
+            const encryptedId = CryptoJS.AES.encrypt(
+              response.data.user.id,
+              encryptionKey
+            ).toString();
+            localStorage.setItem("accessToken", accessToken);
+            document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
+            localStorage.setItem(
+              "refreshToken",
+              response.data.data.refreshToken
+            );
+            localStorage.setItem(
+              "lastname",
+              response.data.user.firstName + " " + response.data.user.lastName
+            );
+            localStorage.setItem("id", encryptedId);
+            // navigate("/admin", { replace: true });
+            window.location.href = "/admin";
+          } else {
+            const accessToken = response.data.data.accessToken;
+            const encryptedId = CryptoJS.AES.encrypt(
+              response.data.user.id,
+              encryptionKey
+            ).toString();
+            localStorage.setItem("accessToken", accessToken);
+            document.cookie = `accessToken=${accessToken}; path=/; HttpOnly`;
+            localStorage.setItem(
+              "refreshToken",
+              response.data.data.refreshToken
+            );
+            localStorage.setItem("id", encryptedId);
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${accessToken}`;
+            navigate("/", { replace: true });
+          }
         }
       })
-      .catch((err) => {
-        setLogin(false);
-        console.error(err);
+      .catch(() => {
+        setMessage("Tài khoản hoặc mật khẩu không đúng");
       });
   };
 
@@ -125,10 +134,8 @@ const Login = () => {
                   />
                 </div>
                 <div>
-                  {login || (
-                    <p style={{ color: "red" }} className="text-center">
-                      Sai tài khoản hoặc mật khẩu
-                    </p>
+                  {message && (
+                    <p className="text-center text-danger">{message}</p>
                   )}
                   <Link to="/forgot-password">Forgot Password?</Link>
                   <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">

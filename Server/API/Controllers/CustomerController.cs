@@ -1,5 +1,6 @@
 ﻿using API.Business.DTOs.CustomerDTO;
 using API.Business.Services.Interface;
+using API.Entities;
 using AutoMapper;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
@@ -95,6 +96,36 @@ namespace API.Controllers
                 {
                     message = ex.Message
                 }) ;
+            }
+        }
+
+        [HttpPost("updateCustomer")]
+
+        public async Task<IActionResult> updateCustomer(string? Id, string? lastName, string? firstName, UpdateCustomerDTO update)
+        {
+            try
+            {
+                var result = await _service.customerService.updateCustomer(Id, update);
+                var user = await _service.authenticationService.UpdateUser(Id, firstName, lastName);
+                return Ok("Update done");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("addAvatar")]
+        public async Task<IActionResult> addAvatar([FromForm] AddCustomerDTO image, string? CustomerId)
+        {
+            try
+            {
+                var result = await _service.customerService.addAvatar(image.Image, CustomerId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

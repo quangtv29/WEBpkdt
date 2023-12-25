@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231030095500_delete-productlist")]
-    partial class deleteproductlist
+    [Migration("20231219045446_v4")]
+    partial class v4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("52d4fc15-9cac-40d5-b6a1-db227503fa5f"));
+                        .HasDefaultValue(new Guid("811c2392-09cb-43c5-b6aa-3efa1499c7e4"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -54,6 +54,9 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -128,7 +131,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("c27fdd51-79cd-462f-ae5a-9ad5d6a8ac75"));
+                        .HasDefaultValue(new Guid("7adf037a-d6bc-4c13-a120-f3327e888005"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -152,6 +155,9 @@ namespace API.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<bool?>("isShow")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
@@ -159,12 +165,56 @@ namespace API.Migrations
                     b.ToTable("Feedback");
                 });
 
+            modelBuilder.Entity("API.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValue(new Guid("7597fd3d-a9ec-4bf4-a3db-04595c87c59b"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Create")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CustomerID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Header")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<int>("Watched")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<bool?>("isDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerID");
+
+                    b.ToTable("Notification");
+                });
+
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("8f336c67-1b08-4bfc-9db8-f8a9dc96bb07"));
+                        .HasDefaultValue(new Guid("86c23bc2-0681-40a2-88fd-1208a3249dd8"));
 
                     b.Property<Guid?>("BillId")
                         .HasColumnType("uniqueidentifier");
@@ -213,13 +263,13 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("00e010f7-328c-4a2a-bd99-5800d602a52d"));
+                        .HasDefaultValue(new Guid("4146a5c0-9a8b-45bf-93e7-c918329bf15d"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Image")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ImportPrice")
                         .IsRequired()
@@ -270,7 +320,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("f0d33bcc-317a-401d-b447-8dd515310720"));
+                        .HasDefaultValue(new Guid("c997549e-5b61-4977-b403-a97eb5dce4ab"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -297,7 +347,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("ff6ef95b-2cea-4012-9930-ce0455f51fdb"));
+                        .HasDefaultValue(new Guid("9ac0c1a1-3b1f-4471-962d-7c961524cf66"));
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");
@@ -368,22 +418,22 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "827656fa-d6f4-4018-baa3-3cad477d674e",
-                            ConcurrencyStamp = "f0c2810e-224e-4a25-bf00-559273aac38e",
+                            Id = "8a47def8-0145-4345-a96d-37d44acd1f8e",
+                            ConcurrencyStamp = "97eb6641-de0e-4e79-8cd9-0407765ad3be",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "32c807ca-acbb-403b-adf1-9bf6b5b4c876",
-                            ConcurrencyStamp = "0c110361-3ff2-495d-9936-0143d96bbc53",
+                            Id = "d6864e27-6874-446d-a46d-6ebddf5dac2e",
+                            ConcurrencyStamp = "49e3d518-2ec8-44de-8c9b-a041adaeb278",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "afc562b4-50cd-4329-b56e-6985257764f9",
-                            ConcurrencyStamp = "43dad1ae-6569-4ebc-8d51-ae66c0d86161",
+                            Id = "88c69f79-57d7-42d2-b9b2-b9e600e704fe",
+                            ConcurrencyStamp = "4b91c993-4979-4aa5-876b-63e334cf51b4",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -572,11 +622,17 @@ namespace API.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<DateTime>("CreateAccount")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LimitReset")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
@@ -617,6 +673,17 @@ namespace API.Migrations
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.Entities.Notification", b =>
+                {
+                    b.HasOne("API.Entities.Customer", "Customer")
+                        .WithMany("Notification")
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("API.Entities.OrderDetail", b =>
@@ -698,6 +765,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Customer", b =>
                 {
                     b.Navigation("Bill");
+
+                    b.Navigation("Notification");
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>

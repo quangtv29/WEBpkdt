@@ -13,8 +13,10 @@ namespace API.Business.Repository.IRepository
         IFeedbackRepository Feedback { get; }
         ISaleRepository Sale { get; }
         INotificationRepository Notification { get; }
-
+        ISaleDetailRepository SaleDetail { get; }
+        IBlogRepository Blog { get; }
         IDbContextTransaction Transaction();
+        
         Task SaveAsync();
     }
 }

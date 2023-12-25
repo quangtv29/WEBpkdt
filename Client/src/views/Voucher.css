@@ -1,0 +1,61 @@
+.voucher-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .voucher-item {
+    width: 48%;
+    border: 1px solid black;
+    display: flex;
+    margin: 10px;
+  }
+  
+  .voucher-details {
+    width: 70%;
+    padding: 10px;
+  }
+  
+  .voucher-code {
+    text-align: center;
+  }
+  
+  .voucher-discount {
+    margin-bottom: 8px;
+  }
+  
+  .voucher-min-bill {
+    margin-bottom: 8px;
+  }
+  
+  .voucher-expiry {
+    margin-bottom: 8px;
+  }
+  
+  .voucher-count {
+    margin-bottom: 8px;
+  }
+  
+  .e-voucher-button{
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .voucher-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    padding: 10px 15px;
+    border: 1px solid #ee4d2d;
+    background-color: #fff;
+    color:#ee4d2d
+  }
+  .voucher-button-save {
+    margin-top: 10px;
+    margin-right: 20px;
+    padding: 10px 15px;
+    border: 1px solid #ee4d2d;
+    background-color: #ee4d2d;
+    color:#fff
+  }
+  

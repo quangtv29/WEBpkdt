@@ -1,7 +1,6 @@
 ﻿using API.Business.DTOs.ProductDTO.cs;
 using API.Business.Shared;
 using API.Entities;
-using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
 namespace API.Business.Services.Interface
 {
@@ -12,6 +11,7 @@ namespace API.Business.Services.Interface
         Task<IEnumerable<Product>> GetProductByIds(IEnumerable<Guid>? Id);
 
         Task<GetAllProductDTO> GetProductById(Guid? Id);
+        Task<IEnumerable<GetAllProductDTO>> getProductByProductType(string? productType, ProductParameters productParameters);
 
         Task Update(UpdateProductDTO product, Guid? Id);
 
@@ -22,7 +22,7 @@ namespace API.Business.Services.Interface
         Task<string> SaveImage(IFormFile imageFile);
          Task<IEnumerable<Product>> getProductByProductTypeId(Guid? ProductTypeId, ProductParameters productParameters);
         Task<(IEnumerable<GetAllProductDTO>, int)> searchByName(string name, ProductParameters productParameters);
-        Task<Product> updateProduct(Guid? Id, UpdateProductDTO product);
+        Task<Product> updateProduct( UpdateProductDTO product);
         Task<IEnumerable<GetAllProductDTO>> getProductByPrice(int? vip, int? to, ProductParameters productParameters, bool inStock, bool outOfStock);
         
         }

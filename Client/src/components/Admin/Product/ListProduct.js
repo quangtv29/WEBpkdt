@@ -5,46 +5,47 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreateProduct from "./CreateProduct";
 import CreateProduct1 from "./CreateProduct1";
+
 const ListProduct = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [productType, setProductType] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [maloaisp, setMaLoaiSP] = useState("");
   const [status, setStatus] = useState(false);
   const [status1, setStatus1] = useState(false);
+  const [data, setData] = useState([]);
+  const pageSize = 5;
+
   useEffect(() => {
     axios
       .get("https://localhost:7295/api/ProductType/getAll")
       .then((res) => {
         setProductType(res.data.data);
         setMaLoaiSP(res.data.data[0].id);
-        console.log(res.data.data);
       })
       .catch(() => {});
   }, []);
-  const [data, setData] = useState([]);
-  const pageNumber = 1;
-  const pageSize = 10;
-  useEffect(() => {
-    const fetchSanPham = async () => {
-      try {
-        const response = await axios.post(
-          "https://localhost:7295/api/Product/getAllProduct",
-          {
-            pageNumber,
-            pageSize,
-          }
-        );
-        setData(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    fetchSanPham();
-  }, []);
+  const fetchSanPham = async (page) => {
+    try {
+      const response = await axios.post(
+        "https://localhost:7295/api/Product/getAllProduct",
+        {
+          pageNumber: page,
+          pageSize,
+        }
+      );
+      setData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSanPham(currentPage);
+  }, [currentPage]);
 
   const handleSelectProduct = (product) => {
-    // console.log(product);
     setSelectedProduct(product);
   };
 
@@ -52,28 +53,21 @@ const ListProduct = () => {
     try {
       const response = await axios.delete(`/api/sanpham/${productId}`);
       console.log(response.data);
-      // Xử lý kết quả trả về khi xóa thành công
       toast.success("Xóa sản phẩm thành công");
       window.location.reload();
     } catch (error) {
       console.error(error);
-      // Xử lý lỗi khi xóa không thành công
       toast.error("Xóa sản phẩm thất bại");
     }
   };
 
-  // const handleAddProduct = (e) => {
-  //   e.preventDefault();
-  //   window.location.href = '/admin/create-product';
-  // };
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    fetchSanPham(page);
+  };
 
   return (
     <div className="contai">
-      {/* <div className='mb-3'>
-        <button class="btn btn-navbar" type="button" onClick={(e) => handleAddProduct(e)}>
-          <i class="fas fa-plus"></i>Thêm sản phẩm
-        </button>
-      </div> */}
       <div className="row">
         <table className="table">
           <thead>
@@ -87,27 +81,46 @@ const ListProduct = () => {
               <th>NSX</th>
               <th>Mô tả</th>
               <th>Hình ảnh</th>
-              <th colspan="2">Thao tác</th>
+              <th colSpan="2">Thao tác</th>
             </tr>
           </thead>
           <tbody>
             {data.map((item) => (
               <tr key={item.id} onClick={() => handleSelectProduct(item)}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.quantity}</td>
-                <td>{item.importPrice}</td>
-                <td>{item.price}</td>
-                <td>{item.productTypeName}</td>
-                <td>{item.producer}</td>
-                <td>{item.describe}</td>
-                <td>
-                  <img src={item.image} alt={item.name} className="fixImage" />
+                <td style={{ wordWrap: "break-word", whiteSpace: "pre-wrap" }}>
+                  {item?.id}
                 </td>
-
+                <td style={{ wordWrap: "break-word", whiteSpace: "pre-wrap" }}>
+                  {item?.name}
+                </td>
+                <td>{item?.quantity}</td>
+                <td>
+                  {item?.importPrice?.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </td>
+                <td>
+                  {item?.price?.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </td>
+                <td>{item?.productTypeName}</td>
+                <td>{item?.producer}</td>
+                <td style={{ wordWrap: "break-word", whiteSpace: "pre-wrap" }}>
+                  {item?.describe}
+                </td>
+                <td>
+                  <img
+                    src={item?.image}
+                    alt={item?.name}
+                    className="fixImage"
+                  />
+                </td>
                 <td>
                   <i
-                    class="fad fa-trash-alt"
+                    className="fad fa-trash-alt"
                     onClick={() => handleDeleteProduct(item.MaSP)}
                   ></i>
                 </td>
@@ -115,25 +128,42 @@ const ListProduct = () => {
             ))}
           </tbody>
         </table>
+        <div className="pagination mb-3">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Trang trước
+          </button>
+          <button onClick={() => handlePageChange(currentPage + 1)}>
+            Trang tiếp theo
+          </button>
+        </div>
         <div className="row">
           <div className="col-6">
             <button
               className="text-center"
               onClick={(e) => {
                 e.preventDefault();
-                setStatus1(true);
+                setStatus1(!status1);
               }}
             >
               Sửa sản phẩm
             </button>
-            {status1 && <CreateProduct product={selectedProduct} />}
+            {status1 && (
+              <CreateProduct
+                product={selectedProduct}
+                productType={productType}
+                maloaisp={maloaisp}
+              />
+            )}
           </div>
           <div className="col-6">
             <button
               className="text-center"
               onClick={(e) => {
                 e.preventDefault();
-                setStatus(true);
+                setStatus(!status);
               }}
             >
               Thêm sản phẩm

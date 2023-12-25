@@ -194,6 +194,7 @@ namespace API.Business.Services
                                      Name= pg.Name,
                                      TotalMoney = od.TotalMoney,
                                      Image = pg.Image,
+                                     isSave = od.isSave
                                  }
                          ).ToListAsync();
             return results;

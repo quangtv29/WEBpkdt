@@ -1,5 +1,5 @@
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -28,7 +28,6 @@ import LayoutAdmin from "./components/Admin/LayoutAdmin/LayoutAdmin";
 import ListBill from "./components/Admin/Bill/ListBill";
 import ListTypeProduct from "./components/Admin/ListTypeProduct/ListTypeProduct";
 import ListBills from "./components/Admin/Bill/ListBills";
-import { CartProvider } from "./CartContext";
 import Confirm from "./components/Purchase History/Confirm";
 import Headers from "./components/Purchase History/Header";
 import Canceled from "./components/Purchase History/Canceled";
@@ -40,11 +39,13 @@ import Statistics from "./components/Admin/Statistics/Statistics";
 import { MyContextProvider } from "./encryptionKey";
 import { Navigate } from "react-router-dom";
 import Delivering from "./components/Admin/Bill/Delivering";
+import ProductRating from "./views/ProductRating";
+import ResetPassword from "./components/ResetPassword";
+import DiscountCodeForm from "./components/Admin/Discount/DiscountCode";
+import Voucher from "./views/Voucher";
 function App() {
-  // const u = JSON.parse(localStorage.getItem('user'));
   const AdminRoute = ({ element }) => {
     if (localStorage.getItem("chucvu") !== "Manager") {
-      // Nếu không phải là admin, chuyển hướng hoặc thực hiện xử lý khác
       return <Navigate to="/error-page" />;
     }
 
@@ -57,6 +58,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
+            <Route path="resetpassword" element={<ResetPassword />} />
             <Route path="profile" element={<Profile />} />
             <Route path="contact" element={<Contact />} />
             <Route path="product" element={<OurStore />} />
@@ -76,6 +78,7 @@ function App() {
             <Route path="refund-policy" element={<RefundPloicy />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="term-conditions" element={<TermAndContions />} />
+            <Route path="voucher" element={<Voucher />} />
             <Route path="to-pay" element={<Headers />}>
               <Route index element={<Confirm />} />
               <Route path="to-cancel" element={<Canceled />} />
@@ -83,6 +86,7 @@ function App() {
               <Route path="done" element={<Done />} />
               <Route path="orderDetail" element={<OrderDetail />} />
             </Route>
+            <Route path="rating" element={<ProductRating />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -102,6 +106,7 @@ function App() {
               <Route path="delivering" element={<Delivering />} />
               <Route path="statistics" element={<Statistics />} />
               <Route path="orderDetaila" element={<OrderDetail />} />
+              <Route path="discount" element={<DiscountCodeForm />} />
             </Route>
           </Routes>
         </BrowserRouter>

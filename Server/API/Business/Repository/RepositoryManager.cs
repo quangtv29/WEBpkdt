@@ -15,6 +15,9 @@ namespace API.Business.Repository
         private readonly Lazy<ISaleRepository> _saleRepo;
         private readonly Lazy<IFeedbackRepository> _feedbackRepository;
         private readonly Lazy<INotificationRepository> _notificationsRepository;
+        private readonly Lazy<ISaleDetailRepository> _saleDetailRepository;
+        private readonly Lazy<IBlogRepository> _blogRepository;
+
         public RepositoryManager(DataContext db )
         {
             _db = db;
@@ -26,6 +29,8 @@ namespace API.Business.Repository
             _saleRepo = new Lazy<ISaleRepository>(() => new SaleRepository(db));
             _feedbackRepository = new Lazy<IFeedbackRepository>(() => new FeedbackRepository(db));
             _notificationsRepository = new Lazy<INotificationRepository>(() => new NotificationRepository(db));
+            _saleDetailRepository = new Lazy<ISaleDetailRepository>(() => new SaleDetailRepository(db));
+            _blogRepository = new Lazy<IBlogRepository>(() => new BlogRepository(db));
         }
 
 
@@ -46,6 +51,10 @@ namespace API.Business.Repository
         public IFeedbackRepository Feedback => _feedbackRepository.Value;
 
         public INotificationRepository Notification => _notificationsRepository.Value;
+
+        public ISaleDetailRepository SaleDetail => _saleDetailRepository.Value;
+
+        public IBlogRepository Blog => _blogRepository.Value;
 
         public async Task SaveAsync()
         {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231215092520_v105")]
-    partial class v105
+    [Migration("20231218080330_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("f357f7f0-0b64-4f63-bc05-2792f71554c0"));
+                        .HasDefaultValue(new Guid("85eb56db-aff6-415a-8ce7-8d912176b33d"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -131,7 +131,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("9cc0e26a-aebb-4961-be8c-24c59f8b7c75"));
+                        .HasDefaultValue(new Guid("65272161-415a-44f7-a78f-cf2dc4e223a3"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -167,13 +167,15 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("a562e374-191c-4540-887b-be1fc86500fe"));
+                        .HasDefaultValue(new Guid("ca080b7b-121b-4d70-bbb5-2c43d2843a8c"));
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Create")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("CustomerID")
                         .IsRequired()
@@ -188,7 +190,9 @@ namespace API.Migrations
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("Watched")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<bool?>("isDelete")
                         .ValueGeneratedOnAdd()
@@ -207,7 +211,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("be1fab0a-85ae-45c4-ac5b-506c270a5ac5"));
+                        .HasDefaultValue(new Guid("e2ddc595-59fb-4bb0-b19e-ff6d9993ac77"));
 
                     b.Property<Guid?>("BillId")
                         .HasColumnType("uniqueidentifier");
@@ -256,7 +260,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("060a1b49-e200-4302-8ba1-6dc379214d73"));
+                        .HasDefaultValue(new Guid("b6d9a910-fc7e-4450-8180-d9b3ce626e59"));
 
                     b.Property<string>("Describe")
                         .HasColumnType("nvarchar(max)");
@@ -313,7 +317,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("79cbfa15-108c-4dd5-a228-42a5ac908197"));
+                        .HasDefaultValue(new Guid("590edb75-211f-44d7-ba75-b054c699c084"));
 
                     b.Property<DateTime?>("LastModificationTime")
                         .ValueGeneratedOnAdd()
@@ -340,7 +344,7 @@ namespace API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("526f0fd9-6f1c-4fa3-a8f9-0c1c471e5318"));
+                        .HasDefaultValue(new Guid("d472ca6e-6540-4fdd-b436-49f5b8b06c65"));
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");
@@ -411,22 +415,22 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2f28a04a-a1d8-4eb2-8918-5fa52b922a2a",
-                            ConcurrencyStamp = "06f5b5cd-c5e8-451e-b8a7-98ce3328478f",
+                            Id = "d0bab4f3-e9f8-466b-8331-e6c693170557",
+                            ConcurrencyStamp = "e641083c-0c52-4ae6-b1f3-d757e6ab6b8f",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "93c0d892-6e9e-4212-8ce9-4faecb3af592",
-                            ConcurrencyStamp = "3847330b-6216-4f85-ae10-1e3c379955d5",
+                            Id = "fbf72970-c346-43e8-9fc5-505340e149bd",
+                            ConcurrencyStamp = "86da7f71-5210-47dd-bef6-600a866e193d",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "bf46f723-fe39-4c7d-b44a-52b528311420",
-                            ConcurrencyStamp = "b622a18f-bd15-448a-ad27-4a7a5655beb4",
+                            Id = "23096bfb-4d7d-40f7-8988-e3c27a827420",
+                            ConcurrencyStamp = "daa6f6ba-f6dc-4213-b258-89c4cce8dec3",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });

@@ -22,7 +22,7 @@ namespace API.Business.Extensions
                 new RateLimitRule
                     {
                         Endpoint = "*",
-                        Limit = 10000,
+                        Limit = 100000,
                         Period = "5m"
                     }
             };

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+﻿
 
 namespace API.Business.DTOs.OrderDetailDTO
 {
@@ -19,6 +17,7 @@ namespace API.Business.DTOs.OrderDetailDTO
 
         public string? Name { get; set; }
         public string? Image { get; set; }
+        public bool? isSave { get; set; }
 
     }
 }
