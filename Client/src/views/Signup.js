@@ -4,7 +4,6 @@ import Container from "../components/Container";
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,12 +28,21 @@ const Signup = () => {
         userName,
       })
       .then((res) => {
+        var a = [...border];
         if (res.data.data === -1) {
           setErrorMessage("Tài khoản đã tồn tại");
+          setCheckUser("exists");
+          a[2] = false;
+          setBorder(a);
         } else if (res.data.data === 0) {
           setCheckUser("null");
+          a[2] = false;
+          setBorder(a);
         } else {
+          setCheckUser("ok");
           setErrorMessage("");
+          a[2] = true;
+          setBorder(a);
         }
       })
       .catch((err) => {
@@ -45,13 +53,22 @@ const Signup = () => {
   const checkPassword = (event, value) => {
     event.preventDefault();
     if (value >= 8) {
+      setcheckPW(true);
       setErrorMessage("");
+      var a = [...border];
+      a[4] = true;
+      setBorder(a);
     } else {
       setcheckPW(false);
       setErrorMessage("Mật khẩu phải có tối thiểu 8 kí tự.");
     }
   };
   const [border, setBorder] = useState([true, true, true, true, true, true]);
+  const validatePhoneNumber = (value) => {
+    const phoneRegex = /^\d{10}$/;
+    console.log(phoneRegex.test(value));
+    return phoneRegex.test(value);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     if (
@@ -71,7 +88,11 @@ const Signup = () => {
       if (lastName === "") {
         a[1] = false;
       }
-      if (userName === "") {
+      if (userName === "" || checkuser === "exists") {
+        if (checkuser === "exists") {
+          setErrorMessage("Tài khoản đã tồn tại");
+          return false;
+        }
         a[2] = false;
       }
       if (phoneNumber === "") {
@@ -87,6 +108,7 @@ const Signup = () => {
       setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
       return false;
     }
+    setErrorMessage("");
     validateEmail(email);
     if (isEmailValid) {
       axios
@@ -106,10 +128,8 @@ const Signup = () => {
             })
             .then(() => {});
           setErrorMessage("");
-          toast("Đăng kí tài khoản thành công");
-          setTimeout(function () {
-            navigate("/login", { replace: true });
-          }, 4000);
+          alert("Đăng kí tài khoản thành công");
+          navigate("/login", { replace: true });
         })
         .catch((err) => {
           alert("Lỗi");
@@ -118,18 +138,19 @@ const Signup = () => {
       return true;
     } else {
       setErrorMessage("Email không đúng định dạng.");
+      return false;
     }
   };
 
   return (
     <>
-      <Meta title={"Sign Up"} />
-      <BreadCrumb title="Sign Up" />
+      <Meta title={"Đăng Ký"} />
+      <BreadCrumb title="Đăng Ký" />
       <Container class1="login-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
             <div className="auth-card" style={{ style: "relative" }}>
-              <h3 className="text-center mb-3">Sign Up</h3>
+              <h3 className="text-center mb-3">Đăng Ký</h3>
               {errorMessage && (
                 <p
                   style={{

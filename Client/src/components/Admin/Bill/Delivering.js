@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Bill.scss";
 import { Link } from "react-router-dom";
-import ReactPaginate from "react-paginate";
 
 const Delivering = () => {
   const [data, setData] = useState([]);
   const accessToken = localStorage.getItem("accessToken");
-  const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 10;
-  const pageCount = Math.ceil(data.length / itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const [totalPage, setTotalPage] = useState(0);
 
   useEffect(() => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
@@ -17,7 +16,7 @@ const Delivering = () => {
       .post(
         `https://localhost:7295/api/Bill/getAll`,
         {
-          pageNumber: pageNumber + 1,
+          pageNumber: currentPage,
           pageSize: itemsPerPage,
         },
         {
@@ -28,13 +27,11 @@ const Delivering = () => {
       )
       .then((response) => {
         setData(response.data.data);
-      })
-      .catch(() => {
-        alert("lỗi jjj");
+        setTotalPage(Math.ceil(response.data.totalPage / itemsPerPage));
       });
-  }, [pageNumber, data]);
-  const handlePageClick = (selectedPage) => {
-    setPageNumber(selectedPage.selected);
+  }, [currentPage, accessToken]);
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage);
   };
 
   const confirm = (id) => {
@@ -50,6 +47,7 @@ const Delivering = () => {
         }
       )
       .then(() => {
+        setData(data.filter((item) => item.id !== id));
         alert("Xác nhận đơn hàng thành công");
       })
       .catch((error) => {
@@ -64,7 +62,7 @@ const Delivering = () => {
           <thead>
             <tr className="text-center">
               <th>Mã hoá đơn</th>
-              <th>ID tài khoản</th>
+              <th>Tên tài khoản</th>
               <th>Tên người nhận</th>
               <th>Địa chỉ</th>
               <th>Số điện thoại</th>
@@ -77,7 +75,7 @@ const Delivering = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {data.map((item, index) => (
               <tr key={item?.id} className="text-center ">
                 <>
                   <td
@@ -100,7 +98,7 @@ const Delivering = () => {
                       }}
                       className="text-danger"
                     >
-                      {item.id}
+                      {index + 1}
                     </Link>
                   </td>
                   <td
@@ -110,7 +108,7 @@ const Delivering = () => {
                       wordWrap: "break-word",
                     }}
                   >
-                    {item?.customerID}
+                    {item?.userName}
                   </td>
                   <td
                     style={{
@@ -149,6 +147,7 @@ const Delivering = () => {
                       style: "currency",
                       currency: "VND",
                     })}
+                    {item?.discountCode === "Done" && <p>(Đã thanh toán)</p>}
                   </td>
                   <td
                     style={{
@@ -159,10 +158,11 @@ const Delivering = () => {
                   >
                     {item?.GhiChu}
                   </td>
-                  <td>
+                  <td className="check">
                     <button
                       onClick={() => confirm(item?.id)}
-                      className="button mr-2"
+                      className="btn mr-2"
+                      style={{ backgroundColor: "blue" }}
                     >
                       Giao thành công <i className="fas fa-check"></i>
                     </button>
@@ -172,17 +172,24 @@ const Delivering = () => {
             ))}
           </tbody>
         </table>
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          pageCount={pageCount}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          previousLinkClassName={"pagination__link"}
-          nextLinkClassName={"pagination__link"}
-          disabledClassName={"pagination__link--disabled"}
-          activeClassName={"pagination__link--active"}
-        />
+        <div className="pagination mb-3">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Trang trước
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPage}
+          >
+            Trang tiếp theo
+          </button>
+          <span className="mt-2">
+            {" "}
+            {currentPage} / {totalPage}
+          </span>
+        </div>
       </div>
     </div>
   );

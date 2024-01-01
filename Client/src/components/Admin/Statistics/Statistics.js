@@ -7,7 +7,6 @@ const Statistics = () => {
   useEffect(() => {
     axios.post("https://localhost:7295/api/Bill/totalRevenue").then((res) => {
       setData(res.data);
-      console.log(res.data);
     });
   }, []);
   useEffect(() => {
@@ -26,7 +25,11 @@ const Statistics = () => {
   const reversedObject = Object.fromEntries(
     Object.entries(revenueData).reverse()
   );
-  return <RevenueChart data={reversedObject} profitData={profit} />;
+  return (
+    <>
+      <RevenueChart data={reversedObject} profitData={profit} />
+    </>
+  );
 };
 
 export default Statistics;

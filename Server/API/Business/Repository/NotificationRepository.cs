@@ -17,9 +17,8 @@ namespace API.Business.Repository
         {
             var result = await GetAllByCondition(p => p.CustomerID == customerId || p.CustomerID == "2bc37ad4-9601-4ede-a821-6a23d9990609", false)
                 .Where(p => p.isDelete == false)
-                .Skip((notificationParameter.PageNumber - 1) * notificationParameter.PageSize)
-                .Take(notificationParameter.PageSize)
-                .OrderByDescending(p => p.Create)
+                 .OrderByDescending(p => p.Create)
+                .Take(notificationParameter.PageSize * notificationParameter.PageNumber)
                 .ToListAsync();
             return result;
         }

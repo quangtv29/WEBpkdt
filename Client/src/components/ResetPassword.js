@@ -82,7 +82,9 @@ const ResetPassword = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
       </div>
-      <button type="submit">Đổi mật khẩu</button>
+      <button className="mt-4" type="submit">
+        Đổi mật khẩu
+      </button>
     </form>
   );
 };

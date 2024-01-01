@@ -22,6 +22,8 @@ namespace API.Business.DTOs.BillDTO
         public string? FormatShippingDate { get; set; }
 
         public DateTime ShippingDate { get; set; }
+        public string? DiscountCode { get; set; }
+        public string? UserName { get; set; }
 
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
-using Microsoft.AspNetCore.Authorization;
 using API.Entities.Enum;
 using API.Business.Shared;
 using API.Entities;
@@ -33,23 +32,27 @@ namespace API.Controllers
             try
             {
                 var bills = await _service.billService.GetAll(trackChanges: false,status,billParameters);
-                if (bills == null || !bills.Any())
+                if (bills.Item1 == null || !bills.Item1.Any())
                 {
                     _logger.LogInfo("List Bill is empty");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                var convert = bills.Select(p =>
+                foreach ( var bi in bills.Item1)
                 {
-                    p.FormatDate = p.Time.ToString("dd/MM/yyyy HH:mm:ss");
-                    return p;
-                }).ToList();
+                    bi.FormatDate = bi.Time.ToString("dd/MM/yyyy HH:mm:ss");
+                    bi.FormatShippingDate = bi.ShippingDate.ToString("dd/MM/yyyy HH:mm:ss");
+                    var a = await _service.authenticationService.getInfoById(bi.CustomerID);
+                    bi.UserName = a.UserName;
+                }    
+                
 
-               
+
                 return Ok(new
                 {
                     message = "Success",
-                    data = _mapper.Map<List<GetAllBillDTO>>(convert)
-                });
+                    data = _mapper.Map<List<GetAllBillDTO>>(bills.Item1),
+                    totalPage = bills.Item2
+                }) ;
             }
             catch (Exception ex)
             {
@@ -211,6 +214,39 @@ namespace API.Controllers
         {
             var result = await _service.billService.TotalRevenueLast12Months();
             return Ok(result);
+        }
+
+        [HttpPost("statiscal")]
+
+        public async Task<IActionResult> statisticalProduct(DateTime a)
+        {
+            var result = await _service.billService.statisticalProduct(a);
+            return Ok(result);
+        }
+
+        [HttpPost("payVNPay")]
+       public async Task<string> payVNPay(CreateVNPayDTO vnpay)
+        {
+            var result = await _service.billService.payVNPay(vnpay);
+            return result;
+        }
+        [HttpPost("updatePayDone")]
+         public async Task<IActionResult> updatePayDone(Guid? Id)
+        {
+            try
+            {
+                var result = await _service.billService.updatePayDone(Id);
+                if (result != null)
+                {
+                    return Ok("Update done");
+
+                }
+                return BadRequest("Id null");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

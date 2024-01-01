@@ -1,0 +1,33 @@
+.account-info-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .account-info-heading {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .account-info-item {
+    margin-bottom: 10px;
+  }
+
+  .account-info-label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  /* Customize styles based on your design */
+/* ... (previous CSS) */
+
+.account-info-avatar {
+    max-width: 100px;
+    max-height: 100px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }

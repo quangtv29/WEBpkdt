@@ -6,7 +6,8 @@ namespace API.Business.Services.Interface
 {
     public interface INotificationService
     {
-        Task<IEnumerable<GetNotificationDTO>> getNotificationByCustomerId(string customerId, NotificationParameter notificationParameter);
+        Task<IEnumerable<Notification>> getNotificationByCustomerId(string customerId, NotificationParameter notificationParameter);
         Task<Notification> createNoti(CreateNotificationDTO createNotificationDTO);
+        Task<Notification> updateNoti(Guid? id);
     }
 }

@@ -1,6 +1,7 @@
 // RevenueChart.js
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
+import Revenue from "../components/Admin/Meo";
 
 const RevenueChart = ({ data, profitData, title }) => {
   const chartRef = useRef(null);
@@ -45,9 +46,12 @@ const RevenueChart = ({ data, profitData, title }) => {
   }, [data, profitData]);
 
   return (
-    <div>
+    <div className="w-100">
       <h2>{title}</h2>
       <canvas ref={chartRef} style={{ minWidth: 1070 }} />
+      <div className="d-flex justify-content-center">
+        <Revenue />
+      </div>
     </div>
   );
 };

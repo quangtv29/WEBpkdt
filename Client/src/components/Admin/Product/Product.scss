@@ -10,13 +10,14 @@
                 box-sizing: border-box;
                 th {
                     border: 1px solid #ddd;
-                    background-color: #04AA6D;
+                    background-color: #FF0033	
+                    ;
                     color: white;
 
                 }
                 tr {
                     &:nth-child(even) {
-                      background-color: #f2f2f2;
+                      background-color: #fff;
                     }
                     &:hover {
                       background-color: #ddd;
@@ -27,6 +28,7 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                   
                 }
                 .fa-edit{
                     font-size: 40px;

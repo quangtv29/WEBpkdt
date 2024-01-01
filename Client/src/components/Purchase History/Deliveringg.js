@@ -32,7 +32,7 @@ const Delivering = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [decryptedId, accessToken, data]);
+  }, [decryptedId, accessToken]);
   const handleDone = (e, id) => {
     e.preventDefault();
     axios.post(
@@ -130,7 +130,7 @@ const Delivering = () => {
                     <div className="done-list-item" style={{ border: 0 }}>
                       <button
                         type="button"
-                        className="btn btn-danger mb-2"
+                        className="btn btn-danger mb-2 ml-1 w-100"
                         onClick={() => {
                           localStorage.setItem("billid11", item?.id);
                         }}
@@ -141,7 +141,7 @@ const Delivering = () => {
                       </button>
                       <button
                         type="button"
-                        className="btn btn-danger ml-1 "
+                        className="btn btn-primary ml-1 w-100 "
                         onClick={(e) => handleDone(e, item?.id)}
                       >
                         Đã nhận hàng

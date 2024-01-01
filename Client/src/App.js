@@ -43,6 +43,12 @@ import ProductRating from "./views/ProductRating";
 import ResetPassword from "./components/ResetPassword";
 import DiscountCodeForm from "./components/Admin/Discount/DiscountCode";
 import Voucher from "./views/Voucher";
+import DoneAdmin from "./components/Admin/Bill/Done";
+import CanceledAdmin from "./components/Admin/Bill/Canceled";
+import BlogForm from "./components/Admin/Blog/CreateBlog";
+import AccountInfo from "./components/Admin/Account/Account";
+import CallbackComponent from "./views/CallBack";
+import NotificationComponent3 from "./views/Notification";
 function App() {
   const AdminRoute = ({ element }) => {
     if (localStorage.getItem("chucvu") !== "Manager") {
@@ -79,6 +85,8 @@ function App() {
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="term-conditions" element={<TermAndContions />} />
             <Route path="voucher" element={<Voucher />} />
+            <Route path="result" element={<CallbackComponent />} />
+            <Route path="noti" element={<NotificationComponent3 />} />
             <Route path="to-pay" element={<Headers />}>
               <Route index element={<Confirm />} />
               <Route path="to-cancel" element={<Canceled />} />
@@ -107,6 +115,11 @@ function App() {
               <Route path="statistics" element={<Statistics />} />
               <Route path="orderDetaila" element={<OrderDetail />} />
               <Route path="discount" element={<DiscountCodeForm />} />
+              <Route path="done" element={<DoneAdmin />} />
+              <Route path="cancel" element={<CanceledAdmin />} />
+              <Route path="blogadmin" element={<Blog />} />
+              <Route path="createblog" element={<BlogForm />} />
+              <Route path="accountinfo" element={<AccountInfo />} />
             </Route>
           </Routes>
         </BrowserRouter>

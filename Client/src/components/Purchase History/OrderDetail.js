@@ -94,7 +94,8 @@ const OrderDetail = () => {
                     })}
                   </h5>
                 </div>
-                {status === 0 ? (
+                {status === 0 &&
+                localStorage.getItem("chucvu") !== "Manager" ? (
                   item?.isSave ? (
                     <div className="col-1">
                       <button

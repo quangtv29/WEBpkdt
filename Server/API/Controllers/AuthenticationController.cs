@@ -107,13 +107,26 @@ namespace API.Controllers
             try
             {
                 var result = await _serviceManager.authenticationService.getInfoById(id);
-                result.FormatDate = result.CreateAccount.ToString("dd/MM/yyyy HH:mm:ss");
-                return Ok(result);
+                if (result != null)
+                {
+                    result.FormatDate = result.CreateAccount.ToString("dd/MM/yyyy HH:mm:ss");
+                }
+                    return Ok(result);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("getInfoByName")]
+        
+        public async Task<IActionResult> getInfoByName(string? userName)
+        {
+            if (userName == null)
+                return BadRequest();
+            var result = await _serviceManager.authenticationService.getInfo(userName);
+            return Ok(result);
         }
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()

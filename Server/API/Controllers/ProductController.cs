@@ -23,19 +23,23 @@ namespace API.Controllers
 
         [HttpPost("getAllProduct")]
 
-        public async Task<IActionResult> getAllProduct([FromBody] ProductParameters productParameters)
+        public async Task<IActionResult> getAllProduct([FromBody] ProductParameters productParameters, int a)
         {
             try
             {
-                var products = await _service.productService.GetAll(productParameters);
-                if (products == null)
+                var products = await _service.productService.GetAll(productParameters, a);
+                if (products.Item1 == null)
                 {
                     return BadRequest(HttpStatusCode.NoContent);
                 }
 
-                var productDTO = _mapper.Map<List<GetAllProductDTO>>(products);
+                var productDTO = _mapper.Map<List<GetAllProductDTO>>(products.Item1);
 
-                return Ok(productDTO);
+                return Ok(new
+                {
+                    productDTO,
+                    products.Item2
+                });
             }
             catch (Exception ex)
             {

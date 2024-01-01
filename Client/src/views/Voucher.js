@@ -19,7 +19,7 @@ const Voucher = () => {
       .then((res) => {
         setData(res.data);
       });
-  }, [decryptedId, data]);
+  }, [decryptedId]);
 
   const handleSave = (e, id) => {
     axios
@@ -30,6 +30,16 @@ const Voucher = () => {
       .then((res) => {
         if (res.data === "Mã giảm giá đã được lưu hết") {
           alert("Mã giảm giá đã được lưu hết");
+        } else {
+          setData(
+            data.filter((item) => {
+              if (item.id === id) {
+                item.isActive = true;
+                item.count += 1;
+              }
+              return item;
+            })
+          );
         }
       });
   };
@@ -44,7 +54,10 @@ const Voucher = () => {
               <div className="voucher-details">
                 <h6 className="voucher-code">{item?.discountCode}</h6>
                 {item?.percent === 1 ? (
-                  <p className="voucher-discount">
+                  <p
+                    className="voucher-discount"
+                    style={{ fontSize: 17, fontWeight: "bold" }}
+                  >
                     Giảm{" "}
                     {item?.money?.toLocaleString("vi-VN", {
                       style: "currency",
@@ -52,7 +65,10 @@ const Voucher = () => {
                     })}
                   </p>
                 ) : (
-                  <p className="voucher-discount">
+                  <p
+                    className="voucher-discount"
+                    style={{ fontSize: 17, fontWeight: "bold" }}
+                  >
                     Giảm {item?.percent * 100}%
                   </p>
                 )}
@@ -74,7 +90,7 @@ const Voucher = () => {
                     </span>
                   )}
                 </p>
-                <p className="voucher-expiry">
+                <p className="voucher-expiry" style={{ color: "#ee4d2d" }}>
                   Hạn sử dụng mã: {item?.formatDate}
                 </p>
                 <p className="voucher-count">

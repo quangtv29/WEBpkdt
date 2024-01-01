@@ -1,0 +1,30 @@
+/* CSS Cho Thông Báo */
+.notification-container3 {
+  position: relative;
+  padding: 20px;
+}
+
+.notification-label3 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.notification-content3 {
+  display: flex;
+  flex-direction: column;
+}
+
+.meo {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.3s;
+  background-color: #fff2ee ;
+}
+.meo:hover {
+  background-color: #f8f8f8;
+  
+}
+/* Tùy chỉnh style cho nút đọc thêm (nếu có) */
+.read-more-btn3 {
+  display: none; /* Ẩn nút "Đọc thêm" */
+}

@@ -8,5 +8,6 @@
         public double? TotalOrderofMonth { get; set; }
 
         public double? TotalDiscount { get; set; }
+        public int? QuantityCancel { get; set; }
     }
 }

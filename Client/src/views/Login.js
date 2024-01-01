@@ -129,7 +129,7 @@ const Login = () => {
                       marginRight: 10,
                       cursor: "pointer",
                     }}
-                    icon={status ? faEye : faEyeSlash}
+                    icon={status ? faEyeSlash : faEye}
                     onClick={isVisible}
                   />
                 </div>

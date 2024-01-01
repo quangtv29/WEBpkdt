@@ -34,6 +34,8 @@ namespace API.Entities
 
         [NotMapped]
         public string? FormatDate { get; set; }
+        [NotMapped]
+        public string? UserName { get; set; }
         public ICollection<OrderDetail>? OrderDetail { get; set; }
 
     }

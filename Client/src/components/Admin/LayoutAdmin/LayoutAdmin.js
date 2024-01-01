@@ -62,9 +62,13 @@ const Admin = (props) => {
                       <button className="btn btn-navbar" type="submit">
                         <i className="fas fa-search"></i>
                       </button>
-                      {/* <button className="btn btn-navbar" type="button" data-widget="navbar-search">
-                            <i className="fas fa-times"></i>
-                            </button> */}
+                      <button
+                        className="btn btn-navbar"
+                        type="button"
+                        data-widget="navbar-search"
+                      >
+                        <i className="fas fa-times"></i>
+                      </button>
                     </div>
                   </div>
                 </form>

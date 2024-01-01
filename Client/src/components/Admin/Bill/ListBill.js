@@ -2,21 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Bill.scss";
 import { Link } from "react-router-dom";
-import ReactPaginate from "react-paginate";
+import Confirmm from "../../Confirm";
 
 const ListBill = () => {
   const [data, setData] = useState([]);
   const accessToken = localStorage.getItem("accessToken");
-  const [pageNumber, setPageNumber] = useState(0);
-  const itemsPerPage = 4;
-  const pageCount = Math.ceil(data.length / itemsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     axios
       .post(
         `https://localhost:7295/api/Bill/getAll`,
         {
-          pageNumber: pageNumber + 1,
+          pageNumber: currentPage,
           pageSize: itemsPerPage,
         },
         {
@@ -27,13 +27,11 @@ const ListBill = () => {
       )
       .then((response) => {
         setData(response.data.data);
-      })
-      .catch(() => {
-        alert("lỗi");
+        setTotalPage(Math.ceil(response.data.totalPage / itemsPerPage));
       });
-  }, [pageNumber, data]);
-  const handlePageClick = (selectedPage) => {
-    setPageNumber(selectedPage.selected);
+  }, [currentPage]);
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage);
   };
 
   const confirm = (id, customerid) => {
@@ -49,6 +47,8 @@ const ListBill = () => {
         }
       )
       .then(() => {
+        setData(data.filter((item) => item.id !== id));
+
         axios.post("https://localhost:7295/api/Notification/createNoti", {
           content: `Đơn hàng ${id} đã được xác nhận. Sản phẩm sẽ được giao đến bạn trong thời gian nhanh nhất.`,
           header: "Đơn hàng đã được xác nhận",
@@ -60,15 +60,39 @@ const ListBill = () => {
         alert("Xác nhận đơn hàng thất bại");
       });
   };
-
+  const [isOpen, setIsOpen] = useState(false);
+  const handleConfirm = () => {
+    setIsOpen(false);
+    setData(
+      data.filter((item) => item.id !== localStorage.getItem("billid11"))
+    );
+    axios.post(
+      "https://localhost:7295/api/Bill/updateStatusBill",
+      {},
+      {
+        params: {
+          Id: localStorage.getItem("billid11"),
+          status: 2,
+        },
+      }
+    );
+  };
+  const handleCancel = () => {
+    setIsOpen(false);
+    localStorage.removeItem("billid11");
+  };
+  const handleOnclick = (id) => {
+    setIsOpen(true);
+    localStorage.setItem("billid11", id);
+  };
   return (
-    <div className="container">
+    <div className="container m-0" style={{ maxWidth: 1260 }}>
       <div id="list-bill" style={{ width: "100%" }}>
         <table className="table table-striped">
           <thead>
             <tr className="text-center">
               <th>Mã hoá đơn</th>
-              <th>ID tài khoản</th>
+              <th>Tài khoản</th>
               <th>Tên người nhận</th>
               <th>Địa chỉ</th>
               <th>Số điện thoại</th>
@@ -81,8 +105,8 @@ const ListBill = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
-              <tr key={item.id} className="text-center ">
+            {data?.map((item) => (
+              <tr key={item?.id} className="text-center ">
                 <>
                   <td
                     style={{
@@ -104,7 +128,7 @@ const ListBill = () => {
                       }}
                       className="text-danger"
                     >
-                      {item.id}
+                      {item?.id}
                     </Link>
                   </td>
                   <td
@@ -114,7 +138,7 @@ const ListBill = () => {
                       wordWrap: "break-word",
                     }}
                   >
-                    {item?.customerID}
+                    {item?.userName}
                   </td>
                   <td
                     style={{
@@ -134,7 +158,15 @@ const ListBill = () => {
                   >
                     {item?.address}
                   </td>
-                  <td>{item?.phoneNumber}</td>
+                  <td
+                    style={{
+                      maxWidth: "115px",
+                      whiteSpace: "pre-line",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    {item?.phoneNumber}
+                  </td>
                   <td>{item?.formatDate}</td>
                   <td>
                     {item?.totalMoney?.toLocaleString("vi-VN", {
@@ -153,6 +185,7 @@ const ListBill = () => {
                       style: "currency",
                       currency: "VND",
                     })}
+                    {item?.discountCode === "Done" && <p>(Đã thanh toán)</p>}
                   </td>
                   <td
                     style={{
@@ -163,12 +196,22 @@ const ListBill = () => {
                   >
                     {item?.GhiChu}
                   </td>
-                  <td>
+                  <td className="check">
                     <button
+                      type="button"
                       onClick={() => confirm(item?.id, item?.customerID)}
-                      className="button mr-2"
+                      className="btn btn-danger mr-2"
+                      style={{ padding: 7 }}
                     >
                       Xác nhận <i className="fas fa-check"></i>
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger mr-2 mt-2"
+                      onClick={() => handleOnclick(item?.id)}
+                      style={{ border: 0, width: 64.2, height: 53 }}
+                    >
+                      Huỷ
                     </button>
                   </td>
                 </>
@@ -176,18 +219,32 @@ const ListBill = () => {
             ))}
           </tbody>
         </table>
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          pageCount={pageCount}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          previousLinkClassName={"pagination__link"}
-          nextLinkClassName={"pagination__link"}
-          disabledClassName={"pagination__link--disabled"}
-          activeClassName={"pagination__link--active"}
-        />
+        <div className="pagination mb-3">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Trang trước
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPage}
+          >
+            Trang tiếp theo
+          </button>
+          <span className="mt-2">
+            {" "}
+            {currentPage} / {totalPage}
+          </span>
+        </div>
       </div>
+      {isOpen && (
+        <Confirmm
+          message="Bạn có chắc chắn muốn huỷ hoá đơn?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
     </div>
   );
 };

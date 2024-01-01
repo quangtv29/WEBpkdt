@@ -42,5 +42,19 @@ namespace API.Controllers
                 return BadRequest();
             }
         }
+        [HttpPost("updateNoti")]
+        public async Task<IActionResult> updateNoti (Guid? id)
+        {
+            if (id == null)
+            {
+                return BadRequest("Id null");
+            }
+            var result = await _service.notificationService.updateNoti(id);
+            if (result == null)
+            {
+                return BadRequest("Update fail");
+            }    
+            return Ok(result);
+        }
     }
 }

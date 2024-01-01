@@ -1,0 +1,33 @@
+/* BlogForm.css */
+.blog-form-container {
+    max-width: 600px;
+    margin: auto;
+    width: 600px;
+  }
+  
+  .blog-label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .blog-input{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    
+  }
+  .blog-textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .blog-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .blog-button:hover {
+    background-color: #3376bf ;
+  }

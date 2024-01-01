@@ -63,7 +63,23 @@ const OurStore = () => {
     setRecord(response.data.length);
     setProducts(response.data);
   };
+  const fetchTopSeller = async () => {
+    let url = "https://localhost:7295/api/Product/searchByName";
+    const pageNumber = currentPage;
+    const pageSize = 6;
+    const response = await axios.post(
+      url,
+      { pageNumber, pageSize },
+      {
+        params: {
+          name: search,
+        },
+      }
+    );
 
+    let data = response.data.item1;
+    setRecord(response.data.item2);
+  };
   const fetchProducts = async () => {
     let url = "https://localhost:7295/api/Product/searchByName";
     const pageNumber = currentPage;
@@ -81,27 +97,27 @@ const OurStore = () => {
     let data = response.data.item1;
     setRecord(response.data.item2);
 
-    switch (condition) {
-      case "Bán Chạy":
-        data = _.sortBy(data, "sold").reverse();
-        break;
-      case "Giá, Thấp đến Cao":
-        data = _.sortBy(data, "price");
-        break;
-      case "Giá, Cao đến Thấp":
-        data = _.sortBy(data, "price").reverse();
-        break;
-      case "Theo Thứ Tự, A-Z":
-        data = _.sortBy(data, "name");
-        break;
-      case "Theo Thứ Tự, Z-A":
-        data = _.sortBy(data, "name").reverse();
-        break;
-      // Thêm các case cho các trường hợp khác
-      default:
-        // Xử lý cho trường hợp mặc định nếu không có case nào khớp với giá trị của biến condition
-        break;
-    }
+    // switch (condition) {
+    //   case "Bán Chạy":
+    //     data = _.sortBy(data, "sold").reverse();
+    //     break;
+    //   case "Giá, Thấp đến Cao":
+    //     data = _.sortBy(data, "price");
+    //     break;
+    //   case "Giá, Cao đến Thấp":
+    //     data = _.sortBy(data, "price").reverse();
+    //     break;
+    //   case "Theo Thứ Tự, A-Z":
+    //     data = _.sortBy(data, "name");
+    //     break;
+    //   case "Theo Thứ Tự, Z-A":
+    //     data = _.sortBy(data, "name").reverse();
+    //     break;
+    //   // Thêm các case cho các trường hợp khác
+    //   default:
+    //     // Xử lý cho trường hợp mặc định nếu không có case nào khớp với giá trị của biến condition
+    //     break;
+    // }
     setProducts(data);
   };
   const handleFilter = async (event) => {
@@ -164,7 +180,7 @@ const OurStore = () => {
   return (
     <>
       <Meta title={"Our Store"} />
-      <BreadCrumb title="Our Store" />
+      {/* <BreadCrumb title="Our Store" /> */}
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
           <div className="col-3">
@@ -353,7 +369,6 @@ const OurStore = () => {
                   <select
                     name=""
                     value={condition}
-                    defaultValue={"Liên Quan"}
                     className="form-control form-select"
                     id=""
                     onChange={handleConditionChange}
@@ -377,31 +392,79 @@ const OurStore = () => {
             </div>
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
-                <ProductCard
-                  grid={grid}
-                  condition={condition}
-                  currentPage={currentPage}
-                  product={products}
-                />
+                {products && (
+                  <ProductCard
+                    grid={grid}
+                    condition={condition}
+                    currentPage={currentPage}
+                    product={products}
+                  />
+                )}
               </div>
             </div>
-            <div className="pagination d-flex justify-content-center">
-              <div className="pagination-info">
-                <span>
-                  Page <b>{currentPage}</b> of <b>{Math.ceil(fix)}</b>
-                </span>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "20px",
+              }}
+            >
+              <div style={{ marginRight: "20px" }}>
+                Page <b>{currentPage}</b> of <b>{Math.ceil(record / 6)}</b>
               </div>
-              <div className="pagination-buttons">
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="mr-3 ml-1"
+                  style={{
+                    padding: "8px 12px",
+                    margin: "0 5px",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    backgroundColor: "#fff",
+                    color: "#333",
+                    transition: "background-color 0.3s",
+                  }}
                 >
                   Previous
                 </button>
+
+                {Array.from({ length: Math.ceil(record / 6) }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => setCurrentPage(index + 1)}
+                    style={{
+                      padding: "8px 12px",
+                      margin: "0 5px",
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      backgroundColor:
+                        currentPage === index + 1 ? "#eee" : "#fff",
+                      color: "#333",
+                      transition: "background-color 0.3s",
+                    }}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === Math.ceil(fix)}
+                  disabled={currentPage === Math.ceil(record / 6)}
+                  style={{
+                    padding: "8px 12px",
+                    margin: "0 5px",
+                    border: "1px solid #ccc",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    backgroundColor: "#fff",
+                    color: "#333",
+                    transition: "background-color 0.3s",
+                  }}
                 >
                   Next
                 </button>

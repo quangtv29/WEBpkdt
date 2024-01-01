@@ -6,7 +6,6 @@ using AutoMapper;
 using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 using API.Business.Helper;
 using Microsoft.Extensions.Options;
 
@@ -69,6 +68,18 @@ namespace API.Business.Services
                 blog.LastChange = blog.LastModificationTime.ToString("dd/MM/yyyy HH:mm:ss");
             }
             return result;
+        }
+        public async Task<Blog> getBlogById(Guid? Id)
+        {
+            var result = await _repo.Blog.GetAllByCondition(p=>p.Id == Id,false).Where(p => p.isDelete == false)
+                .OrderByDescending(p=>p.Create)
+                .FirstOrDefaultAsync();
+            if (result != null)
+            {
+                result.FormatDate = result.Create.ToString("dd/MM/yyyy HH:mm:ss");
+                result.LastChange = result.LastModificationTime.ToString("dd/MM/yyyy HH:mm:ss");
+            }
+                return result;
         }
     }
 }

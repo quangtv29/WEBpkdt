@@ -113,16 +113,6 @@ const CreateProduct = (props) => {
         <Form className="row">
           <Form.Group className="col-md-6">
             <Form.Group className="mb-1">
-              <Form.Label>Mã sản phẩm</Form.Label>
-              <Form.Control
-                type="text"
-                name="masp"
-                onChange={setmasp}
-                defaultValue={masp}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-1">
               <Form.Label>Tên sản phẩm</Form.Label>
               <Form.Control
                 type="text"
@@ -219,7 +209,7 @@ const CreateProduct = (props) => {
               type="submit"
               onClick={addData}
             >
-              <i class="fas fa-plus mr-2"></i>Lưu sản phẩm
+              <i className="fas fa-plus mr-2"></i>Lưu sản phẩm
             </button>
           </Form.Group>
         </Form>

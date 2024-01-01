@@ -79,6 +79,7 @@ const Header = () => {
         });
     }
   }, [decryptedId, isLogin]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleNoti = (e) => {
     e.preventDefault();
@@ -87,7 +88,7 @@ const Header = () => {
         .post(
           "https://localhost:7295/api/Notification/getNotiByCustomerId",
           {
-            pageNumber: 1,
+            pageNumber: currentPage,
             pageSize: 5,
           },
           {
@@ -101,7 +102,9 @@ const Header = () => {
         });
     }
   };
-
+  const handleLoadMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
   const chucvu = localStorage.getItem("chucvu");
   const isAorN = chucvu === "Nhân viên" || chucvu === "Manager";
   // let welcomeMessage = "";
@@ -253,7 +256,7 @@ const Header = () => {
                               borderTop: "1px solid black",
                               backgroundColor:
                                 item?.watched === 1 ? "#DDDDDD" : "#fff",
-                              padding: "10px",
+                              padding: "7px",
                             }}
                           >
                             <h6>{item?.header}</h6>
@@ -264,10 +267,17 @@ const Header = () => {
                             >
                               {item?.content}
                             </p>
-                            <p style={{ fontSize: 13 }}>{item?.formatDate}</p>
+                            <p style={{ fontSize: 13, margin: 0 }}>
+                              {item?.formatDate}
+                            </p>
                           </NavDropdown.Item>
                         </div>
                       ))}
+                      <NavDropdown.Item>
+                        <Link to="/noti">
+                          <button>Xem tất cả</button>
+                        </Link>
+                      </NavDropdown.Item>
                     </NavDropdown>
                   </div>
                 )}
@@ -370,12 +380,13 @@ const Header = () => {
                           </Link>
                         </li>
                       )}
-
-                      <li>
-                        <Link className="dropdown-item text-white" to="">
-                          Another action
-                        </Link>
-                      </li>
+                      {isLogin && (
+                        <li>
+                          <Link className="dropdown-item text-white" to="/noti">
+                            Thông báo
+                          </Link>
+                        </li>
+                      )}
                       <li>
                         <Link className="dropdown-item text-white" to="">
                           Something else here

@@ -9,7 +9,7 @@ import StarRatings from "react-star-ratings";
 
 const ProductCard = (props) => {
   const { grid } = props;
-  const { condition } = props;
+
   let location = useLocation();
 
   const { product } = props;
@@ -18,7 +18,7 @@ const ProductCard = (props) => {
     <>
       {product?.map((item) => (
         <div
-          key={item.id}
+          key={item?.id}
           className={` ${location.pathname === "/" ? "col-3" : `gr-${grid}`} `}
           style={{ minHeight: 460 }}
         >

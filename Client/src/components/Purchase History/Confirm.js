@@ -54,7 +54,7 @@ const Confirm = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [decryptedId, accessToken, data]);
+  }, [decryptedId, accessToken]);
 
   return (
     <>
@@ -77,7 +77,7 @@ const Confirm = () => {
                 <div
                   key={item.id}
                   className="done-list-item"
-                  style={{ border: 0 }}
+                  style={{ border: ".1px solid black" }}
                 >
                   <li className="done-list-row">
                     <div style={{ border: 0 }} className="done-list-item">
@@ -121,22 +121,25 @@ const Confirm = () => {
                         style: "currency",
                         currency: "VND",
                       })}
+                      {item?.discountCode === "Done" && <p>(Đã thanh toán)</p>}
                     </div>
                     <div className="done-list-item" style={{ border: 0 }}>
                       <button
                         type="button"
                         className="btn btn-danger mr-2"
                         onClick={() => handleOnclick(item?.id)}
+                        style={{ border: 0 }}
                       >
                         Huỷ
                       </button>
 
                       <button
                         type="button"
-                        className="btn btn-danger "
+                        className="btn btn-primary "
                         onClick={() => {
                           localStorage.setItem("billid11", item?.id);
                         }}
+                        style={{ border: 0 }}
                       >
                         <Link to="orderDetail" className="text-light">
                           {" "}

@@ -7,7 +7,7 @@ namespace API.Business.Services.Interface
 {
     public interface IBillService
     {
-         Task<IEnumerable<Bill>> GetAll(bool trackChanges, Status status, BillParameters billParameters);
+        Task<(IEnumerable<Bill>, int a)> GetAll(bool trackChanges, Status status, BillParameters billParameters);
         Task<IEnumerable<Bill>> GetAllBillFromCustomer(string? customerId, bool trackChanges, Status status);
 
         Task<Bill> createBill(CreateBillDTO bill, string code);
@@ -21,6 +21,8 @@ namespace API.Business.Services.Interface
         Task<Bill> updateStatusBill(Guid? Id, Status status);
 
         Task<List<Revenue>> TotalRevenueLast12Months();
-
+        Task<IEnumerable<Statistical>> statisticalProduct(DateTime a);
+        Task<string> payVNPay(CreateVNPayDTO vnpay);
+        Task<Bill> updatePayDone(Guid? Id);
     }
 }

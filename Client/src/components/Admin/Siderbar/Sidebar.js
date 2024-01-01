@@ -1,17 +1,25 @@
 import React from "react";
 import "../../../styles/adminlte.min.css";
 import "./Siderbar.scss";
-import { faChartBar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChartBar,
+  faLight,
+  faTicketsPerforated,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-const Sidebar = (props) => {
+import { Link } from "react-router-dom";
+const Sidebar = () => {
   const user = localStorage.getItem("lastname");
   const navigate = useNavigate();
-  const welcomeMessage = `Welcome, ${user}!`;
+  const welcomeMessage = `Xin chào, ${user}!`;
   const [showProductList, setShowProductList] = useState(false);
+  const [showOrderList, setShowOrderList] = useState(false);
 
+  const toggleOrderList = () => {
+    setShowOrderList(!showOrderList);
+  };
   const toggleProductList = () => {
     setShowProductList(!showProductList);
   };
@@ -31,13 +39,13 @@ const Sidebar = (props) => {
         <div className="sidebar">
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="info">
-              <a href="#" className="d-block">
+              <a href="/admin" className="d-block">
                 {welcomeMessage}
               </a>
             </div>
           </div>
 
-          <div className="form-inline">
+          {/* <div className="form-inline">
             <div className="input-group" data-widget="sidebar-search">
               <input
                 className="form-control form-control-sidebar"
@@ -51,7 +59,7 @@ const Sidebar = (props) => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <nav className="mt-2">
             <ul
@@ -69,10 +77,10 @@ const Sidebar = (props) => {
                 </a>
                 <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <a href="pages/tables/simple.html" className="nav-link">
+                    <Link to="/admin/createblog" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Đăng bài viết</p>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <a href="admin/lop/add" className="nav-link">
@@ -100,10 +108,10 @@ const Sidebar = (props) => {
                   }`}
                 >
                   <li className="nav-item">
-                    <a href="/admin/list-product" className="nav-link">
+                    <Link to="/admin/list-product" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Danh sách sản phẩm</p>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <a href="/admin/list-type-product" className="nav-link">
@@ -114,47 +122,61 @@ const Sidebar = (props) => {
                 </ul>
               </li>
               <li className="nav-item">
-                <a href="#" className="nav-link">
+                <a href="#" className="nav-link" onClick={toggleOrderList}>
                   <i className="nav-icon fas fa-table"></i>
                   <p>
-                    Quản lý đơn hàng<i className="fas fa-angle-left right"></i>
+                    Quản lý đơn hàng{" "}
+                    <i
+                      className={`fas fa-angle-left right ${
+                        showOrderList ? "rotate" : ""
+                      }`}
+                    ></i>
                   </p>
                 </a>
                 <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <a href="/admin/list-bill" className="nav-link">
+                    <Link to="/admin/list-bill" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Đơn hàng mới tạo</p>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a href="./delivering" className="nav-link">
+                    <Link to="./delivering" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Đang giao cho khách</p>
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a href="pages/tables/data.html" className="nav-link">
+                    <Link to="./done" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
-                      <p>Đã giao thành công</p>
-                    </a>
+                      <p>Đã hoàn thành</p>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a href="pages/tables/data.html" className="nav-link">
+                    <Link to="./cancel" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Đơn hàng bị hủy</p>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </li>
               <li className="nav-item ml-2">
-                <a href="/admin/statistics" className="nav-link">
+                <Link to="/admin/discount" className="nav-link">
+                  {/* <i className="nav-icon fas fa-table"></i> */}
+                  <FontAwesomeIcon icon="fa-light fa-tickets-perforated" />
+                  <p>
+                    Chương trình khuyến mại<i className=""></i>
+                  </p>
+                </Link>
+              </li>
+              <li className="nav-item ml-2">
+                <Link to="/admin/statistics" className="nav-link">
                   {/* <i className="nav-icon fas fa-table"></i> */}
                   <FontAwesomeIcon icon={faChartBar} size="1x" />
                   <p>
                     Thống kê<i className=""></i>
                   </p>
-                </a>
+                </Link>
               </li>
               <li style={{ textAlign: "center" }}>
                 <button onClick={() => logout()} className="custom-button">

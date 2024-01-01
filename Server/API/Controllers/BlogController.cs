@@ -1,6 +1,5 @@
 ﻿using API.Business.DTOs.BlogDTO;
 using API.Business.Services.Interface;
-using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -32,6 +31,21 @@ namespace API.Controllers
         {
             var result = await _service.blogService.getAllBlog();
             return Ok(result);
+        }
+
+        [HttpGet("getBlogByID")]
+
+        public async Task<IActionResult> getBlogById(Guid? Id)
+        {
+            try
+            {
+                var result = await _service.blogService.getBlogById(Id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

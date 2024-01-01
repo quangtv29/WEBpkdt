@@ -122,6 +122,16 @@ namespace API.Business.Services
                                 order.isCart = "Delivering";
                                 product.Quantity -= order.Quantity;
                             }
+                        else if (isCart == "Cart")
+                        {
+                            order.isCart = "Cart";
+                            
+                        }
+                        else if (isCart == "delivering")
+                            {
+                                order.isCart = "Delivering";
+                                product.Quantity -= order.Quantity;
+                            }
                             else if (isCart == "confirm")
                             {
                                 order.isCart = "Confirm";

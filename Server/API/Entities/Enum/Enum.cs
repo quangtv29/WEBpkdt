@@ -12,7 +12,8 @@
         Delivering,
         Canceled,
         Ordered,
-        Cart
+        Cart,
+        Pay
     }
     public enum Gender
     {

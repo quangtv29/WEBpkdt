@@ -15,5 +15,7 @@ namespace API.Entities
         [ForeignKey("Customer")]
         public string? CustomerID { get; set; }
         public Customer Customer { get; set; }
+        [NotMapped]
+        public string? FormatDate { get; set; }
     }
 }

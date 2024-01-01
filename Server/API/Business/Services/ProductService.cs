@@ -58,49 +58,238 @@ namespace API.Business.Services
           await  _repo.SaveAsync();
         }
 
-        public async Task<IEnumerable<GetAllProductDTO>> GetAll(ProductParameters productParameters)
+        public async Task<(IEnumerable<GetAllProductDTO>,int)> GetAll(ProductParameters productParameters, int a)
+        {
+            if (a == 0)
+            {
+                var result = (from pd in _repo.Product.GetAll(false)
+                              join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                              into feedbackGroup
+                              from meo in feedbackGroup.DefaultIfEmpty()
+                              join pt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pt.Id
+                              group meo by new
+                              {
+                                  pd.Id,
+                                  pd.Name,
+                                  pd.Quantity,
+                                  pd.ImportPrice,
+                                  pd.Price,
+                                  pd.ProductTypeID,
+                                  pd.Producer,
+                                  pd.Describe,
+                                  pd.Image,
+                                  pd.Sold,
+                                  ProductTypeName = pt.Name
+
+                              } into g
+                              select new GetAllProductDTO
+                              {
+                                  Id = g.Key.Id,
+                                  Name = g.Key.Name,
+                                  Quantity = g.Key.Quantity,
+                                  ImportPrice = g.Key.ImportPrice,
+                                  Price = g.Key.Price,
+                                  ProductTypeID = g.Key.ProductTypeID,
+                                  Producer = g.Key.Producer,
+                                  Describe = g.Key.Describe,
+                                  Image = g.Key.Image,
+                                  Sold = g.Key.Sold,
+                                  StarRating = g.Sum(f => f.Star) / (double)g.Count(),
+                                  ProductTypeName = g.Key.ProductTypeName
+                              });
+
+                var results = await result.Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+        .Take(productParameters.PageSize)
+        .ToListAsync();
+
+                int totalCount = await result.CountAsync();
+                return (results, totalCount);
+            }
+            else if ( a == 1 )
+            {
+                var result = (from pd in _repo.Product.GetAll(false)
+                              join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                              into feedbackGroup
+                              from meo in feedbackGroup.DefaultIfEmpty()
+                              join pt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pt.Id
+                              group meo by new
+                              {
+                                  pd.Id,
+                                  pd.Name,
+                                  pd.Quantity,
+                                  pd.ImportPrice,
+                                  pd.Price,
+                                  pd.ProductTypeID,
+                                  pd.Producer,
+                                  pd.Describe,
+                                  pd.Image,
+                                  pd.Sold,
+                                  ProductTypeName = pt.Name
+
+                              } into g
+                              select new GetAllProductDTO
+                              {
+                                  Id = g.Key.Id,
+                                  Name = g.Key.Name,
+                                  Quantity = g.Key.Quantity,
+                                  ImportPrice = g.Key.ImportPrice,
+                                  Price = g.Key.Price,
+                                  ProductTypeID = g.Key.ProductTypeID,
+                                  Producer = g.Key.Producer,
+                                  Describe = g.Key.Describe,
+                                  Image = g.Key.Image,
+                                  Sold = g.Key.Sold,
+                                  StarRating = g.Sum(f => f.Star) / (double)g.Count(),
+                                  ProductTypeName = g.Key.ProductTypeName
+                              });
+
+                var results = await result
+        .OrderByDescending(p=>p.Sold)
+        .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+        .Take(productParameters.PageSize)
+        .ToListAsync();
+
+                int totalCount = await result.CountAsync();
+                return (results, totalCount);
+            }    
+            else if (a == 2)
+            {
+                var result = (from pd in _repo.Product.GetAll(false)
+                              join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                              into feedbackGroup
+                              from meo in feedbackGroup.DefaultIfEmpty()
+                              join pt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pt.Id
+                              group meo by new
+                              {
+                                  pd.Id,
+                                  pd.Name,
+                                  pd.Quantity,
+                                  pd.ImportPrice,
+                                  pd.Price,
+                                  pd.ProductTypeID,
+                                  pd.Producer,
+                                  pd.Describe,
+                                  pd.Image,
+                                  pd.Sold,
+                                  ProductTypeName = pt.Name
+
+                              } into g
+                              select new GetAllProductDTO
+                              {
+                                  Id = g.Key.Id,
+                                  Name = g.Key.Name,
+                                  Quantity = g.Key.Quantity,
+                                  ImportPrice = g.Key.ImportPrice,
+                                  Price = g.Key.Price,
+                                  ProductTypeID = g.Key.ProductTypeID,
+                                  Producer = g.Key.Producer,
+                                  Describe = g.Key.Describe,
+                                  Image = g.Key.Image,
+                                  Sold = g.Key.Sold,
+                                  StarRating = g.Sum(f => f.Star) / (double)g.Count(),
+                                  ProductTypeName = g.Key.ProductTypeName
+                              });
+
+                var results = await result
+                    .OrderByDescending(p => p.Price)
+                    .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+        .Take(productParameters.PageSize)
+        .ToListAsync();
+
+                int totalCount = await result.CountAsync();
+                return (results, totalCount);
+            }    
+            else 
+            {
+                var result = (from pd in _repo.Product.GetAll(false)
+                              join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                              into feedbackGroup
+                              from meo in feedbackGroup.DefaultIfEmpty()
+                              join pt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pt.Id
+                              group meo by new
+                              {
+                                  pd.Id,
+                                  pd.Name,
+                                  pd.Quantity,
+                                  pd.ImportPrice,
+                                  pd.Price,
+                                  pd.ProductTypeID,
+                                  pd.Producer,
+                                  pd.Describe,
+                                  pd.Image,
+                                  pd.Sold,
+                                  ProductTypeName = pt.Name
+
+                              } into g
+                              select new GetAllProductDTO
+                              {
+                                  Id = g.Key.Id,
+                                  Name = g.Key.Name,
+                                  Quantity = g.Key.Quantity,
+                                  ImportPrice = g.Key.ImportPrice,
+                                  Price = g.Key.Price,
+                                  ProductTypeID = g.Key.ProductTypeID,
+                                  Producer = g.Key.Producer,
+                                  Describe = g.Key.Describe,
+                                  Image = g.Key.Image,
+                                  Sold = g.Key.Sold,
+                                  StarRating = g.Sum(f => f.Star) / (double)g.Count(),
+                                  ProductTypeName = g.Key.ProductTypeName
+                              });
+
+                var results = await result.OrderByDescending(p => p.Name)
+                    .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)        
+        .Take(productParameters.PageSize)
+        .ToListAsync();
+
+                int totalCount = await result.CountAsync();
+                return (results, totalCount);
+            }    
+        }
+        public async Task<IEnumerable<GetAllProductDTO>> GetTopSeller(ProductParameters productParameters)
         {
             var result = await (from pd in _repo.Product.GetAll(false)
-                          join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
-                          into feedbackGroup
-                          from meo in feedbackGroup.DefaultIfEmpty()
-                          join pt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pt.Id
-                          group meo by new
-                          {
-                              pd.Id,
-                              pd.Name,
-                              pd.Quantity,
-                              pd.ImportPrice,
-                              pd.Price,
-                              pd.ProductTypeID,
-                              pd.Producer,
-                              pd.Describe,
-                              pd.Image,
-                              pd.Sold,
-                              ProductTypeName = pt.Name
-                              
-                          } into g
-                          select new GetAllProductDTO
-                          {
-                              Id = g.Key.Id,
-                              Name = g.Key.Name,
-                              Quantity = g.Key.Quantity,
-                              ImportPrice = g.Key.ImportPrice,
-                              Price = g.Key.Price,
-                              ProductTypeID = g.Key.ProductTypeID,
-                              Producer = g.Key.Producer,
-                              Describe = g.Key.Describe,
-                              Image = g.Key.Image,
-                              Sold = g.Key.Sold,
-                              StarRating = g.Sum(f => f.Star ) / (double)g.Count(),
-                              ProductTypeName = g.Key.ProductTypeName
-                          }).Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
+                                join fb in _repo.Feedback.GetAll(false) on pd.Id equals fb.ProductId
+                                into feedbackGroup
+                                from meo in feedbackGroup.DefaultIfEmpty()
+                                join pt in _repo.ProductType.GetAll(false) on pd.ProductTypeID equals pt.Id
+                                group meo by new
+                                {
+                                    pd.Id,
+                                    pd.Name,
+                                    pd.Quantity,
+                                    pd.ImportPrice,
+                                    pd.Price,
+                                    pd.ProductTypeID,
+                                    pd.Producer,
+                                    pd.Describe,
+                                    pd.Image,
+                                    pd.Sold,
+                                    ProductTypeName = pt.Name
+
+                                } into g
+                                select new GetAllProductDTO
+                                {
+                                    Id = g.Key.Id,
+                                    Name = g.Key.Name,
+                                    Quantity = g.Key.Quantity,
+                                    ImportPrice = g.Key.ImportPrice,
+                                    Price = g.Key.Price,
+                                    ProductTypeID = g.Key.ProductTypeID,
+                                    Producer = g.Key.Producer,
+                                    Describe = g.Key.Describe,
+                                    Image = g.Key.Image,
+                                    Sold = g.Key.Sold,
+                                    StarRating = g.Sum(f => f.Star) / (double)g.Count(),
+                                    ProductTypeName = g.Key.ProductTypeName
+                                })
+                                .OrderByDescending(p=>p.Sold)
+                                .Skip((productParameters.PageNumber - 1) * productParameters.PageSize)
                 .Take(productParameters.PageSize)
                 .ToListAsync();
             return result;
 
         }
-
         public async Task<GetAllProductDTO> GetProductById(Guid? Id)
         {
             var result = await (from pd in _repo.Product.GetAll(false)

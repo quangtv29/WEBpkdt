@@ -24,7 +24,15 @@ import brand5 from "../assets/images/brand-05.png";
 import brand6 from "../assets/images/brand-06.png";
 import brand7 from "../assets/images/brand-07.png";
 import brand8 from "../assets/images/brand-08.png";
+import { useEffect, useState } from "react";
+import axios from "axios";
 const Home = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    axios.get("https://localhost:7295/api/Blog/getBlog").then((res) => {
+      setData(res.data);
+    });
+  }, []);
   return (
     <>
       <Container class1="home-wrapper-1 py-5">
@@ -205,11 +213,7 @@ const Home = () => {
         <div className="row">
           <div className="col-3">
             <div className="famous-card position-relative">
-              <img
-                src={famous}
-                className="img-fluid"
-                alt="famous"
-              />
+              <img src={famous} className="img-fluid" alt="famous" />
               <div className="famous-content position-absolute">
                 <h5>Big Screen</h5>
                 <h6>Smart Watch Series 7</h6>
@@ -219,11 +223,7 @@ const Home = () => {
           </div>
           <div className="col-3">
             <div className="famous-card position-relative">
-              <img
-                src={famous2}
-                className="img-fluid"
-                alt="famous"
-              />
+              <img src={famous2} className="img-fluid" alt="famous" />
               <div className="famous-content position-absolute">
                 <h5 className="text-dark">Studio Display</h5>
                 <h6 className="text-dark">600 nits of brightness.</h6>
@@ -233,11 +233,7 @@ const Home = () => {
           </div>
           <div className="col-3">
             <div className="famous-card position-relative">
-              <img
-                src={famous3}
-                className="img-fluid"
-                alt="famous"
-              />
+              <img src={famous3} className="img-fluid" alt="famous" />
               <div className="famous-content position-absolute">
                 <h5 className="text-dark">smartphones</h5>
                 <h6 className="text-dark">Smartphone 13 Pro.</h6>
@@ -249,11 +245,7 @@ const Home = () => {
           </div>
           <div className="col-3">
             <div className="famous-card position-relative">
-              <img
-                src={famous4}
-                className="img-fluid"
-                alt="famous"
-              />
+              <img src={famous4} className="img-fluid" alt="famous" />
               <div className="famous-content position-absolute">
                 <h5 className="text-dark">home speakers</h5>
                 <h6 className="text-dark">Room-filling sound.</h6>
@@ -334,18 +326,11 @@ const Home = () => {
           </div>
         </div>
         <div className="row">
-          <div className="col-3">
-            <BlogCard />
-          </div>
-          <div className="col-3">
-            <BlogCard />
-          </div>
-          <div className="col-3">
-            <BlogCard />
-          </div>
-          <div className="col-3">
-            <BlogCard />
-          </div>
+          {data?.map((item) => (
+            <div key={item?.id} className="col-3 mb-3">
+              {data && <BlogCard item={item} />}
+            </div>
+          ))}
         </div>
       </Container>
     </>

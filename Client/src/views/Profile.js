@@ -6,6 +6,9 @@ import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
 import "./Profile.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -28,7 +31,7 @@ const Profile = () => {
   const [selectedValue, setSelectedValue] = useState(0);
   const [active, setActive] = useState(false);
   const handleSelectChange = (event) => {
-    setSelectedValue(event.target.value);
+    setSelectedValue(parseInt(event.target.value, 10));
   };
   useEffect(() => {
     axios
@@ -53,10 +56,9 @@ const Profile = () => {
         },
       })
       .then((res) => {
-        setAddress1(res.data.data[0].address1);
-        setAddress2(res.data.data[0].address2);
+        setAddress1(res.data.data[0].address1 ?? "");
+        setAddress2(res.data.data[0].address2 ?? "");
         setSelectedValue(res.data.data[0].gender);
-        console.log(res.data.data[0].gender);
       });
   }, [decryptedId]);
   useEffect(() => {
@@ -151,47 +153,144 @@ const Profile = () => {
         toast.error("Đổi ảnh đại diện thất bại");
       });
   };
+  const styletd = {
+    textAlign: "right",
+    color: "rgba(85,85,85,.8)",
+    overflow: "hidden",
+    paddingBottom: "30px",
+    whiteSpace: "nowrap",
+    minWidth: "20%",
+  };
+  const styleright = {
+    boxSizing: "border-box",
+    paddingLeft: 20,
+    paddingBottom: 36,
+    fontSize: ".875rem",
+    color: "#333",
+  };
   return (
     <>
       <Container className="m-0 p-0" style={{ maxWidth: 1350 }}>
-        <div className="row w-100 m-0">
-          <div className="col-5 d-flex" style={{ backgroundColor: "#e9f5f3" }}>
-            <div className="auth-card justify-content-center">
-              <h2 className="mt-5 text-center">Tài khoản của tôi</h2>
-              <h6 className="mt-3 mb-0">Tài khoản</h6>
-              <p>{customer?.userName}</p>
-              <h6 className="mb-0">Số điện thoại</h6>
-              <p>{customer?.phoneNumber}</p>
-              <h6 className=" mb-0">Ngày lập tài khoản</h6>
-              <p>{customer?.formatDate}</p>
-              <h6 className=" mb-0">Số đơn hàng</h6>
-              <p>{detailOrder?.quantity}</p>
-              <h6 className=" mb-0">Tổng số tiền đã mua tháng này</h6>
-              <p>
-                {detailOrder?.totalOrderofMonth?.toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}
-              </p>
-              <h6 className=" mb-0">Tổng số tiền đã mua</h6>
-              <p>
-                {detailOrder?.totalOrder?.toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}
-              </p>
-              <h6 className=" mb-0">Tổng số tiền được giảm giá</h6>
-              <p>
-                {detailOrder?.totalDiscount?.toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}
-              </p>
+        <div
+          style={{
+            display: "block",
+            minWidth: "100%",
+            borderBottom: "0.0625rem solid #efefef",
+            padding: "1.125rem 0",
+          }}
+        >
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "1.125rem",
+              fontWeight: 500,
+              lineHeight: "1.5rem",
+              textTransform: "capitalize",
+              color: "#333",
+            }}
+            className="text-center"
+          >
+            Hồ Sơ Của Tôi
+          </h1>
+          <div
+            style={{
+              marginTop: "0.1875rem",
+              fontSize: ".875rem",
+              lineHeight: "1.0625rem",
+              color: "#555",
+            }}
+            className="text-center"
+          >
+            Quản lý thông tin hồ sơ để bảo mật tài khoản
+          </div>
+        </div>
+        <div
+          className="row w-100 m-0"
+          style={{ borderBottom: "0.0625rem solid #efefef" }}
+        >
+          <div className="col-6 " style={{ backgroundColor: "#fff" }}>
+            <div className="mt-5">
+              <table
+                className="ml-5"
+                style={{ borderCollapse: "collapse", borderColor: "gray" }}
+              >
+                <tr>
+                  <td style={styletd}>
+                    <label>Tên đăng nhập</label>
+                  </td>
+                  <td style={styleright}>{customer?.userName}</td>
+                </tr>
+                <tr>
+                  <td style={styletd}>
+                    <label>Số điện thoại</label>
+                  </td>
+                  <td style={styleright}>{customer?.phoneNumber}</td>
+                </tr>
+                <tr>
+                  <td style={styletd}>
+                    <label>Ngày lập tài khoản</label>
+                  </td>
+                  <td style={styleright}>{customer?.formatDate}</td>
+                </tr>
+                <tr>
+                  <td style={styletd}>
+                    <label>Số đơn hàng đã mua</label>
+                  </td>
+                  <td style={styleright}>{detailOrder?.quantity}</td>
+                </tr>
+                <tr>
+                  <td style={styletd}>
+                    <label>Tổng tiền hoá đơn tháng này</label>
+                  </td>
+                  <td style={styleright}>
+                    {detailOrder?.totalOrderofMonth?.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styletd}>
+                    <label>Tổng số tiền đã mua</label>
+                  </td>
+                  <td style={styleright}>
+                    {detailOrder?.totalOrder?.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styletd}>
+                    <label>Số tiền được giảm giá</label>
+                  </td>
+                  <td style={styleright}>
+                    {detailOrder?.totalDiscount?.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
-          <div className="col-7" style={{ backgroundColor: "#e9f5f3" }}>
-            <div className="auth-card ">
-              <h2 className="text-center mb-2 ">Thông tin cá nhân</h2>
+
+          <div className="col-6" style={{ backgroundColor: "#fff" }}>
+            <div style={{ borderLeft: "1px solid black", paddingLeft: 30 }}>
+              <h2
+                className="text-center  "
+                style={{
+                  margin: 0,
+                  fontSize: "1.125rem",
+                  fontWeight: 500,
+                  lineHeight: "1.5rem",
+                  textTransform: "capitalize",
+                  color: "#333",
+                }}
+              >
+                {" "}
+                Sửa Thông Tin Cá Nhân
+              </h2>
               <form className="d-flex flex-column gap-15 ">
                 <label className="mb-0">Họ </label>
                 <input
@@ -239,26 +338,28 @@ const Profile = () => {
                   onChange={handleSelectChange}
                   disabled={!active}
                 >
-                  <option value="0">Nam</option>
-                  <option value="1">Nữ</option>
-                  <option value="2">Khác</option>
+                  <option value={0}>Nam</option>
+                  <option value={1}>Nữ</option>
+                  <option value={2}>Khác</option>
                 </select>
 
-                <div className="w-100 d-flex ">
+                <div className="w-100 d-flex justify-content-center ">
                   <button
                     className="button update w-75"
                     onClick={(e) => {
                       e.preventDefault();
                       setActive(true);
                     }}
+                    style={{ maxWidth: 150 }}
                   >
-                    Sửa
+                    <FontAwesomeIcon icon={faEdit} className="edit-icon" /> Sửa
                   </button>
                   <button
-                    className="button save w-75"
+                    className="button save w-75 ml-2"
                     onClick={(e) => handleSave(e)}
+                    style={{ maxWidth: 150 }}
                   >
-                    Lưu
+                    <FontAwesomeIcon icon={faSave} /> Lưu
                   </button>
                 </div>
               </form>
@@ -286,7 +387,7 @@ const Profile = () => {
             id="mypicture"
           />
           <div>
-            <button className="change-button" onClick={(e) => addData(e)}>
+            <button className="change-button mb-2" onClick={(e) => addData(e)}>
               Đổi
             </button>
           </div>

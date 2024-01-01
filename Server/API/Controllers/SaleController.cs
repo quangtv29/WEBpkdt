@@ -1,6 +1,5 @@
 ﻿using API.Business.DTOs.SaleDTO;
 using API.Business.Services.Interface;
-using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -67,7 +66,7 @@ namespace API.Controllers
                 var sale = await _service.saleService.getAll(customerid);
                 foreach(var sa in sale)
                 {
-                    sa.FormatDate = sa.EndDate.ToString("dd/MM/yyyy HH:mm");
+                    sa.FormatDate = sa.EndDate.ToString("dd/MM/yyyy");
                 }    
                 return Ok(sale);
             }

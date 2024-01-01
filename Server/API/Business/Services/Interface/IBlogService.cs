@@ -7,5 +7,6 @@ namespace API.Business.Services.Interface
     {
         Task<Blog> CreateBlog(CreateBlogDTO createBlogDTO);
         Task<IEnumerable<Blog>> getAllBlog();
+        Task<Blog> getBlogById(Guid? Id);
     }
 }

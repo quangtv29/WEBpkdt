@@ -10,7 +10,7 @@ namespace API.Business.DTOs.ProductDTO.cs
         public int? Quantity { get; set; }
        
         public int? ImportPrice { get; set; }
-        public int Sold { get; set; } 
+        public int? Sold { get; set; } 
        
         public int? Price { get; set; }
 

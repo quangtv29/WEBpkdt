@@ -206,8 +206,8 @@ const SingleProduct = () => {
             ))} */}
             </div>
           </div>
-          <div className="col-6">
-            <div className="main-product-details">
+          <div className="col-6" style={{ boxSizing: "border-box" }}>
+            <div className="main-product-details" style={{ minHeight: 682 }}>
               <div className="border-bottom">
                 <h3 className="title">{product?.name}</h3>
               </div>
@@ -308,7 +308,7 @@ const SingleProduct = () => {
                     </button>
                   </div>
                 </div>
-                <div className="d-flex align-items-center gap-15">
+                {/* <div className="d-flex align-items-center gap-15">
                   <div>
                     <Link>
                       <TbGitCompare className="fs-5 me-2" /> Add to Compare
@@ -319,30 +319,34 @@ const SingleProduct = () => {
                       <AiOutlineHeart className="fs-5 me-2" /> Add to Wishlist
                     </Link>
                   </div>
-                </div>
-                <div className="d-flex gap-10 flex-column  my-3">
+                </div> */}
+                {/* <div className="d-flex gap-10 flex-column  my-3">
                   <h3 className="product-heading">Shipping & Returns :</h3>
                   <p className="product-data">
                     Free shipping and returns available on all orders! <br /> We
                     ship all US domestic orders within
                     <b>5-10 business days!</b>
                   </p>
+                </div> */}
+                <div
+                  class1="description-wrapper py-5 home-wrapper-2"
+                  style={{ height: 280 }}
+                >
+                  <div className="row">
+                    <div className="col-12">
+                      <h4>Mô tả</h4>
+                      <div className="bg-white p-3">
+                        <p>{product?.describe}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </Container>
-      <Container class1="description-wrapper py-5 home-wrapper-2">
-        <div className="row">
-          <div className="col-12">
-            <h4>Mô tả</h4>
-            <div className="bg-white p-3">
-              <p>{product?.describe}</p>
-            </div>
-          </div>
-        </div>
-      </Container>
+
       <Container class1="reviews-wrapper home-wrapper-2">
         <div className="row">
           <div className="col-12">

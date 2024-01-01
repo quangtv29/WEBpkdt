@@ -22,12 +22,24 @@ namespace API.Business.Repository
 
         public async Task<IEnumerable<Bill>> GetAllBill(bool trackChanges, Status status, BillParameters billParameters)
         {
-            var bill = await GetAll(trackChanges).Where(b => b.isDelete == false && b.Status == status)
-                .OrderByDescending(p=>p.Time)
-                .Skip((billParameters.PageNumber - 1)*billParameters.PageSize)
-                .Take(billParameters.PageSize)
-                .ToListAsync();
-            return bill;
+            if (status == 0)
+            {
+                var bills = await GetAll(trackChanges).Where(b => b.isDelete == false && b.Status == status)
+               .OrderByDescending(p => p.ShippingDate)
+               .Skip((billParameters.PageNumber - 1) * billParameters.PageSize)
+               .Take(billParameters.PageSize)
+               .ToListAsync();
+                return bills;
+            }
+            else
+            {
+                var bill = await GetAll(trackChanges).Where(b => b.isDelete == false && b.Status == status)
+                    .OrderByDescending(p => p.Time)
+                    .Skip((billParameters.PageNumber - 1) * billParameters.PageSize)
+                    .Take(billParameters.PageSize)
+                    .ToListAsync();
+                return bill;
+            }
         }
 
         public async Task<IEnumerable<Bill>> GetAllBillFromCustomer(string? customerId, bool trackChanges, Status status)

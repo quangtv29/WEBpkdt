@@ -44,4 +44,48 @@
   .form-button:hover {
     background-color: #45a049;
   }
+  .voucher-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .voucher-itemm {
+    width: 50%;
+    border: .0625rem solid #e8e8e8 ;
+    margin: 10px;
+    &:nth-child(even) {
+      background-color: #f9f9f9;
+  }
+  }
+  
+  
+  .voucher-detailss {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .voucher-code {
+    text-align: center;
+  }
+  
+  .voucher-discount {
+    margin-bottom: 8px;
+  }
+  
+  .voucher-min-bill {
+    margin-bottom: 8px;
+  }
+  
+  .voucher-expiry {
+    margin-bottom: 8px;
+  }
+  
+  .voucher-count {
+    margin-bottom: 8px;
+  }
+  
+ 
+  
+  
   

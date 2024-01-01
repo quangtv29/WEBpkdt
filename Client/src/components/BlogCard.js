@@ -1,20 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import blog from "../assets/images/blog-1.jpg";
-const BlogCard = () => {
+const BlogCard = (props) => {
   return (
-    <div className="blog-card">
+    <div className="blog-card" style={{}}>
       <div className="card-image">
-        <img src={blog} className="img-fluid w-100" alt="blog" />
+        <img src={props?.item?.image} className="img-fluid w-100" alt="blog" />
       </div>
       <div className="blog-content">
-        <p className="date">1 Dec, 2022</p>
-        <h5 className="title">A beautiful sunday morning renaissance</h5>
-        <p className="desc">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque quaerat
-          accusamus officia
+        <p className="date">{props?.item?.formatDate}</p>
+        <h5 className="title" style={{ height: 60 }}>
+          {props?.item?.title}
+        </h5>
+        <p className="desc" style={{ maxHeight: 150, overflow: "hidden" }}>
+          {props?.item?.content}
         </p>
-        <Link to="/blog/:id" className="button">
+
+        <Link
+          to="/blog/:id"
+          className="button"
+          onClick={(e) => {
+            localStorage.setItem("blog", props?.item?.id);
+          }}
+        >
           Đọc thêm
         </Link>
       </div>

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { AiOutlineHome, AiOutlineMail } from "react-icons/ai";
 import { BiPhoneCall, BiInfoCircle } from "react-icons/bi";
 import Container from "../components/Container";
+import NotificationComponent3 from "./Notification";
 
 const Contact = () => {
   return (
@@ -91,6 +92,7 @@ const Contact = () => {
                     </li>
                   </ul>
                 </div>
+                <NotificationComponent3 />
               </div>
             </div>
           </div>

@@ -26,6 +26,56 @@ const Checkout = () => {
   //   setAddress(newAddress);
   // };
   // const { id } = useState('1');
+  const handleOrderByVNPay = (totalMoney) => {
+    if (phone == null || !name || !address) {
+      alert("Bạn cần nhập đầy đủ thông tin");
+    } else {
+      axios
+        .post("https://localhost:7295/api/bill/updateBill", {
+          id: localStorage.getItem("billid1"),
+          discount: checkdiscount,
+          intoMoney: totalMoney - checkdiscount,
+          name: name,
+          address: address,
+          phoneNumber: phone,
+          status: 4,
+        })
+        .then(() => {
+          axios
+            .post(
+              "https://localhost:7295/api/orderdetail/updateOrderDetail",
+              {},
+              {
+                params: {
+                  Id: localStorage.getItem("billid1"),
+                  isCart: "Cart",
+                },
+              }
+            )
+            .then((res) => {
+              if (res.data.message === "Thêm hoá đơn bị lỗi") {
+                toast.error("Số lượng sản phẩm trong kho không đủ!");
+              }
+            })
+            .catch(() => {
+              toast.error("Số lượng sản phẩm trong kho không đủ!");
+              setTimeout(function () {
+                window.location.href = "/cart";
+              }, 4000);
+            });
+        });
+
+      axios
+        .post("https://localhost:7295/api/Bill/payVNPay", {
+          id: id,
+          amount: totalMoney - checkdiscount,
+          callBackUrl: "http://localhost:3000/result",
+        })
+        .then((res) => {
+          window.location.href = res.data;
+        });
+    }
+  };
   const handleOrder = (totalMoney, e) => {
     if (phone == null || !name || !address) {
       alert("Bạn cần nhập đầy đủ thông tin");
@@ -382,7 +432,13 @@ const Checkout = () => {
                       // onClick={handleOrder(invoice, invoiceDetails)}
                       onClick={(e) => handleOrder(data.totalMoney, e)}
                     >
-                      Đặt hàng
+                      Thanh toán khi nhận hàng
+                    </Link>
+                    <Link
+                      className="button"
+                      onClick={() => handleOrderByVNPay(data.totalMoney)}
+                    >
+                      Thanh toán VNPAY
                     </Link>
                   </div>
                 </div>
