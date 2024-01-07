@@ -87,6 +87,16 @@ namespace API.Controllers
             }) ;
         }
 
+        [HttpPost]
 
+       public async Task<IActionResult> delete(Guid? id)
+        {
+            var result = await _service.productTypeService.delete(id);
+            if (result == 0)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

@@ -139,9 +139,9 @@ namespace API.Business.Services
             int countCancel = await _repo.Bill.GetAllByCondition(p => p.CustomerID == Id, false)
                 .Where(p => p.isDelete == false && p.Status == Status.Canceled).CountAsync();
             double? totalDiscount = 0;
-            var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+            var thirtyDaysAgo = DateTime.Now;
             var results = await _repo.Bill.GetAllByCondition(p => p.CustomerID == Id, false)
-                 .Where(p => p.isDelete == false && p.Status == 0 && p.Time > thirtyDaysAgo).ToListAsync();
+                 .Where(p => p.isDelete == false && p.Status == 0 && p.Time.Month == thirtyDaysAgo.Month).ToListAsync();
 
             int? totalOrder = 0;
             int? totalOrderOfMonth = 0;
@@ -150,7 +150,7 @@ namespace API.Business.Services
                 totalOrder += re.TotalMoney;
                 totalDiscount += re.Discount;
             }
-            foreach (var re in result)
+            foreach (var re in results)
             {
                 totalOrderOfMonth += re.TotalMoney;
             }

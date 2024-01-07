@@ -56,7 +56,7 @@ const ProductCard = (props) => {
                 style={{ fontFamily: "Roboto, sans-serif" }}
                 className="product-title"
               >
-                <p style={{ minHeight: 40 }}>{item.name}</p>
+                <p style={{ minHeight: 40 }}>{item?.name}</p>
               </h5>
               <h6>Kho {item?.quantity}</h6>
               <div className="d-flex">

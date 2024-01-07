@@ -17,7 +17,7 @@ namespace API.Business.Services.Interface
         Task<IEnumerable<PurchaseHistoryDTO>> purchaseHistory(string? CustomerId);
         Task<IEnumerable<PurchaseHistoryDTO>> listCart(string? CustomerId);
 
-        Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail);
+        Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail, string customerid);
 
         Task<IEnumerable<OrderDetail>> updateOrderDetail(Guid? orderDetailId, string? isCart);
         Task<OrderDetail> updateOrderDetailBillId(Guid? orderDetailId, Guid? BillId);

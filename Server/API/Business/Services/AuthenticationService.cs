@@ -182,7 +182,7 @@ List<Claim> claims)
 
         public async Task<User> getInfo(string userId)
         {
-            return await _userManager.FindByNameAsync(userId); ;
+            return await _userManager.FindByNameAsync(userId); 
         }
 
         public async Task<IEnumerable<string>> getRole (string UserId)

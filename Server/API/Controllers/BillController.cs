@@ -7,7 +7,6 @@ using API.Business.DTOs.BillDTO;
 using API.Business.Helper;
 using API.Entities.Enum;
 using API.Business.Shared;
-using API.Entities;
 
 namespace API.Controllers
 {   
@@ -31,22 +30,22 @@ namespace API.Controllers
         {
             try
             {
-                var bills = await _service.billService.GetAll(trackChanges: false,status,billParameters);
-                if (bills.Item1 == null || !bills.Item1.Any())
+                var bills = await _service.billService.GetAll(trackChanges: false, status, billParameters);
+                if (bills.Item1 == null)
                 {
                     _logger.LogInfo("List Bill is empty");
                     return BadRequest(HttpStatusCode.NotFound);
                 }
-                foreach ( var bi in bills.Item1)
+                if (bills.Item1.Any())
                 {
-                    bi.FormatDate = bi.Time.ToString("dd/MM/yyyy HH:mm:ss");
-                    bi.FormatShippingDate = bi.ShippingDate.ToString("dd/MM/yyyy HH:mm:ss");
-                    var a = await _service.authenticationService.getInfoById(bi.CustomerID);
-                    bi.UserName = a.UserName;
-                }    
-                
-
-
+                    foreach (var bi in bills.Item1)
+                    {
+                        bi.FormatDate = bi.Time.ToString("dd/MM/yyyy HH:mm:ss");
+                        bi.FormatShippingDate = bi.ShippingDate.ToString("dd/MM/yyyy HH:mm:ss");
+                        var a = await _service.authenticationService.getInfoById(bi.CustomerID);
+                        bi.UserName = a.UserName;
+                    }
+                }
                 return Ok(new
                 {
                     message = "Success",

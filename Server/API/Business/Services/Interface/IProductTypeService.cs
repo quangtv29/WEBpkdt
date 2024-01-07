@@ -11,7 +11,8 @@ namespace API.Business.Services.Interface
         Task<ProductType> createProductType(CreateProductTypeDTO productType);
 
         Task updateProductType(UpdateProducTypeDTO producType, Guid? Id);
+        Task<int> delete(Guid? id);
 
-       
+
     }
 }

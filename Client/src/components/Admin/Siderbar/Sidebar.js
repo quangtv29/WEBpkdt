@@ -114,10 +114,10 @@ const Sidebar = () => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <a href="/admin/list-type-product" className="nav-link">
+                    <Link to="/admin/list-type-product" className="nav-link">
                       <i className="far fa-circle nav-icon"></i>
                       <p>Danh sách loại sản phẩm</p>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </li>

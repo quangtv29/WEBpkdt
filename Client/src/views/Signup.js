@@ -12,15 +12,15 @@ const Signup = () => {
   const [phoneNumber, setPhone] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false);
+
   const navigate = useNavigate();
   const [checkuser, setCheckUser] = useState("");
-  const validateEmail = (value) => {
-    // Biểu thức chính quy để kiểm tra định dạng email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = emailRegex.test(value);
-    setIsEmailValid(isValid);
-  };
+
+  // Biểu thức chính quy để kiểm tra định dạng email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const phoneRegex = /^\d{10}$/;
+
   const checkUserName = (event) => {
     event.preventDefault();
     axios
@@ -65,8 +65,6 @@ const Signup = () => {
   };
   const [border, setBorder] = useState([true, true, true, true, true, true]);
   const validatePhoneNumber = (value) => {
-    const phoneRegex = /^\d{10}$/;
-    console.log(phoneRegex.test(value));
     return phoneRegex.test(value);
   };
   const handleSubmit = (event) => {
@@ -109,35 +107,40 @@ const Signup = () => {
       return false;
     }
     setErrorMessage("");
-    validateEmail(email);
-    if (isEmailValid) {
-      axios
-        .post("https://localhost:7295/api/Authentication", {
-          firstName,
-          lastName,
-          userName,
-          password,
-          email,
-          phoneNumber,
-        })
-        .then((res) => {
-          let id = res.data.id;
-          axios
-            .post("https://localhost:7295/api/Customer/createCustomer", {
-              id,
-            })
-            .then(() => {});
-          setErrorMessage("");
-          alert("Đăng kí tài khoản thành công");
-          navigate("/login", { replace: true });
-        })
-        .catch((err) => {
-          alert("Lỗi");
-          return false;
-        });
-      return true;
+    const isValid = emailRegex.test(email);
+    if (phoneRegex.test(phoneNumber)) {
+      if (isValid) {
+        axios
+          .post("https://localhost:7295/api/Authentication", {
+            firstName,
+            lastName,
+            userName,
+            password,
+            email,
+            phoneNumber,
+          })
+          .then((res) => {
+            let id = res.data.id;
+            axios
+              .post("https://localhost:7295/api/Customer/createCustomer", {
+                id,
+              })
+              .then(() => {});
+            setErrorMessage("");
+            alert("Đăng kí tài khoản thành công");
+            navigate("/login", { replace: true });
+          })
+          .catch((err) => {
+            alert("Lỗi");
+            return false;
+          });
+        return true;
+      } else {
+        setErrorMessage("Email không đúng định dạng.");
+        return false;
+      }
     } else {
-      setErrorMessage("Email không đúng định dạng.");
+      setErrorMessage("SĐT không đúng định dạng.");
       return false;
     }
   };
@@ -287,7 +290,7 @@ const Signup = () => {
                       className="button border-0"
                       onClick={(e) => handleSubmit(e)}
                     >
-                      Sign Up
+                      Đăng ký
                     </button>
                   </div>
                 </div>

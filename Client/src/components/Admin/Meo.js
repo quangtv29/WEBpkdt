@@ -47,15 +47,12 @@ const Revenue = () => {
     }
     return options;
   };
+  const nonNullLabels = name
+    .map((item) => item?.name)
+    .filter((label) => label !== null);
 
   const chartData = {
-    labels: [
-      name[0]?.name,
-      name[1]?.name,
-      !name[2]?.name ? "" : name[2]?.name,
-      !name[3]?.name ? "" : name[3]?.name,
-      !name[4]?.name ? "" : name[4]?.name,
-    ],
+    labels: nonNullLabels,
     datasets: [
       {
         data: monthlyRevenues,
@@ -64,7 +61,7 @@ const Revenue = () => {
           "#36A2EB",
           "#FFCE56",
           "#4CAF50",
-          !name[4]?.name ? "#fff" : "green",
+          name[4]?.name === undefined ? "#fff" : "green",
         ],
         hoverBackgroundColor: [
           "#FF6384",

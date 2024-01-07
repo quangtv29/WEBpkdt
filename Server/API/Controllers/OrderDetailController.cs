@@ -76,7 +76,7 @@ namespace API.Controllers
         [HttpPost("createCart")]
        
 
-        public async Task<IActionResult> createOrderDetail(CreateCartDTO order)
+        public async Task<IActionResult> createOrderDetail(CreateCartDTO order, string customerid)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace API.Controllers
                         StatusCode = HttpStatusCode.BadRequest
                     });
                 }
-                await _service.orderDetailService.createCart(order);
+                await _service.orderDetailService.createCart(order, customerid);
                 return Ok(new ApiResponse
                 {
                     Message = "Create Success",

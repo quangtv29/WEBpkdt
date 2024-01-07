@@ -283,7 +283,7 @@ export const Cart = () => {
                   currency: "VND",
                 })}
               </h4>
-              <p>Taxes and shipping calculated at checkout</p>
+              <p>Thuế và phí vận chuyển được tính khi thanh toán</p>{" "}
               <Link className="button" onClick={() => handleCreateBill()}>
                 Thanh toán
               </Link>

@@ -28,23 +28,26 @@ const Delivering = () => {
       )
       .then((response) => {
         setData(response.data);
+        console.log(response.data);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => {});
   }, [decryptedId, accessToken]);
   const handleDone = (e, id) => {
     e.preventDefault();
-    axios.post(
-      "https://localhost:7295/api/Bill/updateStatusBill",
-      {},
-      {
-        params: {
-          Id: id,
-          status: 0,
-        },
-      }
-    );
+    axios
+      .post(
+        "https://localhost:7295/api/Bill/updateStatusBill",
+        {},
+        {
+          params: {
+            Id: id,
+            status: 0,
+          },
+        }
+      )
+      .then(() => {
+        setData(data.filter((item) => item.id !== id));
+      });
   };
 
   // const handleCancel = (id) => {

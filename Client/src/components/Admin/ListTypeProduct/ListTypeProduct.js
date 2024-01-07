@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './TypeProduct.scss';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import CreateTypeProduct from './CreateTypeProduct';
-const ListTypeProduct = (props) => {
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./TypeProduct.scss";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CreateTypeProduct from "./CreateTypeProduct";
+const ListTypeProduct = () => {
   const [selectedTypeProduct, setSelectedTypeProduct] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -12,8 +12,10 @@ const ListTypeProduct = (props) => {
   useEffect(() => {
     const fetchLoaiSanPham = async () => {
       try {
-        const response = await axios.get('/api/loaisanpham');
-        setData(response.data);
+        const response = await axios.get(
+          "https://localhost:7295/api/ProductType/GetAll"
+        );
+        setData(response.data.data);
       } catch (error) {
         console.error(error);
       }
@@ -34,17 +36,17 @@ const ListTypeProduct = (props) => {
 
   const handleDeleteTypeProduct = (typeProductId) => {
     axios
-      .delete(`/api/loaisanpham/${typeProductId}`)
-      .then((response) => {
-        console.log(response.data);
+      .post(`https://localhost:7295/api/ProductType?id=${typeProductId}`)
+      .then(() => {
         // Xử lý kết quả trả về khi xóa thành công
-        toast.success('Xóa loại sản phẩm thành công');
-        window.location.reload();
+        toast.success("Xóa loại sản phẩm thành công");
+        setData(data.filter((item) => item.id !== typeProductId));
       })
       .catch((error) => {
-        console.error(error);
         // Xử lý lỗi khi xóa không thành công
-        toast.error('Xóa loại sản phẩm thất bại');
+        toast.error(
+          "Không xoá được loại sản phẩm vì đang tồn tài sản phẩm thuộc loại này"
+        );
       });
   };
 
@@ -71,23 +73,23 @@ const ListTypeProduct = (props) => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {data?.map((item) => (
                 <tr
-                  key={item.MaLoaiSP}
+                  key={item?.id}
                   onClick={() => handleSelectTypeProduct(item)}
                 >
-                  <td>{item.MaLoaiSP}</td>
-                  <td>{item.TenLoaiSP}</td>
+                  <td>{item?.id}</td>
+                  <td>{item?.name}</td>
                   <td>
                     <i
                       class="fad fa-edit"
-                      onClick={() => handleEditTypeProduct(item.MaLoaiSP)}
+                      onClick={() => handleEditTypeProduct(item.id)}
                     ></i>
                   </td>
                   <td>
                     <i
                       class="fad fa-trash-alt"
-                      onClick={() => handleDeleteTypeProduct(item.MaLoaiSP)}
+                      onClick={() => handleDeleteTypeProduct(item.id)}
                     ></i>
                   </td>
                 </tr>
@@ -103,7 +105,7 @@ const ListTypeProduct = (props) => {
             />
           ) : (
             <CreateTypeProduct />
-          )}{' '}
+          )}{" "}
         </div>
       </div>
     </div>

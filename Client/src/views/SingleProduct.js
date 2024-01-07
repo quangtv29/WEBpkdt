@@ -5,9 +5,7 @@ import axios from "axios";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import Color from "../components/Color";
-import { TbGitCompare } from "react-icons/tb";
-import { AiOutlineHeart } from "react-icons/ai";
-import { Link } from "react-router-dom";
+
 import Container from "../components/Container";
 import { CartContext } from "../CartContext";
 import StarRatings from "react-star-ratings";
@@ -101,13 +99,21 @@ const SingleProduct = () => {
           }
         );
 
-        await axios.post("https://localhost:7295/api/OrderDetail/createCart", {
-          billId: result.data.data.id,
-          price: price,
-          productId: productid,
-          quantity: quantity,
-          totalMoney: totalmoney,
-        });
+        await axios.post(
+          "https://localhost:7295/api/OrderDetail/createCart",
+          {
+            billId: result.data.data.id,
+            price: price,
+            productId: productid,
+            quantity: quantity,
+            totalMoney: totalmoney,
+          },
+          {
+            params: {
+              customerid: decryptedId,
+            },
+          }
+        );
         if (a === 1) {
           localStorage.setItem("billid1", result.data.data.id);
           window.location.href = "/checkout";
@@ -184,7 +190,7 @@ const SingleProduct = () => {
 
   return (
     <>
-      <Meta title={"Product Name"} />
+      <Meta title={product?.name} />
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">

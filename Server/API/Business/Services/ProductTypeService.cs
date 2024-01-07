@@ -3,6 +3,7 @@ using API.Business.Repository.IRepository;
 using API.Business.Services.Interface;
 using API.Entities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Business.Services
 {
@@ -41,6 +42,21 @@ namespace API.Business.Services
             var productType = await _repo.ProductType.GetProductTypeById(Id);
             _mapper.Map(producType, productType);
            await _repo.SaveAsync();
+        }
+
+        public async Task<int> delete (Guid? id)
+        {
+            var product = await _repo.Product.GetAllByCondition(p => p.ProductTypeID == id, true)
+                .Where(p => p.isDelete == false)
+                .ToListAsync();
+            if (product.Count == 0)
+            {
+                var productType = await _repo.ProductType.GetProductTypeById(id);
+                _repo.ProductType.Delete(productType);
+                await _repo.SaveAsync();
+                return 0;
+            }
+            return -1;
         }
     }
 }

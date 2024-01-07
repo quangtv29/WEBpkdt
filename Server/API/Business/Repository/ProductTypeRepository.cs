@@ -1,5 +1,4 @@
-﻿using API.Business.DTOs.ProductTypeDTO;
-using API.Business.Repository.IRepository;
+﻿using API.Business.Repository.IRepository;
 using API.Database;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;

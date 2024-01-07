@@ -12,16 +12,22 @@ const Confirm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleConfirm = () => {
     setIsOpen(false);
-    axios.post(
-      "https://localhost:7295/api/Bill/updateStatusBill",
-      {},
-      {
-        params: {
-          Id: localStorage.getItem("billid11"),
-          status: 2,
-        },
-      }
-    );
+    axios
+      .post(
+        "https://localhost:7295/api/Bill/updateStatusBill",
+        {},
+        {
+          params: {
+            Id: localStorage.getItem("billid11"),
+            status: 2,
+          },
+        }
+      )
+      .then(() => {
+        setData(
+          data.filter((item) => item.id !== localStorage.getItem("billid11"))
+        );
+      });
   };
   const handleCancel = () => {
     setIsOpen(false);

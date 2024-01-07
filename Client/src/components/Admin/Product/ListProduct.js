@@ -68,6 +68,7 @@ const ListProduct = () => {
       const response = await axios.delete(`/api/sanpham/${productId}`);
 
       toast.success("Xóa sản phẩm thành công");
+
       window.location.reload();
     } catch (error) {
       toast.error("Xóa sản phẩm thất bại");

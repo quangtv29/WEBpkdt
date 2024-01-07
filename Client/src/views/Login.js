@@ -89,8 +89,8 @@ const Login = () => {
   }, [navigate]);
   return (
     <>
-      <Meta title={"Login"} />
-      <BreadCrumb title="Login" />
+      <Meta title={"Đăng nhập"} />
+      <BreadCrumb title="Đăng nhập" />
       <Container class1="login-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
@@ -137,7 +137,7 @@ const Login = () => {
                   {message && (
                     <p className="text-center text-danger">{message}</p>
                   )}
-                  <Link to="/forgot-password">Forgot Password?</Link>
+                  <Link to="/forgot-password">Quên mật khẩu</Link>
                   <div className="mt-3 d-flex justify-content-center gap-15 align-items-center">
                     <button
                       className="button border-0"

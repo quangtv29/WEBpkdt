@@ -41,6 +41,8 @@ namespace API.Business.Services
         public async Task<int?> UpdateTotalMoneyDTO(Guid? Id, int? Quantity )
         {
             var product = await _repo.Product.GetProductById(Id);
+            if (product == null)
+               return 0;
             int? quantityValue = Quantity ?? 1;
            return product.Price * quantityValue;
         }
@@ -82,15 +84,37 @@ namespace API.Business.Services
 
 
 
-        public async Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail)
+        public async Task<GetAllOrderDetail> createCart(CreateCartDTO orderDetail, string customerid)
         {
             var product = await _repo.Product.GetProductById(orderDetail.ProductId);
             orderDetail.Price = product.Price;
-            var order = _mapper.Map<OrderDetail>(orderDetail);
-            order.isCart = "Cart";
-            _repo.OrderDetail.addOrderDetail(order);
-            await _repo.SaveAsync();
-            return _mapper.Map<GetAllOrderDetail>(order);
+            var check = await (from cu in _repo.Customer.GetAll(false)
+                               join bi in _repo.Bill.GetAll(false) on cu.Id equals bi.CustomerID
+                               join or in _repo.OrderDetail.GetAll(true) on bi.Id equals or.BillId
+                               where or.ProductId == orderDetail.ProductId && cu.Id == customerid && or.isCart == "Cart"
+                               select new
+                               {
+                                   id = or.Id,
+                                   quantity = or.Quantity,
+                               }
+                               ).FirstOrDefaultAsync();
+            if (check == null)
+            {
+                var order = _mapper.Map<OrderDetail>(orderDetail);
+                order.isCart = "Cart";
+                _repo.OrderDetail.addOrderDetail(order);
+                await _repo.SaveAsync();
+                return _mapper.Map<GetAllOrderDetail>(order);
+            }
+            else
+            {
+                var order = await _repo.OrderDetail.GetAllByCondition(p=>p.Id == check.id,true)
+                    .Where(p=>p.isDelete == false).FirstOrDefaultAsync();
+                order.Quantity += orderDetail.Quantity;
+                order.TotalMoney = order.Price * order.Quantity;
+                await _repo.SaveAsync();
+                return _mapper.Map<GetAllOrderDetail>(order);
+            }
         }
 
 
@@ -213,6 +237,8 @@ namespace API.Business.Services
         public async Task<OrderDetail> updateOrderDetailBillId(Guid? orderDetailId, Guid? BillId)
         {
             var order = await _repo.OrderDetail.GetOrderDetailById(orderDetailId);
+            if (order == null)
+                return null;
             if (order.Quantity == 0)
                 return null;
             order.BillId = BillId;

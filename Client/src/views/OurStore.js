@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import ProductCard from "../components/ProductCard";
 import Color from "../components/Color";
@@ -13,7 +12,21 @@ const OurStore = () => {
   const [grid, setGrid] = useState(4);
   const [isInStockChecked, setIsInStockChecked] = useState(false);
   const [isOutOfStockChecked, setIsOutOfStockChecked] = useState(false);
+  const [pro, setPro] = useState([]);
+  useEffect(() => {
+    const fetchLoaiSanPham = async () => {
+      try {
+        const response = await axios.get(
+          "https://localhost:7295/api/ProductType/GetAll"
+        );
+        setPro(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
+    fetchLoaiSanPham();
+  }, []);
   const handleInStockChange = () => {
     if (isInStockChecked) {
       setIsInStockChecked(false);
@@ -39,7 +52,6 @@ const OurStore = () => {
   const [to, setTo] = useState(0);
   const { record, search, setRecord, status, setStatus } =
     useContext(SearchContext);
-  const fix = record / 6;
   const [products, setProducts] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,23 +75,23 @@ const OurStore = () => {
     setRecord(response.data.length);
     setProducts(response.data);
   };
-  const fetchTopSeller = async () => {
-    let url = "https://localhost:7295/api/Product/searchByName";
-    const pageNumber = currentPage;
-    const pageSize = 6;
-    const response = await axios.post(
-      url,
-      { pageNumber, pageSize },
-      {
-        params: {
-          name: search,
-        },
-      }
-    );
+  // const fetchTopSeller = async () => {
+  //   let url = "https://localhost:7295/api/Product/searchByName";
+  //   const pageNumber = currentPage;
+  //   const pageSize = 6;
+  //   const response = await axios.post(
+  //     url,
+  //     { pageNumber, pageSize },
+  //     {
+  //       params: {
+  //         name: search,
+  //       },
+  //     }
+  //   );
 
-    let data = response.data.item1;
-    setRecord(response.data.item2);
-  };
+  //   let data = response.data.item1;
+  //   setRecord(response.data.item2);
+  // };
   const fetchProducts = async () => {
     let url = "https://localhost:7295/api/Product/searchByName";
     const pageNumber = currentPage;
@@ -187,7 +199,7 @@ const OurStore = () => {
             <div className="filter-card mb-3">
               <h3 className="filter-title">Danh mục sản phẩm</h3>
               <div>
-                <ul className="list-unstyled ps-0">
+                {/* <ul className="list-unstyled ps-0">
                   <li className="mb-1">
                     <button
                       onClick={() => fetchProductByType("Ốp lưng")}
@@ -262,6 +274,18 @@ const OurStore = () => {
                       Giá đỡ điện thoại {"\u00A0"}
                     </button>
                   </li>
+                </ul> */}
+                <ul className="list-unstyled ps-0">
+                  {pro?.map((item) => (
+                    <li key={item.id} className="mb-1">
+                      <button
+                        onClick={() => fetchProductByType(item?.name)}
+                        className="btn  align-items-center"
+                      >
+                        {item?.name} {"\u00A0"}
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -412,7 +436,7 @@ const OurStore = () => {
               }}
             >
               <div style={{ marginRight: "20px" }}>
-                Page <b>{currentPage}</b> of <b>{Math.ceil(record / 6)}</b>
+                Trang <b>{currentPage}</b> / <b>{Math.ceil(record / 6)}</b>
               </div>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <button
@@ -429,7 +453,7 @@ const OurStore = () => {
                     transition: "background-color 0.3s",
                   }}
                 >
-                  Previous
+                  Trước
                 </button>
 
                 {Array.from({ length: Math.ceil(record / 6) }, (_, index) => (
@@ -466,7 +490,7 @@ const OurStore = () => {
                     transition: "background-color 0.3s",
                   }}
                 >
-                  Next
+                  Sau
                 </button>
               </div>
             </div>

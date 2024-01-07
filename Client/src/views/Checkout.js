@@ -11,7 +11,7 @@ const Checkout = () => {
   const [selectedVoucher, setSelectedVoucher] = useState("");
 
   const [address, setAddress] = useState("");
-  const [customer, setCustomer] = useState();
+  const [customer, setCustomer] = useState("");
   const [data, setData] = useState([]);
   const [order, setOrder] = useState([]);
   const [checkdiscount, setCheckDiscount] = useState(0);
@@ -157,6 +157,7 @@ const Checkout = () => {
       })
       .then((res) => {
         setCustomer(res.data);
+        setName(res.data.firstName + " " + res.data.lastName);
         setPhone(res.data.phoneNumber);
       });
   }, [decryptedId]);
