@@ -6,7 +6,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Runtime.InteropServices;
 
 namespace API.Controllers
 {
@@ -154,8 +153,7 @@ namespace API.Controllers
 
         }
 
-        [HttpDelete("{Id}")]
-        [Authorize(Roles = "Manager")]
+        [HttpPost("deleteProduct")]
 
         public async Task<IActionResult> deleteProduct(Guid? Id)
         {
@@ -166,12 +164,19 @@ namespace API.Controllers
                     StatusCode = HttpStatusCode.BadRequest
                 });
             }
-            await _service.productService.deleteProduct(Id);
-            return Ok(new ApiResponse
+           var result =  await _service.productService.deleteProduct(Id);
+            if (result == 0)
             {
-                Message = "Success",
-                StatusCode = HttpStatusCode.OK
-            });
+                return Ok(new ApiResponse
+                {
+                    Message = "Success",
+                    StatusCode = HttpStatusCode.OK
+                });
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost("searchByName")]
@@ -223,6 +228,12 @@ namespace API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpPost("getTopSeller")]
+        public async Task<IActionResult> GetTopSeller(ProductParameters productParameters)
+        {
+            var result = await _service.productService.GetTopSeller(productParameters);
+            return Ok(result);
         }
     }
 }

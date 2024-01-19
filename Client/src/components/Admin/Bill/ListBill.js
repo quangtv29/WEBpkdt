@@ -27,6 +27,7 @@ const ListBill = () => {
       )
       .then((response) => {
         setData(response.data.data);
+
         setTotalPage(Math.ceil(response.data.totalPage / itemsPerPage));
       });
   }, [currentPage]);
@@ -100,7 +101,7 @@ const ListBill = () => {
               <th>Tạm tính</th>
               <th>Giảm giá</th>
               <th>Tổng tiền</th>
-              <th>Ghi chú </th>
+
               <th>Thao tác</th>
             </tr>
           </thead>
@@ -136,6 +137,10 @@ const ListBill = () => {
                       maxWidth: "100px",
                       whiteSpace: "pre-line",
                       wordWrap: "break-word",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      localStorage.setItem("username", item?.userName);
                     }}
                   >
                     {item?.userName}
@@ -145,6 +150,7 @@ const ListBill = () => {
                       maxWidth: "100px",
                       whiteSpace: "pre-line",
                       wordWrap: "break-word",
+                      fontSize: 18,
                     }}
                   >
                     {item?.name}
@@ -180,36 +186,41 @@ const ListBill = () => {
                       currency: "VND",
                     })}
                   </td>
-                  <td>
+                  <td style={{ fontWeight: "bold" }}>
                     {item?.intoMoney?.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}
                     {item?.discountCode === "Done" && <p>(Đã thanh toán)</p>}
                   </td>
-                  <td
-                    style={{
-                      maxWidth: "100px",
-                      whiteSpace: "pre-line",
-                      wordWrap: "break-word",
-                    }}
-                  >
-                    {item?.GhiChu}
-                  </td>
+
                   <td className="check">
                     <button
                       type="button"
                       onClick={() => confirm(item?.id, item?.customerID)}
                       className="btn btn-danger mr-2"
-                      style={{ padding: 7 }}
+                      style={{
+                        padding: 7,
+
+                        color: "black",
+                        border: "1px solid black",
+                      }}
                     >
-                      Xác nhận <i className="fas fa-check"></i>
+                      Xác nhận
                     </button>
                     <button
                       type="button"
                       className="btn btn-danger mr-2 mt-2"
                       onClick={() => handleOnclick(item?.id)}
-                      style={{ border: 0, width: 64.2, height: 53 }}
+                      style={{
+                        border: 0,
+                        width: 64.2,
+
+                        padding: 7,
+
+                        color: "black",
+                        border: "1px solid black",
+                      }}
                     >
                       Huỷ
                     </button>

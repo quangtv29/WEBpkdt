@@ -7,7 +7,8 @@ const AccountInfo = () => {
   const [id, setId] = useState("");
   const [customer, setCustomer] = useState([]);
   const [searchUsername, setSearchUsername] = useState("");
-
+  const [name, setName] = useState("");
+  let userName = localStorage.getItem("username");
   useEffect(() => {
     if (id) {
       axios
@@ -36,21 +37,34 @@ const AccountInfo = () => {
       }
     );
     setCustomer(response.data);
+    setName(response.data.firstName + " " + response.data.lastName);
     setId(response.data.id);
   };
   const [image, setImage] = useState("");
+  const [cuid, setCuId] = useState("");
+  const [isActive, setIsActive] = useState("");
   useEffect(() => {
     if (id) {
       axios
         .get(`https://localhost:7295/api/Customer/${id}`)
         .then((res) => {
           setImage(res.data.data[0].image);
+          setCuId(res.data.data[0].id);
+          setIsActive(res.data.data[0].isActive);
         })
         .catch((err) => {
           console.error(err);
         });
     }
   }, [id]);
+  const handleChangeActive = (e) => {
+    axios
+      .post(`https://localhost:7295/api/Customer/lockAccount?id=${cuid}`)
+      .then((res) => {
+        alert("Thành công");
+        window.location.reload();
+      });
+  };
   return (
     <div className="account-info-container">
       <h2 className="account-info-heading">Thông tin tài khoản</h2>
@@ -72,7 +86,7 @@ const AccountInfo = () => {
 
       <div className="account-info-item">
         <span className="account-info-label">Họ và tên:</span>
-        {customer?.firstName + " " + customer?.lastName}
+        {name}
       </div>
       <div className="account-info-item">
         <span className="account-info-label">Đơn hàng đã mua:</span>
@@ -106,9 +120,25 @@ const AccountInfo = () => {
           currency: "VND",
         })}
       </div>
-      <div className="account-info-item">
-        <button className="text-center p-1">Khoá tài khoản</button>
-      </div>
+      {id && (
+        <div className="account-info-item">
+          {isActive ? (
+            <button
+              className="text-center p-1"
+              onClick={(e) => handleChangeActive(e)}
+            >
+              Khoá tài khoản
+            </button>
+          ) : (
+            <button
+              className="text-center p-1"
+              onClick={(e) => handleChangeActive(e)}
+            >
+              Mở khoá tài khoản
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

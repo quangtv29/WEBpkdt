@@ -5,27 +5,77 @@ import {
   faChartBar,
   faLight,
   faTicketsPerforated,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Breadcrumb, Layout, Menu, theme } from "antd";
+
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
+const items = [
+  getItem(
+    "Bài viết giới thiệu",
+    "sub1",
+    <i className="nav-icon fas fa-table"></i>,
+    [
+      getItem("Đăng bài viết", "createblog"),
+      getItem("Danh sách bài viết", "lop/add"),
+    ]
+  ),
+  getItem(
+    "Quản lý sản phẩm",
+    "sub2",
+    <i className="nav-icon fas fa-table"></i>,
+    [
+      getItem("Danh sách sản phẩm", "list-product"),
+      getItem("Danh sách loại sản phẩm", "list-type-product"),
+    ]
+  ),
+  getItem(
+    "Quản lý đơn hàng",
+    "sub3",
+    <i className="nav-icon fas fa-table"></i>,
+    [
+      getItem("Đơn hàng mới tạo", "list-bill"),
+      getItem("Đơn hàng giao cho khách", "delivering"),
+      getItem("Đơn hàng hoàn thành", "done"),
+      getItem("Đơn hàng bị hủy", "cancel"),
+    ]
+  ),
+  getItem(
+    "Chương trình khuyến mại",
+    "discount",
+    <FontAwesomeIcon icon={faChartBar} size="1x" />
+  ),
+  getItem(
+    "Thống kê",
+    "statistics",
+    <FontAwesomeIcon icon={faChartBar} size="1x" />
+  ),
+  getItem(
+    "Quản lý tài khoản",
+    "accountinfo",
+    <FontAwesomeIcon icon={faUser} size="1x" />
+  ),
+];
+
 const Sidebar = () => {
   const user = localStorage.getItem("lastname");
   const navigate = useNavigate();
   const welcomeMessage = `Xin chào, ${user}!`;
-  const [showProductList, setShowProductList] = useState(false);
-  const [showOrderList, setShowOrderList] = useState(false);
 
-  const toggleOrderList = () => {
-    setShowOrderList(!showOrderList);
-  };
-  const toggleProductList = () => {
-    setShowProductList(!showProductList);
-  };
   const logout = () => {
     localStorage.clear();
-    navigate("/login", { replace: true });
+    window.location.href = "/login";
   };
 
   return (
@@ -60,131 +110,43 @@ const Sidebar = () => {
               </div>
             </div>
           </div> */}
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={["1"]}
+            mode="inline"
+            className="menu"
+          >
+            {items.map((item) => {
+              if (item?.children) {
+                return (
+                  <Menu.SubMenu
+                    key={item.key}
+                    icon={item.icon}
+                    title={item.label}
+                    className="sub-menu"
+                  >
+                    {item.children.map((child) => (
+                      <Menu.Item key={child.key} className="menu-item">
+                        <Link to={`/admin/${child.key}`}>{child.label}</Link>
+                      </Menu.Item>
+                    ))}
+                  </Menu.SubMenu>
+                );
+              } else {
+                return (
+                  <Menu.Item key={item.key} icon={item.icon}>
+                    <Link to={`/admin/${item.key}`}>{item.label}</Link>
+                  </Menu.Item>
+                );
+              }
+            })}
+          </Menu>
 
-          <nav className="mt-2">
-            <ul
-              className="nav nav-pills nav-sidebar flex-column"
-              role="menu"
-              data-accordion="false"
-            >
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  <i className="nav-icon fas fa-table"></i>
-                  <p>
-                    Bài viết giới thiệu
-                    <i className="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <Link to="/admin/createblog" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Đăng bài viết</p>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <a href="admin/lop/add" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Danh sách bài viết</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link" onClick={toggleProductList}>
-                  <i className="nav-icon fas fa-table"></i>
-                  <p>
-                    Quản lý sản phẩm
-                    <i
-                      className={`fas fa-angle-left right ${
-                        showProductList ? "rotate" : ""
-                      }`}
-                    ></i>
-                  </p>
-                </a>
-                <ul
-                  className={`nav nav-treeview ${
-                    showProductList ? "show" : ""
-                  }`}
-                >
-                  <li className="nav-item">
-                    <Link to="/admin/list-product" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Danh sách sản phẩm</p>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/admin/list-type-product" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Danh sách loại sản phẩm</p>
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link" onClick={toggleOrderList}>
-                  <i className="nav-icon fas fa-table"></i>
-                  <p>
-                    Quản lý đơn hàng{" "}
-                    <i
-                      className={`fas fa-angle-left right ${
-                        showOrderList ? "rotate" : ""
-                      }`}
-                    ></i>
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <Link to="/admin/list-bill" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Đơn hàng mới tạo</p>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="./delivering" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Đang giao cho khách</p>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="./done" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Đã hoàn thành</p>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="./cancel" className="nav-link">
-                      <i className="far fa-circle nav-icon"></i>
-                      <p>Đơn hàng bị hủy</p>
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item ml-2">
-                <Link to="/admin/discount" className="nav-link">
-                  {/* <i className="nav-icon fas fa-table"></i> */}
-                  <FontAwesomeIcon icon="fa-light fa-tickets-perforated" />
-                  <p>
-                    Chương trình khuyến mại<i className=""></i>
-                  </p>
-                </Link>
-              </li>
-              <li className="nav-item ml-2">
-                <Link to="/admin/statistics" className="nav-link">
-                  {/* <i className="nav-icon fas fa-table"></i> */}
-                  <FontAwesomeIcon icon={faChartBar} size="1x" />
-                  <p>
-                    Thống kê<i className=""></i>
-                  </p>
-                </Link>
-              </li>
-              <li style={{ textAlign: "center" }}>
-                <button onClick={() => logout()} className="custom-button">
-                  <b>Đăng xuất</b>
-                </button>
-              </li>
-            </ul>
-          </nav>
+          <div style={{ textAlign: "center", margin: "20px" }}>
+            <button onClick={() => logout()} className="custom-button">
+              <b>Đăng xuất</b>
+            </button>
+          </div>
         </div>
       </aside>
     </>

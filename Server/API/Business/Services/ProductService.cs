@@ -51,11 +51,25 @@ namespace API.Business.Services
             return pro;
         }
 
-        public async Task deleteProduct(Guid? Id)
+        public async Task<int> deleteProduct(Guid? Id)
         {
             var product = await _repo.Product.GetProductById(Id);
+            var bill = await _repo.Bill.GetAllByCondition(p => p.Status != 0 && p.Status == Entities.Enum.Status.Canceled, false)
+                .Where(p => p.isDelete == false)
+                .ToListAsync();
+            foreach(var bi in bill)
+            {
+                var order = await _repo.OrderDetail.GetAllByCondition(p => p.BillId == bi.Id, false)
+                    .Where(p => p.ProductId == Id)
+                    .ToListAsync();
+                if(order.Count != 0)
+                {
+                    return -1;
+                }    
+            }    
            _repo.Product.delete(product);
           await  _repo.SaveAsync();
+            return 0;
         }
 
         public async Task<(IEnumerable<GetAllProductDTO>,int)> GetAll(ProductParameters productParameters, int a)

@@ -61,6 +61,7 @@ namespace API.Business.Services
         public async Task<IEnumerable<Blog>> getAllBlog ()
         {
             var result = await _repo.Blog.GetAll(false).Where(p => p.isDelete == false)
+                .OrderByDescending(p=>p.Create)
                 .ToListAsync();
             foreach(var blog in result)
             {

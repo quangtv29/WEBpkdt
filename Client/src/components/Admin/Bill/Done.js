@@ -94,6 +94,7 @@ const DoneAdmin = () => {
                       maxWidth: "100px",
                       whiteSpace: "pre-line",
                       wordWrap: "break-word",
+                      fontSize: 17,
                     }}
                   >
                     {item?.name}

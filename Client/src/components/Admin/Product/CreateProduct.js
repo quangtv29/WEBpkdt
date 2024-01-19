@@ -15,6 +15,7 @@ const CreateProduct = (props) => {
   const [nsx, setNSX] = useState("");
   const [mota, setMoTa] = useState("");
   const [image, setImage] = useState("");
+  const [name, setName] = useState("");
   // const imageRef = useRef(null);
   const accessToken = localStorage.getItem("accessToken");
   useEffect(() => {
@@ -28,6 +29,7 @@ const CreateProduct = (props) => {
       setNSX(props.product.producer);
       setMoTa(props.product.describe);
       setImage(props.product.image);
+      setName(props.product.productTypeName);
     }
   }, [props.product]);
 
@@ -63,6 +65,7 @@ const CreateProduct = (props) => {
       }
     });
     setMaLoaiSP(id);
+    setName(e.target.value);
   };
 
   const setnsx = (e) => {
@@ -100,7 +103,8 @@ const CreateProduct = (props) => {
         config
       )
       .then(() => {
-        toast("Cập nhật sản phẩm thành công");
+        alert("Cập nhật sản phẩm thành công");
+        window.location.reload();
       })
       .catch(() => {
         toast.error("Cập nhật sản phẩm thất bại");
@@ -156,7 +160,7 @@ const CreateProduct = (props) => {
               <Form.Label>Loại sản phẩm</Form.Label>
               <Form.Select
                 name="maloaisp"
-                value={props?.product?.productTypeName}
+                value={name}
                 onChange={(e) => setmaloaisp(e)}
               >
                 {productType?.map((item) => (

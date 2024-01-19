@@ -65,13 +65,15 @@ const ListProduct = () => {
 
   const handleDeleteProduct = async (productId) => {
     try {
-      const response = await axios.delete(`/api/sanpham/${productId}`);
-
-      toast.success("Xóa sản phẩm thành công");
-
+      const response = await axios.post(
+        `https://localhost:7295/api/Product/deleteProduct?Id=${productId}`
+      );
+      alert("Xóa sản phẩm thành công");
       window.location.reload();
     } catch (error) {
-      toast.error("Xóa sản phẩm thất bại");
+      toast.error(
+        "Xóa sản phẩm thất bại vì sản phẩm này đang được nằm trong đơn hàng chưa hoàn thành"
+      );
     }
   };
 
@@ -189,7 +191,7 @@ const ListProduct = () => {
                 <td>
                   <i
                     className="fad fa-trash-alt"
-                    onClick={() => handleDeleteProduct(item.MaSP)}
+                    onClick={() => handleDeleteProduct(item?.id)}
                   ></i>
                 </td>
               </tr>

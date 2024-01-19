@@ -110,6 +110,17 @@ const Checkout = () => {
                 }, 4000);
               } else {
                 toast.success("Đặt hàng thành công");
+                axios.post(
+                  "https://localhost:7295/api/SaleDetail/updateSaleDetail",
+                  {},
+                  {
+                    params: {
+                      // Thay đổi thành selectedVoucher
+                      discount: selectedVoucher,
+                      id: decryptedId,
+                    },
+                  }
+                );
                 setTimeout(function () {
                   window.location.href = "/to-pay";
                 }, 4000);

@@ -200,14 +200,12 @@ export const Cart = () => {
                     />
                   </div>
                   <div className="w-75">
-                    <p>{item.product}</p>
-                    <p>Size: Không có</p>
-                    <p>Màu: Không có</p>
+                    <p>{item?.product}</p>
                   </div>
                 </div>
                 <div className="col-2">
                   <h5 className="price">
-                    {item.price?.toLocaleString("vi-VN", {
+                    {item?.price?.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}

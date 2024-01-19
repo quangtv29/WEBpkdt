@@ -18,6 +18,7 @@ import { MyContext } from "../encryptionKey";
 import { SearchContext } from "../SearchContext";
 import CryptoJS from "crypto-js";
 import Avatar from "./Avatar";
+import "./Header.css";
 const Header = () => {
   const { setSearchTerm } = useContext(CartContext);
   const { search, setSearch, setStatus } = useContext(SearchContext);
@@ -176,7 +177,7 @@ const Header = () => {
             <div className="col-2">
               <h2>
                 <Link to="/" className="text-white">
-                  Vinh Quang
+                  Doly Case
                 </Link>
               </h2>
             </div>
@@ -232,7 +233,7 @@ const Header = () => {
                     <NavDropdown
                       title=" Thông báo 🔔"
                       onClick={(e) => handleNoti(e)}
-                      drop="down "
+                      drop="down"
                     >
                       <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
@@ -285,11 +286,7 @@ const Header = () => {
 
                 <div className="d-flex align-items-center gap-10 text-white text-light">
                   {isLogin ? (
-                    <NavDropdown
-                      title={customer}
-                      id="basic-nav-dropdown"
-                      className="nav-dropdown-title"
-                    >
+                    <NavDropdown title={customer} id="basic-nav-dropdown">
                       {customer && isAorN && (
                         <LinkContainer to="/admin" onClick={handleLinkClick}>
                           <NavDropdown.Item>Admin</NavDropdown.Item>
@@ -387,11 +384,6 @@ const Header = () => {
                           </Link>
                         </li>
                       )}
-                      <li>
-                        <Link className="dropdown-item text-white" to="">
-                          Something else here
-                        </Link>
-                      </li>
                     </ul>
                   </div>
                 </div>
@@ -400,7 +392,6 @@ const Header = () => {
                     <NavLink to="/">Trang chủ</NavLink>
                     <NavLink to="/product">Sản phẩm</NavLink>
                     <NavLink to="/blogs">Blogs</NavLink>
-                    <NavLink to="/contact">Liên hệ</NavLink>
                   </div>
                 </div>
               </div>

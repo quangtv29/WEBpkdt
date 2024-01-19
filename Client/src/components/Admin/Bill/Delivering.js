@@ -115,6 +115,7 @@ const Delivering = () => {
                       maxWidth: "100px",
                       whiteSpace: "pre-line",
                       wordWrap: "break-word",
+                      fontSize: 18,
                     }}
                   >
                     {item?.name}
@@ -142,7 +143,7 @@ const Delivering = () => {
                       currency: "VND",
                     })}
                   </td>
-                  <td>
+                  <td style={{ fontWeight: "bold" }}>
                     {item?.intoMoney?.toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
@@ -162,7 +163,12 @@ const Delivering = () => {
                     <button
                       onClick={() => confirm(item?.id)}
                       className="btn mr-2"
-                      style={{ backgroundColor: "blue" }}
+                      style={{
+                        padding: 7,
+                        fontSize: 10,
+                        color: "black",
+                        border: "1px solid black",
+                      }}
                     >
                       Giao thành công <i className="fas fa-check"></i>
                     </button>

@@ -128,5 +128,18 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("lockAccount")]
+       public async Task<IActionResult> lockAccount(string? id)
+        {
+            var result = await _service.customerService.lockAccount(id);
+            if (result == null)
+            {
+                return BadRequest();
+            }    
+            else
+            {
+                return Ok(result);
+            }
+        }
     }
 }

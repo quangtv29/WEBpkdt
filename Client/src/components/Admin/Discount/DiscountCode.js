@@ -91,7 +91,7 @@ const DiscountCodeForm = () => {
             <span style={{ color: "red" }}> *</span>
           </div>
           <div className="form-group">
-            <label className="form-label">Số tiền giảm giá:</label>
+            <label className="form-label">Số tiền giảm giá tối đa:</label>
             <input
               type="text"
               className="form-input"
@@ -102,7 +102,7 @@ const DiscountCodeForm = () => {
             <span style={{ color: "red" }}> *</span>
           </div>
           <div className="form-group">
-            <label className="form-label">Số lượng sử dụng:</label>
+            <label className="form-label">Số lượng:</label>
             <input
               type="text"
               className="form-input"

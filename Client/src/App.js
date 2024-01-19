@@ -49,6 +49,7 @@ import BlogForm from "./components/Admin/Blog/CreateBlog";
 import AccountInfo from "./components/Admin/Account/Account";
 import CallbackComponent from "./views/CallBack";
 import NotificationComponent3 from "./views/Notification";
+import Dragon from "./views/Dragon";
 function App() {
   const AdminRoute = ({ element }) => {
     if (localStorage.getItem("chucvu") !== "Manager") {
@@ -86,6 +87,7 @@ function App() {
             <Route path="term-conditions" element={<TermAndContions />} />
             <Route path="voucher" element={<Voucher />} />
             <Route path="result" element={<CallbackComponent />} />
+            <Route path="dragon" element={<Dragon />} />
             <Route path="noti" element={<NotificationComponent3 />} />
             <Route path="to-pay" element={<Headers />}>
               <Route index element={<Confirm />} />
@@ -118,6 +120,7 @@ function App() {
               <Route path="done" element={<DoneAdmin />} />
               <Route path="cancel" element={<CanceledAdmin />} />
               <Route path="blogadmin" element={<Blog />} />
+              <Route path="detailblog" element={<SingleBlog />} />
               <Route path="createblog" element={<BlogForm />} />
               <Route path="accountinfo" element={<AccountInfo />} />
             </Route>

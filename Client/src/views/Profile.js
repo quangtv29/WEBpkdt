@@ -214,63 +214,65 @@ const Profile = () => {
                 className="ml-5"
                 style={{ borderCollapse: "collapse", borderColor: "gray" }}
               >
-                <tr>
-                  <td style={styletd}>
-                    <label>Tên đăng nhập</label>
-                  </td>
-                  <td style={styleright}>{customer?.userName}</td>
-                </tr>
-                <tr>
-                  <td style={styletd}>
-                    <label>Số điện thoại</label>
-                  </td>
-                  <td style={styleright}>{customer?.phoneNumber}</td>
-                </tr>
-                <tr>
-                  <td style={styletd}>
-                    <label>Ngày lập tài khoản</label>
-                  </td>
-                  <td style={styleright}>{customer?.formatDate}</td>
-                </tr>
-                <tr>
-                  <td style={styletd}>
-                    <label>Số đơn hàng đã mua</label>
-                  </td>
-                  <td style={styleright}>{detailOrder?.quantity}</td>
-                </tr>
-                <tr>
-                  <td style={styletd}>
-                    <label>Tổng tiền hoá đơn tháng này</label>
-                  </td>
-                  <td style={styleright}>
-                    {detailOrder?.totalOrderofMonth?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </td>
-                </tr>
-                <tr>
-                  <td style={styletd}>
-                    <label>Tổng số tiền đã mua</label>
-                  </td>
-                  <td style={styleright}>
-                    {detailOrder?.totalOrder?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </td>
-                </tr>
-                <tr>
-                  <td style={styletd}>
-                    <label>Số tiền được giảm giá</label>
-                  </td>
-                  <td style={styleright}>
-                    {detailOrder?.totalDiscount?.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td style={styletd}>
+                      <label>Tên đăng nhập</label>
+                    </td>
+                    <td style={styleright}>{customer?.userName}</td>
+                  </tr>
+                  <tr>
+                    <td style={styletd}>
+                      <label>Số điện thoại</label>
+                    </td>
+                    <td style={styleright}>{customer?.phoneNumber}</td>
+                  </tr>
+                  <tr>
+                    <td style={styletd}>
+                      <label>Ngày lập tài khoản</label>
+                    </td>
+                    <td style={styleright}>{customer?.formatDate}</td>
+                  </tr>
+                  <tr>
+                    <td style={styletd}>
+                      <label>Số đơn hàng đã mua</label>
+                    </td>
+                    <td style={styleright}>{detailOrder?.quantity}</td>
+                  </tr>
+                  <tr>
+                    <td style={styletd}>
+                      <label>Tổng tiền hoá đơn tháng này</label>
+                    </td>
+                    <td style={styleright}>
+                      {detailOrder?.totalOrderofMonth?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={styletd}>
+                      <label>Tổng số tiền đã mua</label>
+                    </td>
+                    <td style={styleright}>
+                      {detailOrder?.totalOrder?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={styletd}>
+                      <label>Số tiền được giảm giá</label>
+                    </td>
+                    <td style={styleright}>
+                      {detailOrder?.totalDiscount?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>

@@ -54,6 +54,7 @@ namespace API.Business.Services
                 foreach(var sa in sale )
                 {
                     var sd = await _repo.SaleDetail.GetAllByCondition(p => p.CustomerId == customerId && p.SaleId == sa.Id,false)
+                        .Where(p=>p.isDelete==false)
                         .FirstOrDefaultAsync();
                     if (sd == null)
                     {

@@ -1,15 +1,30 @@
 // ProductManagement.scss
 .nav-treeview {
-    display: none;
-  
-    &.show {
-      display: block;
-    }
+  display: none;
+
+  &.show {
+    display: block;
   }
-  
-  .right {
-    &.rotate {
-      transform: rotate(90deg);
-    }
+}
+
+.right {
+  &.rotate {
+    transform: rotate(90deg);
   }
-  
+}
+
+.main-sidebar {
+  min-height: 100vh !important;
+
+  .menu {
+    background-color: #343a40;
+
+    .sub-menu {
+      ul {
+        background-color: #343a40 !important;
+      }
+
+    }
+
+  }
+}

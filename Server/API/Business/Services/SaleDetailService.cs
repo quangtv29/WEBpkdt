@@ -22,7 +22,7 @@ namespace API.Business.Services
         {
             var result = await (from sd in _repo.SaleDetail.GetAll(false)
                                 join s in _repo.Sale.GetAll(false) on sd.SaleId equals s.Id
-                                where sd.CustomerId == id && s.DiscountCode == discount
+                                where sd.CustomerId == id && s.DiscountCode == discount && sd.isDelete == false
                                 select new
                                 {
                                     s.MinBill,
@@ -73,6 +73,20 @@ namespace API.Business.Services
             var result = await _repo.SaleDetail.GetAllByCondition(p => p.SaleId == SaleId && p.CustomerId == customerId, false)
                 .Where(p => p.isDelete == false)
                 .FirstOrDefaultAsync();
+            return result;
+        }
+
+        public async Task<SaleDetail> updateSaleDetail (string discount, string id)
+        {
+            var result = await (from sd in _repo.SaleDetail.GetAll(true)
+                                join s in _repo.Sale.GetAll(true) on sd.SaleId equals s.Id
+                                where sd.CustomerId == id && s.DiscountCode == discount && sd.isDelete == false
+                                select sd
+                               ).FirstOrDefaultAsync();
+            if (result == null)
+                return null;
+            result.isDelete = true;
+            await _repo.SaveAsync();
             return result;
         }
     }

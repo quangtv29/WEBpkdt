@@ -8,5 +8,6 @@ namespace API.Business.Services.Interface
         Task<double?> getMoney(string discount, string id, double totalMoney);
         Task<SaleDetail> createSaleDetail(CreateSaleDetailDTO saleDetail);
         Task<SaleDetail> check(Guid? SaleId, string? customerId);
+        Task<SaleDetail> updateSaleDetail(string discount, string id);
     }
 }

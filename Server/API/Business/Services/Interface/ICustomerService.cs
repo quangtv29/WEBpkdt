@@ -11,5 +11,6 @@ namespace API.Business.Services.Interface
         Task<Customer> updateCustomer(string? Id, UpdateCustomerDTO update);
         Task<Customer> addAvatar(IFormFile Image, string? CustomerId);
         Task<Customer> getCustomerByIDD(string? Id);
+        Task<Customer> lockAccount(string? id);
     }
 }

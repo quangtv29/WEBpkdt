@@ -13,7 +13,13 @@ const ProductCard = (props) => {
   let location = useLocation();
 
   const { product } = props;
-
+  const isLoggedIn = localStorage.getItem("accessToken");
+  const handleLinkClick = () => {
+    if (!isLoggedIn) {
+      alert("Bạn cần đăng nhập để mua hàng.");
+    }
+    // else, handle the link click as usual
+  };
   return (
     <>
       {product?.map((item) => (
@@ -23,14 +29,15 @@ const ProductCard = (props) => {
           style={{ minHeight: 460 }}
         >
           <Link
-            to={`${
-              location.pathname === "/"
-                ? `/product/${item.id}`
-                : location.pathname === `/product/${item.id}`
-                ? `/product/${item.id}`
-                : `${item.id}`
-            }`}
+            to={
+              isLoggedIn
+                ? location.pathname === "/"
+                  ? `/product/${item.id}`
+                  : `/product/${item.id}`
+                : "/"
+            }
             className="product-card position-relative"
+            onClick={handleLinkClick}
           >
             <div className="wishlist-icon position-absolute">
               <button className="border-0 bg-transparent">
@@ -68,7 +75,7 @@ const ProductCard = (props) => {
                   activeColor="#ffd700"
                 /> */}
                 <StarRatings
-                  rating={item.starRating}
+                  rating={item?.starRating}
                   starRatedColor="#ffd700"
                   starEmptyColor="#e4e5e9"
                   numberOfStars={5}
@@ -77,7 +84,7 @@ const ProductCard = (props) => {
                   isSelectable={false}
                 />
                 <p style={{ marginTop: 4, marginLeft: 35, color: "black" }}>
-                  Đã bán {item.sold}
+                  Đã bán {item?.sold}
                 </p>
               </div>
               <div
@@ -85,7 +92,7 @@ const ProductCard = (props) => {
                 style={{ display: "flex", alignItems: "center" }}
               >
                 <p className="price">
-                  {item.price?.toLocaleString("vi-VN", {
+                  {item?.price?.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}

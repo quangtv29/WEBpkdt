@@ -75,23 +75,7 @@ const OurStore = () => {
     setRecord(response.data.length);
     setProducts(response.data);
   };
-  // const fetchTopSeller = async () => {
-  //   let url = "https://localhost:7295/api/Product/searchByName";
-  //   const pageNumber = currentPage;
-  //   const pageSize = 6;
-  //   const response = await axios.post(
-  //     url,
-  //     { pageNumber, pageSize },
-  //     {
-  //       params: {
-  //         name: search,
-  //       },
-  //     }
-  //   );
 
-  //   let data = response.data.item1;
-  //   setRecord(response.data.item2);
-  // };
   const fetchProducts = async () => {
     let url = "https://localhost:7295/api/Product/searchByName";
     const pageNumber = currentPage;

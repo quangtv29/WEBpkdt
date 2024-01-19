@@ -8,11 +8,11 @@ import ProductCard from "../components/ProductCard";
 import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import { services } from "../ultils/Data";
-import camera from "../assets/images/camera.jpg";
+import meo from "../assets/images/meo.png";
 import mainbanner from "../assets/images/main-banner-1.jpg";
 import mainbanner2 from "../assets/images/main-banner.jpg";
 import mainbanner3 from "../assets/images/main-banner-1.jpg";
-import famous from "../assets/images/famous-1.webp";
+import beautiful from "../assets/images/beautiful.png";
 import famous2 from "../assets/images/famous-2.webp";
 import famous3 from "../assets/images/famous-3.webp";
 import famous4 from "../assets/images/famous-4.webp";
@@ -33,89 +33,56 @@ const Home = () => {
       setData(res.data);
     });
   }, []);
+  const [type, setType] = useState([]);
+  useEffect(() => {
+    const fetchLoaiSanPham = async () => {
+      try {
+        const response = await axios.get(
+          "https://localhost:7295/api/ProductType/GetAll"
+        );
+        setType(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchLoaiSanPham();
+  }, []);
+  const [seller, setSeller] = useState([]);
+  useEffect(() => {
+    axios
+      .post("https://localhost:7295/api/Product/getTopSeller", {
+        pageNumber: 1,
+        pageSize: 4,
+      })
+      .then((res) => {
+        setSeller(res.data);
+        console.log(res.data);
+      });
+  }, []);
+
   return (
     <>
       <Container class1="home-wrapper-1 py-5">
         <div className="row">
           <div className="col-6">
             <div className="main-banner position-relative ">
-              <img
-                src={mainbanner}
-                className="img-fluid rounded-3"
-                alt="main banner"
-              />
-              <div className="main-banner-content position-absolute">
-                <h4>SUPERCHARGED FOR PROS.</h4>
-                <h5>iPad S13+ Pro.</h5>
-                <p>From $999.00 or $41.62/mo.</p>
-                <Link className="button">BUY NOW</Link>
-              </div>
+              <img src={meo} className="rounded-3" alt="main banner" />
             </div>
           </div>
           <div className="col-6">
-            <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
-              <div className="small-banner position-relative">
-                <img
-                  src={mainbanner}
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>Best Sake</h4>
-                  <h5>iPad S13+ Pro.</h5>
-                  <p>
-                    From $999.00 <br /> or $41.62/mo.
-                  </p>
-                </div>
-              </div>
-              <div className="small-banner position-relative">
-                <img
-                  src={mainbanner2}
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>NEW ARRIVAL</h4>
-                  <h5>But IPad Air</h5>
-                  <p>
-                    From $999.00 <br /> or $41.62/mo.
-                  </p>
-                </div>
-              </div>
-              <div className="small-banner position-relative ">
-                <img
-                  src={mainbanner3}
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>NEW ARRIVAL</h4>
-                  <h5>But IPad Air</h5>
-                  <p>
-                    From $999.00 <br /> or $41.62/mo.
-                  </p>
-                </div>
-              </div>
-              <div className="small-banner position-relative ">
-                <img
-                  src={mainbanner2}
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-                <div className="small-banner-content position-absolute">
-                  <h4>NEW ARRIVAL</h4>
-                  <h5>But IPad Air</h5>
-                  <p>
-                    From $999.00 <br /> or $41.62/mo.
-                  </p>
-                </div>
-              </div>
+            <div className="main-banner position-relative ">
+              <img
+                src={beautiful}
+                className="img-fluid rounded-3"
+                alt="main banner"
+              />
             </div>
           </div>
         </div>
       </Container>
-      <Container class1="home-wrapper-2 py-5">
-        {/* <div className="row">
+      {/* <Container class1="home-wrapper-2 py-5">
+        <div className="row">
           <div className="col-12">
             <div className="servies d-flex align-items-center justify-content-between">
               {services?.map((i, j) => {
@@ -131,8 +98,8 @@ const Home = () => {
               })}
             </div>
           </div>
-        </div> */}
-      </Container>
+        </div>
+      </Container> */}
       {/* <Container class1="home-wrapper-2 py-5">
         <div className="row">
           <div className="col-12">
@@ -270,14 +237,13 @@ const Home = () => {
       <Container class1="popular-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
-            <h3 className="section-heading">Sản phẩm phổ biến</h3>
+            <h3 className="section-heading text-center">Sản phẩm bán chạy</h3>
           </div>
         </div>
-        <div className="row">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+        <div className="products-list ">
+          <div className="d-flex  flex-wrap">
+            {seller && <ProductCard grid={4} product={seller} />}
+          </div>
         </div>
       </Container>
       <Container class1="marque-wrapper home-wrapper-2 py-5">

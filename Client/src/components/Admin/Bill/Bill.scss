@@ -5,7 +5,7 @@
         box-sizing: border-box;
         th {
             border: 1px solid #ddd;
-            background-color: #04AA6D;
+            background-color: #FF0033;
             color: white;
             max-width: 110px;
                 white-space: pre-line;
@@ -14,12 +14,7 @@
         }
         tr {
             box-sizing: border-box;
-            &:nth-child(even) {
-              background-color: #fff;
-            }
-            &:hover {
-              background-color: #ddd;
-            }
+           
           }
         td{
             white-space: nowrap;
@@ -47,14 +42,14 @@
                 font-size: 13px;
                 font-weight: bold;
                 color: #fff;
-                background-color: #f44336;
+                background-color: #fff;
                 border: none;
                 border-radius: 15px;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
                 
                 &:hover{
-                    background-color: green;
+                    background-color: pink;
                 }
             }                        
         }

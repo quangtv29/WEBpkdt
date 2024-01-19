@@ -118,8 +118,9 @@ const CreatProduct1 = (props) => {
         config
       )
       .then(() => {
-        toast("Thêm sản phẩm thành công");
+        alert("Thêm sản phẩm thành công");
         formData = new FormData();
+        window.location.reload();
       })
       .catch((err) => {
         toast.error("Thêm sản phẩm thất bại");

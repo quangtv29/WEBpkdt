@@ -108,5 +108,26 @@ namespace API.Business.Services
            var result = await _repo.Customer.GetAllByCondition(p=> p.isDelete == false,false).Where(p=>p.Id == Id).FirstOrDefaultAsync();
             return result;
         }
+
+        public async Task<Customer> lockAccount (string? id)
+        {
+            var result = await _repo.Customer.GetAllByCondition(p => p.Id == id, true)
+                .Where(p => p.isDelete == false)
+                .FirstOrDefaultAsync();
+            if (result == null)
+            {
+                return null;
+            }
+            if (result.isActive == true)
+            {
+                result.isActive = false;
+            }
+            else
+            {
+                result.isActive = true;
+            }
+            await _repo.SaveAsync();
+            return result;           
+        }
     }
 }

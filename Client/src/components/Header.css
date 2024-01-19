@@ -1,27 +1,11 @@
-/* CSS Cho Thông Báo */
-.notification-container2 {
-  position: relative;
-  display: inline-block;
-}
 
-.notification-content2 {
-  display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  min-width: 200px;
-  background-color: #fff;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  z-index: 1;
-}
 
-.notification-container2:hover .notification-content2 {
-  display: block;
+@media (min-height: 100px) {
+  .dropdown-menu.show {
+    max-height: 520px;
+    overflow: scroll;
+  }
 }
-
-.notification-item2 {
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
+#basic-nav-dropdown{
+  overflow: visible;
 }
-

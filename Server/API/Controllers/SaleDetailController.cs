@@ -76,5 +76,15 @@ namespace API.Controllers
             }
             return Ok(data);
         }
+        [HttpPost("updateSaleDetail")]
+        public async Task<IActionResult> updateSaleDetail(string discount, string id)
+        {
+            var result = await _service.saleDetailService.updateSaleDetail(discount, id);
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            return Ok(result);
+        }
     }
 }
