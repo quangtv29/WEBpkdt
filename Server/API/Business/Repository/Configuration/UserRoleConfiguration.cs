@@ -13,8 +13,8 @@ namespace API.Business.Repository.Configuration
             builder.HasData(
                 new IdentityUserRole<string>
                 {
-                    UserId ="db2ef474-d30b-490f-a98c-15a3347b2ab9",
-                    RoleId = "a5bc451a-281d-4bcd-bde5-cac2d09df773"
+                    UserId = "57d08f9f-053a-47e4-8429-bb0d27c90b65",
+                    RoleId = "57d08f9f-053a-47e4-8429-bb0d27c90b78"
                 }
                 ) ;
         }

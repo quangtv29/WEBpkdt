@@ -2,17 +2,20 @@
 using API.Business.Services.Interface;
 using API.Business.Shared;
 using API.Entities;
+using API.SignalR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace API.Controllers
 {
     public class NotificationController : BaseApiController
     {
         private readonly IServiceManager _service;
-
-        public NotificationController(IServiceManager service)
+        private readonly IHubContext<NotificationHub> _notiHub;
+        public NotificationController(IServiceManager service, IHubContext<NotificationHub> notiHub)
         {
             _service = service;
+            _notiHub=notiHub;
         }
 
         [HttpPost("getNotiByCustomerId")]
@@ -35,6 +38,7 @@ namespace API.Controllers
             try
             {
                 var noti = await _service.notificationService.createNoti(createNotificationDTO);
+                await _notiHub.Clients.All.SendAsync("meo");
                 return Ok(noti);
             }
             catch

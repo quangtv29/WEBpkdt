@@ -71,23 +71,23 @@ export const Cart = () => {
     setTotal(listTotal);
   }, [data]);
 
-  const UpdateCart = (event, id, quantity) => {
-    event.preventDefault();
-    axios
-      .post("https://localhost:7295/api/OrderDetail/updateTotal", {
-        id,
-        quantity,
-      })
-      .then((res) => {
-        // const updatedTotal = data.map((item) => {
-        //   if (item.id === id) {
-        //     return item.price * quantity;
-        //   }
-        //   return item.totalMoney;
-        // });
-        // setTotal(updatedTotal);
-      });
-  };
+  // const UpdateCart = (event, id, quantity) => {
+  //   event.preventDefault();
+  //   axios
+  //     .post("https://localhost:7295/api/OrderDetail/updateTotal", {
+  //       id,
+  //       quantity,
+  //     })
+  //     .then((res) => {
+  //       // const updatedTotal = data.map((item) => {
+  //       //   if (item.id === id) {
+  //       //     return item.price * quantity;
+  //       //   }
+  //       //   return item.totalMoney;
+  //       // });
+  //       // setTotal(updatedTotal);
+  //     });
+  // };
   const handleCreateBill = async () => {
     try {
       const result = await axios.post(
@@ -244,7 +244,6 @@ export const Cart = () => {
                         if (checked[index]) {
                           setTotalMoney(totalMoney + change);
                         }
-                        UpdateCart(event, item.id, newQuantities[index]);
                       }}
                     />
                   </div>

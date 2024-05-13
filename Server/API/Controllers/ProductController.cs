@@ -188,7 +188,7 @@ namespace API.Controllers
         }
 
         [HttpPost("updateProduct")]
-        [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> updateProduct( [FromForm] UpdateProductDTO product)
         {
             try

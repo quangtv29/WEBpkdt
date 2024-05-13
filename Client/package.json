@@ -1,6 +1,6 @@
 {
   "name": "do_an_react",
-  "proxy": "https://dragongem.biasaigon.vn/sbar/api",
+  "proxy" : "https://localhost:7295",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -9,7 +9,7 @@ import axios from "axios";
 import "./OurStore.css";
 
 const OurStore = () => {
-  const [grid, setGrid] = useState(4);
+  const grid = 4;
   const [isInStockChecked, setIsInStockChecked] = useState(false);
   const [isOutOfStockChecked, setIsOutOfStockChecked] = useState(false);
   const [pro, setPro] = useState([]);
@@ -261,7 +261,7 @@ const OurStore = () => {
                 </ul> */}
                 <ul className="list-unstyled ps-0">
                   {pro?.map((item) => (
-                    <li key={item.id} className="mb-1">
+                    <li key={item.id} className="mb-1 custom-hover">
                       <button
                         onClick={() => fetchProductByType(item?.name)}
                         className="btn  align-items-center"

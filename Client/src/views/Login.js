@@ -18,7 +18,7 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("https://localhost:7295/api/Authentication/login", {
+      .post("/api/Authentication/login", {
         Username,
         Password,
       })

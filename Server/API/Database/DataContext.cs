@@ -31,7 +31,8 @@ namespace API.Database
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfiguration());
-
+            //builder.ApplyConfiguration(new UserConfiguration());
+            //builder.ApplyConfiguration(new UserRoleConfiguration());
             builder.Entity<Bill>(e =>
             {
                 e.Property(e => e.Time).HasDefaultValueSql("DATEADD(hour, 7, GETUTCDATE())");

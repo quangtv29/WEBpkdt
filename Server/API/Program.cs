@@ -1,5 +1,6 @@
 using API.Business.Extensions;
 using API.Database;
+using API.SignalR;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,7 @@ builder.Services.ConfigureJWT(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -52,9 +54,10 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSwagger();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+  
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
 }
 app.UseIpRateLimiting();
@@ -65,6 +68,7 @@ app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrig
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapHub<NotificationHub>("hubs/noti");
 
 app.MapControllers();
 

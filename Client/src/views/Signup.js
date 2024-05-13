@@ -64,9 +64,9 @@ const Signup = () => {
     }
   };
   const [border, setBorder] = useState([true, true, true, true, true, true]);
-  const validatePhoneNumber = (value) => {
-    return phoneRegex.test(value);
-  };
+  // const validatePhoneNumber = (value) => {
+  //   return phoneRegex.test(value);
+  // };
   const handleSubmit = (event) => {
     event.preventDefault();
     if (

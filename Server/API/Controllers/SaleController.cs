@@ -54,7 +54,7 @@ namespace API.Controllers
               var result = await _service.saleService.createSale(discount);
                 return Ok(result);
             }
-            return BadRequest(HttpStatusCode.NotFound);
+            return BadRequest();
         }
 
         [HttpGet("GetAllSale")]

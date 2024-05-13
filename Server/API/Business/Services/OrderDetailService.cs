@@ -187,7 +187,7 @@ namespace API.Business.Services
                                     Id = order.Id,
                                     Quantity = order.Quantity,
                                     Product = product.Name,
-                                    Price = order.Price,
+                                    Price = product.Price,
                                     ProductId = order.Id,
                                     Image = product.Image,
                                     TotalMoney = order.TotalMoney,
@@ -204,8 +204,16 @@ namespace API.Business.Services
         public async Task<GetAllOrderDetail> updateTotal(Guid? Id, int? quantity)
         {
             var result = await _repo.OrderDetail.GetOrderDetailById(Id);
+            var price = await (from or in _repo.OrderDetail.GetAll(false)
+                               join pd in _repo.Product.GetAll(false) on or.ProductId equals pd.Id
+                               where or.Id == Id
+                               select new
+                               {
+                                   price = pd.Price
+                               }
+                                 ).FirstOrDefaultAsync();
             result.Quantity = quantity;
-            result.TotalMoney = result.Price * quantity;
+            result.TotalMoney = price?.price * quantity;
             await _repo.SaveAsync();
             var results = _mapper.Map<GetAllOrderDetail>(result);
             return results;
@@ -223,10 +231,10 @@ namespace API.Business.Services
                                      Id= od.Id,
                                      BillId = od.BillId,
                                      ProductId = od.ProductId,
-                                     Price = od.Price,
+                                     Price = pg.Price,
                                      Quantity = od.Quantity,
                                      Name= pg.Name,
-                                     TotalMoney = od.TotalMoney,
+                                     TotalMoney = pg.Price*od.Quantity,
                                      Image = pg.Image,
                                      isSave = od.isSave
                                  }
