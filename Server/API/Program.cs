@@ -1,5 +1,6 @@
 using API.Business.Extensions;
 using API.Database;
+using API.ExceptionMiddleware;
 using API.SignalR;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Http.Features;
@@ -42,6 +43,13 @@ builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("VIP", policy =>
+    {
+        policy.RequireRole("Customer", "Employee");
+    });
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -49,10 +57,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });  
 });
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 if (app.Environment.IsDevelopment())

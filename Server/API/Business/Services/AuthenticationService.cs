@@ -36,7 +36,10 @@ namespace API.Business.Services
             var users = _mapper.Map<User>(user);
             var result = await _userManager.CreateAsync(users, user.Password);
             if (result.Succeeded)
+            {
+                await _userManager.AddClaimAsync(users, new Claim("UserName",users.UserName ));
                 await _userManager.AddToRolesAsync(users, user.Roles);
+            }
             return result;
         }
 

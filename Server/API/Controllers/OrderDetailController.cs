@@ -17,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllOrderDetail")]
-
+       
         public async Task<IActionResult> getAllOrderDetail ()
         {
             try

@@ -22,6 +22,7 @@ namespace API.Business.Services
         private readonly Lazy<INotificationService> _notificationService;
         private readonly Lazy<IBlogService> _blogService;
         private readonly Lazy<ISaleDetailService> _saleDetailService;
+        private readonly Lazy<IPhotoService> _photoService;
 
 
         public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper, UserManager<User> userManager, IConfiguration configuration, IOptions<CloudinarySettings> config)
@@ -38,6 +39,7 @@ namespace API.Business.Services
             _notificationService = new Lazy<INotificationService>(() => new NotificationService(repositoryManager, _mapper));
             _saleDetailService = new Lazy<ISaleDetailService>(() => new SaleDetailService(repositoryManager, _mapper));
             _blogService = new Lazy<IBlogService>(() => new BlogService(repositoryManager, _mapper,config,configuration));
+            _photoService = new Lazy<IPhotoService>(() => new PhotoService(repositoryManager, configuration,_mapper));
         }
 
         public ICustomerService customerService => _customerService.Value;
@@ -62,5 +64,7 @@ namespace API.Business.Services
         public ISaleDetailService saleDetailService => _saleDetailService.Value;
 
         public IBlogService blogService => _blogService.Value;
+
+        public IPhotoService photoService => _photoService.Value;
     }
 }

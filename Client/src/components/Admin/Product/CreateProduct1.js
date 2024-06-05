@@ -19,7 +19,7 @@ const CreatProduct1 = (props) => {
   //   const [maloaisp, setMaLoaiSP] = useState("");
   const handleFileChange = (e) => {
     e.preventDefault();
-    const selectedFile = e.target.files[0];
+    const selectedFile = e.target.files;
     setImage(selectedFile);
   };
 
@@ -103,7 +103,7 @@ const CreatProduct1 = (props) => {
     formData.append("ProductTypeID", maloaisp);
     formData.append("Producer", nsx);
     formData.append("Describe", mota);
-    formData.append("Image", image);
+    formData.append("Image", image[0]);
 
     const config = {
       headers: {
@@ -117,13 +117,31 @@ const CreatProduct1 = (props) => {
         formData,
         config
       )
-      .then(() => {
+      .then((res) => {
+        var imageArray = Array.from(image);
+        imageArray.forEach(async (img) => {
+          try {
+            console.log(img);
+            let formData1 = new FormData();
+            formData1.append("Image", img);
+            formData1.append("ProductId", res.data.id);
+
+            await axios.post(
+              "https://localhost:7295/api/Photo/createPhoto",
+              formData1,
+              config
+            );
+          } catch (error) {
+            console.error("Error uploading image:", error);
+          }
+        });
+
         alert("Thêm sản phẩm thành công");
         formData = new FormData();
-        window.location.reload();
       })
       .catch((err) => {
         toast.error("Thêm sản phẩm thất bại");
+        console.error(err);
       });
 
     // if (props.isEditing === true) {
@@ -223,6 +241,7 @@ const CreatProduct1 = (props) => {
                 name="file"
                 onChange={handleFileChange}
                 id="mypicture"
+                multiple
               />
             </Form.Group>
             <button

@@ -15,6 +15,7 @@ namespace API.Business.Repository.IRepository
         INotificationRepository Notification { get; }
         ISaleDetailRepository SaleDetail { get; }
         IBlogRepository Blog { get; }
+        IPhotoRepository Photo { get; }
         IDbContextTransaction Transaction();
         
         Task SaveAsync();

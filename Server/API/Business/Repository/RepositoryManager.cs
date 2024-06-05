@@ -17,6 +17,7 @@ namespace API.Business.Repository
         private readonly Lazy<INotificationRepository> _notificationsRepository;
         private readonly Lazy<ISaleDetailRepository> _saleDetailRepository;
         private readonly Lazy<IBlogRepository> _blogRepository;
+        private readonly Lazy<IPhotoRepository> _photoRepository;
 
         public RepositoryManager(DataContext db )
         {
@@ -31,6 +32,7 @@ namespace API.Business.Repository
             _notificationsRepository = new Lazy<INotificationRepository>(() => new NotificationRepository(db));
             _saleDetailRepository = new Lazy<ISaleDetailRepository>(() => new SaleDetailRepository(db));
             _blogRepository = new Lazy<IBlogRepository>(() => new BlogRepository(db));
+            _photoRepository = new Lazy<IPhotoRepository>(() => new PhotoRepository(db));
         }
 
 
@@ -55,6 +57,8 @@ namespace API.Business.Repository
         public ISaleDetailRepository SaleDetail => _saleDetailRepository.Value;
 
         public IBlogRepository Blog => _blogRepository.Value;
+
+        public IPhotoRepository Photo => _photoRepository.Value;
 
         public async Task SaveAsync()
         {

@@ -50,19 +50,12 @@ namespace API.Controllers
 
         public async Task<IActionResult> createSaleDetail(CreateSaleDetailDTO saleDetail)
         {
-            try
-            {
                 var result = await _service.saleDetailService.createSaleDetail(saleDetail);
                 if (result == null)
                 {
                     return Ok("Mã giảm giá đã được lưu hết");
                 }    
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
         [HttpPost("check")]
 

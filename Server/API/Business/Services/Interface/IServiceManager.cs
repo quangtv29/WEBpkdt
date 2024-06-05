@@ -20,5 +20,6 @@
         INotificationService notificationService { get; }
         ISaleDetailService saleDetailService { get; }
         IBlogService blogService { get; }   
+        IPhotoService photoService { get; }
     }
 }

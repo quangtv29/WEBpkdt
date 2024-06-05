@@ -5,6 +5,7 @@ using API.Business.DTOs.CustomerDTO;
 using API.Business.DTOs.FeedbackDTO;
 using API.Business.DTOs.NotificationDTO;
 using API.Business.DTOs.OrderDetailDTO;
+using API.Business.DTOs.PhotoDTO;
 using API.Business.DTOs.ProductDTO.cs;
 using API.Business.DTOs.ProductTypeDTO;
 using API.Business.DTOs.SaleDetailDTO;
@@ -42,7 +43,8 @@ namespace API.Business.Helper
             CreateMap<GetNotificationDTO, Notification>().ReverseMap();
             CreateMap<CreateNotificationDTO, Notification>().ReverseMap();  
             CreateMap<SaleDetail,CreateSaleDetailDTO>().ReverseMap();   
-            CreateMap<Blog,CreateBlogDTO>().ReverseMap();   
+            CreateMap<Blog,CreateBlogDTO>().ReverseMap();
+            CreateMap<Photo, CreatePhotoDTO>().ReverseMap();
         }
     }
 }

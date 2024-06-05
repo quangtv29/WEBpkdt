@@ -33,6 +33,8 @@ namespace API.Entities
 
         public ICollection<Feedback> Feedback { get; set; }
         public ICollection<OrderDetail> OrderDetail { get; set; }
+
+        public ICollection<Photo> Photo { get; set; }
       
 
     }

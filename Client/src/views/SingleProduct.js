@@ -1,17 +1,20 @@
 import { useState, useEffect, useContext } from "react";
 import React from "react";
+import Slider from "react-slick";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import Color from "../components/Color";
-
 import Container from "../components/Container";
 import { CartContext } from "../CartContext";
 import StarRatings from "react-star-ratings";
 import { MyContext } from "../encryptionKey";
 import CryptoJS from "crypto-js";
 import Avatar from "../components/Avatar";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 const MaskedString = ({ originalString }) => {
   const visibleCharacters = 1;
 
@@ -123,7 +126,13 @@ const SingleProduct = () => {
       }
     }
   };
-
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   const { id } = useParams();
   useEffect(() => {
     axios
@@ -137,6 +146,16 @@ const SingleProduct = () => {
         }
       })
       .catch((error) => console.error(error));
+  }, [id]);
+  const [photo, setPhoto] = useState([]);
+  useEffect(() => {
+    axios
+      .get("https://localhost:7295/api/Photo/getPhotoByProduct", {
+        params: { Id: id },
+      })
+      .then((res) => {
+        setPhoto(res.data);
+      });
   }, [id]);
   useEffect(() => {
     if (product?.id) {
@@ -196,9 +215,13 @@ const SingleProduct = () => {
         <div className="row">
           <div className="col-6">
             <div className="main-product-image">
-              <div>
-                <img src={product?.image} alt="imageCase" />
-              </div>
+              <Slider {...settings}>
+                {photo.map((image, index) => (
+                  <div key={index}>
+                    <img src={image.image} alt={`productImage-${index}`} />
+                  </div>
+                ))}
+              </Slider>
             </div>
             <div className="other-product-images d-flex flex-wrap gap-15">
               {/* {product.map(image => (

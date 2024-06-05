@@ -61,19 +61,12 @@ namespace API.Controllers
 
         public async Task<IActionResult> getAll(string customerid)
         {
-            try
-            {
                 var sale = await _service.saleService.getAll(customerid);
                 foreach(var sa in sale)
                 {
                     sa.FormatDate = sa.EndDate.ToString("dd/MM/yyyy");
                 }    
                 return Ok(sale);
-            }
-            catch (Exception ex)
-                {
-                return BadRequest(ex.Message);
-            }
         }
 
     }

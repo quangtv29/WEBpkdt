@@ -35,16 +35,9 @@ namespace API.Controllers
 
         public async Task<IActionResult> createNoti(CreateNotificationDTO createNotificationDTO)
         {
-            try
-            {
                 var noti = await _service.notificationService.createNoti(createNotificationDTO);
                 await _notiHub.Clients.All.SendAsync("meo");
                 return Ok(noti);
-            }
-            catch
-            {
-                return BadRequest();
-            }
         }
         [HttpPost("updateNoti")]
         public async Task<IActionResult> updateNoti (Guid? id)

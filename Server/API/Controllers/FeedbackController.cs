@@ -21,8 +21,6 @@ namespace API.Controllers
 
         public async Task<IActionResult> createFeedback([FromForm]CreateFeedbackDTO feedback)
         {
-            try
-            {
                 if (feedback.ProductId == null || feedback.Star == null)
                 {
                     return BadRequest(new
@@ -36,11 +34,6 @@ namespace API.Controllers
                     return BadRequest("Sản phẩm đã được đánh giá");
                 }    
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
         }
 
         [HttpPost("getFeedbackByProduct")]

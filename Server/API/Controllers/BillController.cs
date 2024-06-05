@@ -28,8 +28,6 @@ namespace API.Controllers
         [HttpPost("getAll")]
         public async Task<IActionResult> getAll( Status status,[FromBody] BillParameters billParameters)
         {
-            try
-            {
                 var bills = await _service.billService.GetAll(trackChanges: false, status, billParameters);
                 if (bills.Item1 == null)
                 {
@@ -52,19 +50,11 @@ namespace API.Controllers
                     data = _mapper.Map<List<GetAllBillDTO>>(bills.Item1),
                     totalPage = bills.Item2
                 }) ;
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
-
         }
         
         [HttpPost("{customerId}/bills")]
         public async Task<IActionResult> getAllBillFromCustomer(string? customerId, Status status)
-        {
-            try
-            {
+        {       
                 var bills = await _service.billService.GetAllBillFromCustomer(customerId, trackChanges: false, status );
                 //var convert = bills.Select(
                 //    p => {
@@ -82,19 +72,12 @@ namespace API.Controllers
                 }).ToList();
 
                 return Ok(_mapper.Map<List<GetAllBillDTO>>(convert));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
         }
 
         [HttpPost("createBill")]
 
         public async Task<IActionResult> createBillWithDiscountCode(CreateBillDTO bill, string code)
         {
-            try
-            {
                 if (bill == null)
                 {
                     return Ok(new ApiResponse
@@ -125,22 +108,10 @@ namespace API.Controllers
                         Data = status
                     });
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Ok(new ApiResponse
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = ex.Message
-                });
-            }
         }
         [HttpPost("getBillById")]
         public async Task<IActionResult> getBillById(Guid? Id)
         {
-            try
-            {
                 if (Id == null)
                 {
                     return Ok(
@@ -152,37 +123,17 @@ namespace API.Controllers
                 var result = await _service.billService.getBillById(Id);
                  result.FormatDate = result.Time.ToString("dd/MM/yyyy HH:mm:ss");
                 return Ok(result);
-            }
-
-            catch (Exception ex)
-            {
-                return Ok(new ApiResponse
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Message = ex.Message
-                });
-            }
         }
 
         [HttpPost("updateBill")]
         public async Task<IActionResult> updateBillById (UpdateBillDTO bill)
         {
-            try
-            {
                 if(bill ==null)
                 {
                     return BadRequest();
                 }    
-                var bills = await _service.billService.updateBillById(bill);
-                return Ok("done");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    message = ex.Message
-                });
-            }
+                 await _service.billService.updateBillById(bill);
+                return Ok();   
         }
 
         [HttpPost("getInfoOrder")]
@@ -196,15 +147,8 @@ namespace API.Controllers
         [HttpPost("updateStatusBill")]
         public async Task<IActionResult> updateStatusBill(Guid? Id, Status status)
         {
-            try
-            {
                 var result = await _service.billService.updateStatusBill(Id, status);
                 return Ok("done");
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
         [HttpPost("totalRevenue")]
@@ -231,9 +175,7 @@ namespace API.Controllers
         }
         [HttpPost("updatePayDone")]
          public async Task<IActionResult> updatePayDone(Guid? Id)
-        {
-            try
-            {
+        {        
                 var result = await _service.billService.updatePayDone(Id);
                 if (result != null)
                 {
@@ -241,11 +183,6 @@ namespace API.Controllers
 
                 }
                 return BadRequest("Id null");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }

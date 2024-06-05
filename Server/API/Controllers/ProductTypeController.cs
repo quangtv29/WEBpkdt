@@ -18,9 +18,7 @@ namespace API.Controllers
         [HttpGet("GetAll")]
 
         public async Task<IActionResult> getAll()
-        {
-            try
-            {
+        {        
                 var productType = await _service.productTypeService.GetAll();
                 return Ok(new
                 {
@@ -28,14 +26,6 @@ namespace API.Controllers
                     Data = productType,
                     StatusCode = HttpStatusCode.OK
                 });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    message = ex.Message
-                });
-            }
         }
 
         [HttpPost("createProductType")]

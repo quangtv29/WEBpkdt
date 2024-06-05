@@ -23,17 +23,13 @@ namespace API.Controllers
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAll()
         {
-            try
-            {
                 var list = await _service.customerService.GetAllCustomer(trackChanges: false);
-                if (!list.Any())
-                {
-                    return BadRequest(HttpStatusCode.NoContent);
-                }
+               if (list  != null)
+               {
                 var convert = list.Select(p => {
                     p.FormatDate = p.DateOfBirth.ToString("dd/MM/yyyy");
-                    return p; 
-                    }).ToList();
+                    return p;
+                }).ToList();
                 var message = new
                 {
                     statusCode = HttpStatusCode.OK,
@@ -42,11 +38,8 @@ namespace API.Controllers
                 };
                 return Ok(message);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            return Ok(list);
+                
         }
 
         [HttpGet("{Id}")]

@@ -26,13 +26,14 @@ namespace API.Database
 
         public DbSet<SaleDetail> SaleDetail { get; set; }
        
-
+        public DbSet<Photo> Photos { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleConfiguration());
-            //builder.ApplyConfiguration(new UserConfiguration());
-            //builder.ApplyConfiguration(new UserRoleConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new UserRoleConfiguration());
+            builder.ApplyConfiguration(new CustomerConfiguration());
             builder.Entity<Bill>(e =>
             {
                 e.Property(e => e.Time).HasDefaultValueSql("DATEADD(hour, 7, GETUTCDATE())");
@@ -105,6 +106,16 @@ namespace API.Database
                 e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
                 e.Property(e => e.isDelete).HasDefaultValue(false);
             });
+            builder.Entity<Photo>(e =>
+            {
+                e.Property(e => e.LastModificationTime).HasDefaultValueSql("GETDATE()");
+                e.Property(e => e.Id).HasDefaultValue(Guid.NewGuid());
+                e.Property(e => e.isDelete).HasDefaultValue(false);
+            });
+            builder.Entity<Photo>()
+                .HasOne(p => p.Product)
+                .WithMany(e => e.Photo)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
 

@@ -95,8 +95,10 @@ namespace API.Business.Services
 
         public async Task<GetAllBillDTO> getBillById(Guid? Id)
         {
-            var result = await _repo.Bill.getBillById(Id,false);
-            return _mapper.Map<GetAllBillDTO>(result);
+            
+                var result = await _repo.Bill.getBillById(Id, false);
+                return _mapper.Map<GetAllBillDTO>(result);
+           
         }
 
         public async Task<Bill> updateStatusBill (Guid? Id, Status status)

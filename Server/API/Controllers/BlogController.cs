@@ -15,15 +15,8 @@ namespace API.Controllers
         [HttpPost("CreateBlog")]
         public async Task<IActionResult> CreateBlog([FromForm]CreateBlogDTO createBlogDTO)
         {
-            try
-            {
                 var result = await _service.blogService.CreateBlog(createBlogDTO);
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
 
         [HttpGet("getBlog")]
@@ -37,15 +30,8 @@ namespace API.Controllers
 
         public async Task<IActionResult> getBlogById(Guid? Id)
         {
-            try
-            {
                 var result = await _service.blogService.getBlogById(Id);
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }
