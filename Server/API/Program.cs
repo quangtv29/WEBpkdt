@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 if (app.Environment.IsDevelopment())
@@ -80,5 +80,6 @@ app.UseAuthorization();
 app.MapHub<NotificationHub>("hubs/noti");
 
 app.MapControllers();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();
