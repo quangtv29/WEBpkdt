@@ -30,7 +30,7 @@ namespace API.ExceptionMiddleware
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 var response = _env.IsDevelopment()
-                    ? new { statusCode = context.Response.StatusCode, message = ex.Message }
+                    ? new { statusCode = context.Response.StatusCode, message = ex.Message + "meomeo" }
                     : new { statusCode = context.Response.StatusCode, message = "Internal Server Error" };
                 var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
                 var json = JsonSerializer.Serialize(response);

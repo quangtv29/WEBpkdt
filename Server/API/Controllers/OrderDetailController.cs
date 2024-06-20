@@ -39,7 +39,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getOrderDetailFromCustomerId")]
-        [Authorize(Roles ="Customer")]
+      
 
         public async Task<IActionResult> getOrderDetailFromCustomerId (string? CustomerId)
         {
