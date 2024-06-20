@@ -9,6 +9,8 @@ namespace API.Entities
         [ForeignKey("Role")]
         public string? RoleId { get; set; }
         [NotMapped]
-        public int meo { get; set; }
+        public int hihihi { get; set; }
+
+        
     }
 }
